@@ -22,7 +22,9 @@
           </q-card-section>
 
           <q-card-section>
-            <q-btn color="dark" size="md" rounded style="padding: 9px;" label="Войти" no-caps class="full-width"></q-btn>
+            <router-link to="/main">
+              <q-btn color="dark" size="md" rounded style="padding: 9px;" label="Войти" no-caps class="full-width"></q-btn>
+            </router-link>
           </q-card-section>
           <q-card-section class="text-center q-pt-none q-mt-xl">
             <div class="text-grey-8">В первый раз здесь?

@@ -21,7 +21,7 @@ const routes = [
   },
   {
     path: "/main",
-    component: () => import('pages/mainPage.vue')
+    component: () => import('pages/MainPage.vue')
   },
   // Always leave this as last one,
   // but you can also remove it

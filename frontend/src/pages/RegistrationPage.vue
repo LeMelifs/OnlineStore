@@ -16,7 +16,7 @@
               <div class="text-grey-9 text-weight-bold q-ma-sm">Email</div>
               <q-input dense outlined rounded color="dark" v-model="email" label="Введите email"><template v-slot:prepend></template></q-input>
               <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Телефон</div>
-              <q-input dense outlined rounded color="dark" class="" v-model="password" label="Введите телефон"><template v-slot:prepend></template></q-input>
+              <q-input dense outlined rounded color="dark" mask="+7 (###) ### - ## - ##" v-model="phone" label="Введите телефон"><template v-slot:prepend></template></q-input>
               <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px; margin-bottom: 10px">Выберите пол:</div>
               <input type="radio" name="gender" value="male" class="radio" style="margin-left: 60px">
               <span>Мужчина</span>
@@ -28,13 +28,14 @@
               <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Пароль</div>
             <q-input dense outlined rounded color="dark" v-model="password" type="password" label="Введите пароль"><template v-slot:prepend></template></q-input>
             <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Повтор пароля</div>
-            <q-input dense outlined rounded color="dark" v-model="password" type="password" label="Повтор пароля"><template v-slot:prepend></template></q-input>
+            <q-input dense outlined rounded style="margin-bottom: 20px" color="dark" v-model="password" type="password" label="Повтор пароля"><template v-slot:prepend></template></q-input>
             </template>
             <q-btn  @click="awesome = !awesome" color="dark" rounded size="md" style="padding: 9px; margin-top: 15px" label="Продолжить" no-caps class="full-width"></q-btn>
           </q-card-section>
           <q-card-section class="text-center q-pt-none q-mt-lg">
             <div class="text-grey-8">Уже есть аккаунт?
-              <router-link to="/"><a class="text-grey-9 text-weight-bold">Войти</a></router-link></div>
+              <router-link to="/"><a class="text-grey-9 text-weight-bold">Войти</a></router-link>
+            </div>
 
           </q-card-section>
 
