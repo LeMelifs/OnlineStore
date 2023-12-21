@@ -24,7 +24,7 @@
             </div>
 
           </q-card-section>
-          
+
 
         </q-card>
       </q-page>
@@ -60,5 +60,6 @@ a {
 import { defineComponent } from 'vue'
 export default defineComponent({
   name: 'ResetPassword',
+
 })
 </script>
