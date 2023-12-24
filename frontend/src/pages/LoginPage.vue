@@ -24,6 +24,7 @@
           <q-card-section>
               <q-btn color="dark" size="md" type="submit" rounded style="padding: 9px;" label="Войти" no-caps class="full-width"></q-btn>
           </q-card-section>
+            <p>{{ error }}</p>
           </q-form>
           <q-card-section class="text-center q-pt-none q-mt-xl">
             <div class="text-grey-8">В первый раз здесь?
@@ -96,7 +97,8 @@
 
 <script setup>
 import {useRouter} from "vue-router";
-import {reactive} from "vue";
+import {reactive, ref} from "vue";
+let error = ref('')
 const data = reactive({
     username: '',
     password: ''
@@ -104,6 +106,7 @@ const data = reactive({
 )
 const router = useRouter()
 const submit = async () => {
+  error.value = ''
   const response = await fetch('http://127.0.0.1:8000/api/login', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
@@ -112,6 +115,10 @@ const submit = async () => {
   })
   if (response.status !== 403)
     await router.push('/main')
+  else {
+    let text = await response.json()
+    error.value = text['error']
+  }
 }
 
 </script>

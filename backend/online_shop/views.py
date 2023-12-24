@@ -36,7 +36,7 @@ class LoginView(APIView):
             }
             return response
         else:
-            return Response(status=403)
+            return Response({'error': 'Неверные данные! Повторите попытку'}, status=403)
 
 
 class UserView(APIView):
