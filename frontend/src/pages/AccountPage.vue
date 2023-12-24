@@ -23,12 +23,14 @@
                   </q-card-section>
                 </q-card>
                 <q-btn flat rounded style="width: 50px; height: 50px; background-color: #ffffff; border: 1px solid #a4a4a4; margin: 100px 0px 0px -20px" dense icon="edit"></q-btn>
+                <q-input dense outlined rounded color="dark" style="width: 410px; background-color: white; border-radius: 25px; height: 40px; margin: 110px 0px 0px 15px"  label="Ваше имя"><template v-slot:prepend></template></q-input>
                 <q-input dense outlined rounded color="dark" style="width: 410px; background-color: white; border-radius: 25px; height: 40px; margin: 110px 0px 0px 15px"  label="Имя пользователя"><template v-slot:prepend></template></q-input>
               </div>
               <div style="margin: 50px 0px 4px 15px; font-size: 14px">Почта</div>
               <q-btn style="border: 1px solid #a4a4a4; padding: 7px 0px 7px 10px; font-size: 15px" rounded flat text-color="grey-10" class="full-width text-weight-bold"  label="popik@mail.ru" no-caps ><q-icon style="margin-left: 450px" name="chevron_right"></q-icon></q-btn>
               <div style="margin: 15px 0px 4px 15px; font-size: 14px">Телефон</div>
               <q-btn style="border: 1px solid #a4a4a4;margin: 0px 0px 50px 0px; padding: 7px 0px 7px 10px" rounded flat text-color="grey-10" class="full-width text-h7 text-weight-bold" label="+7 (123) 456-89-00" no-caps ><q-icon style="margin-left: 420px" name="chevron_right"></q-icon></q-btn>
+              <q-btn>Сохранить</q-btn> <br>
               <router-link to="/">
                 <a class="text-grey-9 text-weight-bold" style="margin: 0px 0px 4px 10px;">Изменить пароль</a>
               </router-link>
