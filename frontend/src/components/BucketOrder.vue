@@ -14,7 +14,7 @@
           <input type="checkbox" checked id="checkbox" />
           <label for="checkbox"></label>
         </div>
-        <div style="font-weight: bold;margin-top: 95px; font-size: 22px; color: #2f2f2f;">
+        <div style="font-weight: bold;margin-top: 105px; font-size: 22px; color: #2f2f2f;">
           <q-btn round outline color="grey-8" @click="decrement"><q-icon color="dark" name="remove"></q-icon></q-btn>
           <span class="q-ma-md dark">{{ number }}</span>
           <q-btn round outline color="grey-8" @click="increment"><q-icon color="dark" name="add"></q-icon></q-btn>
@@ -25,7 +25,7 @@
   </div>
 </template>
 
-<style scoped>
+<style>
 .parent {
   display: flex;
   justify-content: center;
@@ -33,6 +33,7 @@
 .round {
   margin-left: 88px;
   padding-bottom: 15px;
+  position: relative;
 }
 
 .round label {
@@ -74,7 +75,6 @@
   opacity: 1;
 }
 </style>
-
 <script>
 export default {
   data() {
