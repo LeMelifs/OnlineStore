@@ -3,7 +3,6 @@ name = "online-shop"
 version = "0.1.0"
 description = ""
 authors = ["poslam <kirden04@gmail.com>"]
-readme = "README.md"
 
 [tool.poetry.dependencies]
 python = "^3.11"
@@ -11,6 +10,8 @@ django = "^5.0"
 djangorestframework = "^3.14.0"
 django-phonenumber-field = "^7.2.0"
 pyjwt = "^2.8.0"
+django-cors-headers = "^4.3.1"
+pillow = "^10.1.0"
 
 
 [build-system]
