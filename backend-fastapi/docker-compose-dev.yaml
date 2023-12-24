@@ -1,0 +1,31 @@
+version: '3'
+
+name: online-store
+
+services:
+
+    database:
+        image: postgres:16
+        restart: always
+        environment:
+            POSTGRES_PASSWORD: postgres
+        ports:
+            - 5432:5432
+
+
+    api:
+        links:
+            - database
+        image: api
+        ports:
+            - 8005:8000
+        environment:
+            DB_NAME: postgres
+            DB_PORT: 5432
+            DB_PASS: postgres
+            DB_USER: postgres
+            DB_HOST: database
+        env_file:
+            - .env
+        build: ./api
+        command: python -m uvicorn src.app:app --host 0.0.0.0 --port 8000 --reload

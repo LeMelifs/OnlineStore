@@ -1,0 +1,38 @@
+version: '3'
+
+name: online-store
+
+services:
+
+    database:
+        image: postgres:16
+        environment:
+            POSTGRES_PASSWORD: postgres
+        ports:
+            - 5432:5432
+        volumes:
+            - ./db_data:/var/lib/postgresql/data
+            - ./dumps/main.sql:/docker-entrypoint-initdb.d/main.sql
+            - ./dumps:/dumps
+
+
+    api:
+        links:
+            - database
+        image: api
+        ports:
+            - 8005:8000
+        environment:
+            DB_NAME: postgres
+            DB_PORT: 5432
+            DB_PASS: postgres
+            DB_USER: postgres
+            DB_HOST: database
+        env_file:
+            - .env
+        build: ./api
+        command: python -m uvicorn src.app:app --host 0.0.0.0 --port 8000
+
+volumes:
+    data:
+        driver: local
