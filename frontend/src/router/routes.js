@@ -27,6 +27,10 @@ const routes = [
     path: "/account",
     component: () => import('pages/AccountPage.vue')
   },
+  {
+    path: "/bucket",
+    component: () => import('pages/BucketPage.vue')
+  },
   // Always leave this as last one,
   // but you can also remove it
   {
