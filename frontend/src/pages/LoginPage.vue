@@ -108,8 +108,9 @@ const submit = async () => {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     credentials: 'include',
-    body: JSON.stringify(data),
+    body: JSON.stringify(data)
   })
+  if (response.status !== 403)
     await router.push('/main')
 }
 

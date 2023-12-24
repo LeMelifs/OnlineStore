@@ -22,24 +22,21 @@ class LoginView(APIView):
         password = request.data['password']
         user = CustomUser.objects.filter(username=username).first()
 
-        if user is None:
-            raise AuthenticationFailed('Пользователь на найден!')
-        if not user.check_password(password):
-            raise AuthenticationFailed('Неверный пароль!')
-
-        payload = {
-            'id': user.id,
-            'exp': datetime.datetime.now() + datetime.timedelta(hours=24),
-            'iat': datetime.datetime.now()
-        }
-
-        token = jwt.encode(payload, 'secret', algorithm='HS256')
-        response = Response()
-        response.set_cookie(key='jwt', value=token, httponly=True)
-        response.data = {
-            'jwt': token
-        }
-        return response
+        if user is not None and user.check_password(password):
+            payload = {
+                'id': user.id,
+                'exp': datetime.datetime.now() + datetime.timedelta(hours=24),
+                'iat': datetime.datetime.now()
+            }
+            token = jwt.encode(payload, 'secret', algorithm='HS256')
+            response = Response()
+            response.set_cookie(key='jwt', value=token, httponly=True)
+            response.data = {
+                'jwt': token
+            }
+            return response
+        else:
+            return Response(status=403)
 
 
 class UserView(APIView):
