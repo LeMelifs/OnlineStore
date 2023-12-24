@@ -8,27 +8,26 @@
             <div class="text-grey-9 text-h5 text-weight-bold" style="margin-bottom: 5px">Вход в аккаунт</div>
             <div class="text-grey-7 text-h7 ">Войдите, чтобы получить доступ к своему аккаунту</div>
           </q-card-section>
+          <q-form @submit.prevent="submit">
           <q-card-section>
-            <div class="text-grey-9 text-weight-bold q-ma-sm">Email или имя пользователя</div>
-            <q-input dense outlined rounded color="dark" v-model="email" label="Введите email"><template v-slot:prepend></template></q-input>
+            <div class="text-grey-9 text-weight-bold q-ma-sm">Имя пользователя</div>
+            <q-input dense outlined rounded color="dark" type="text" v-model="data.username" label="Введите имя пользователя"><template v-slot:prepend></template></q-input>
             <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Пароль</div>
-            <q-input dense outlined rounded color="dark" class="" v-model="password" type="password" label="Введите пароль"><template v-slot:prepend></template></q-input>
-            <div class="row round ">
+            <q-input dense outlined rounded color="dark" v-model="data.password" type="password" label="Введите пароль"><template v-slot:prepend></template></q-input>
+            <div class="row round">
               <input type="checkbox" checked id="checkbox" />
               <label for="checkbox"></label>
               <div class="text-grey-8 text-h7 q-ml-md">Запомнить меня</div>
               <router-link to="/reset"><a class="text-grey-9 text-weight-bold" style="margin-left: 60px">Забыли пароль?</a></router-link>
             </div>
           </q-card-section>
-
           <q-card-section>
-            <router-link to="/main">
-              <q-btn color="dark" size="md" rounded style="padding: 9px;" label="Войти" no-caps class="full-width"></q-btn>
-            </router-link>
+              <q-btn color="dark" size="md" type="submit" rounded style="padding: 9px;" label="Войти" no-caps class="full-width"></q-btn>
           </q-card-section>
+          </q-form>
           <q-card-section class="text-center q-pt-none q-mt-xl">
             <div class="text-grey-8">В первый раз здесь?
-              <router-link to="/registration"><a class="text-grey-9 text-weight-bold">Создать аккаунт</a></router-link></div>
+              <router-link to="/registration"><a class="text-grey-9 text-weight-bold">Создайте аккаунт</a></router-link></div>
           </q-card-section>
         </q-card>
       </q-page>
@@ -95,15 +94,23 @@
 
 </style>
 
-<script>
-import { defineComponent } from 'vue'
-import { ref } from 'vue'
-export default defineComponent({
-  name: 'LoginPage',
-  setup () {
-    return {
-      dark: ref(true)
-    }
+<script setup>
+import {useRouter} from "vue-router";
+import {reactive} from "vue";
+const data = reactive({
+    username: '',
+    password: ''
   }
-})
+)
+const router = useRouter()
+const submit = async () => {
+  const response = await fetch('http://127.0.0.1:8000/api/login', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    credentials: 'include',
+    body: JSON.stringify(data),
+  })
+    await router.push('/main')
+}
+
 </script>

@@ -9,36 +9,39 @@
             <div v-if="awesome" class="text-grey-7 text-h7 ">Введите ваши контактные данные, чтобы создать аккаунт</div>
             <div v-else class="text-grey-7 text-h7 ">Подтвердите пароль, чтобы завершить создание аккаунта</div>
           </q-card-section>
+          <q-form @submit.prevent="submit">
           <q-card-section>
             <template v-if="awesome">
-              <div class="text-grey-9 text-weight-bold q-ma-sm">Имя пользователя</div>
-              <q-input dense outlined rounded color="dark" v-model="email" label="Введите имя пользователя"><template v-slot:prepend></template></q-input>
-              <div class="text-grey-9 text-weight-bold q-ma-sm">Email</div>
-              <q-input dense outlined rounded color="dark" v-model="email" label="Введите email"><template v-slot:prepend></template></q-input>
+              <div class="text-grey-9 text-weight-bold q-ma-sm">Имя</div>
+              <q-input dense outlined rounded color="dark" type="text" v-model="data.first_name" label="Введите ваше имя"><template v-slot:prepend></template></q-input>
+              <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Имя пользователя</div>
+              <q-input dense outlined rounded color="dark" type="text" v-model="data.username" label="Введите имя пользователя"><template v-slot:prepend></template></q-input>
               <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Телефон</div>
-              <q-input dense outlined rounded color="dark" mask="+7 (###) ### - ## - ##" v-model="phone" label="Введите телефон"><template v-slot:prepend></template></q-input>
+              <q-input dense outlined rounded color="dark" mask="+7 ###-###-##-##" v-model="data.phone" label="Введите телефон"><template v-slot:prepend></template></q-input>
               <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px; margin-bottom: 10px">Выберите пол:</div>
-              <input type="radio" name="gender" value="male" class="radio" style="margin-left: 60px">
+              <input type="radio" v-model="data.gender" value="м" name="gender" class="radio" style="margin-left: 60px">
               <span>Мужчина</span>
-              <input type="radio" name="gender" value="female" class="radio" style="margin-left: 50px">
+              <input type="radio" v-model="data.gender" value="ж" name="gender" class="radio" style="margin-left: 50px">
               <span>Женщина</span>
-
             </template>
             <template v-else>
-              <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Пароль</div>
-            <q-input dense outlined rounded color="dark" v-model="password" type="password" label="Введите пароль"><template v-slot:prepend></template></q-input>
+            <div class="text-grey-9 text-weight-bold q-ma-sm">Email</div>
+            <q-input dense outlined rounded color="dark" type="email" v-model="data.email" label="Введите email"><template v-slot:prepend></template></q-input>
+            <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Пароль</div>
+            <q-input dense outlined rounded color="dark" v-model="passwords.password1" type="password" label="Введите пароль"><template v-slot:prepend></template></q-input>
             <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Повтор пароля</div>
-            <q-input dense outlined rounded style="margin-bottom: 20px" color="dark" v-model="password" type="password" label="Повтор пароля"><template v-slot:prepend></template></q-input>
+            <q-input dense outlined rounded style="margin-bottom: 20px" color="dark" v-model="passwords.password2" type="password" label="Повтор пароля"><template v-slot:prepend></template></q-input>
             </template>
-            <q-btn  @click="awesome = !awesome" color="dark" rounded size="md" style="padding: 9px; margin-top: 15px" label="Продолжить" no-caps class="full-width"></q-btn>
+            <q-btn  v-if="awesome" @click="awesome = false" color="dark" rounded size="md" style="padding: 9px; margin-top: 15px" label="Продолжить" no-caps class="full-width"></q-btn>
+            <q-btn  v-else color="dark" type="submit" rounded size="md" style="padding: 9px; margin-top: 15px" label="Продолжить" no-caps class="full-width"></q-btn>
           </q-card-section>
+            <p>{{ error }}</p>
+          </q-form>
           <q-card-section class="text-center q-pt-none q-mt-lg">
             <div class="text-grey-8">Уже есть аккаунт?
               <router-link to="/"><a class="text-grey-9 text-weight-bold">Войти</a></router-link>
             </div>
-
           </q-card-section>
-
         </q-card>
       </q-page>
     </q-page-container>
@@ -63,15 +66,40 @@
   }
 </style>
 
-<script>
-import { defineComponent } from 'vue'
+<script setup>
+import { reactive } from 'vue'
 import { ref } from 'vue'
-export default defineComponent({
-  name: 'RegistrationPage',
-  setup() {
-    return {
-      awesome: ref(true),
-    }
-  },
+import {useRouter} from "vue-router";
+
+let awesome = ref(true)
+let passwords = reactive({
+  password1: '',
+  password2: ''
 })
+
+const data = reactive({
+    first_name: '',
+    username: '',
+    email: '',
+    password: '',
+    phone: '',
+    gender: ''
+  }
+)
+const router = useRouter()
+
+let error = ref('')
+const submit = async () => {
+  if (passwords.password1 === passwords.password2) {
+    data.password = passwords.password1
+    await fetch('http://127.0.0.1:8000/api/register', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json'},
+      credentials: 'include',
+      body: JSON.stringify(data),
+    })
+    await router.push('/')
+  }
+  else error.value = 'Пароли не совпадают!'
+}
 </script>

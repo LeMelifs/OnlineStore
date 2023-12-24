@@ -1,7 +1,6 @@
 from django.contrib.auth.base_user import BaseUserManager, AbstractBaseUser
 from django.contrib.auth.models import PermissionsMixin
 from django.db import models
-from phonenumber_field.modelfields import PhoneNumberField
 
 
 class UserManager(BaseUserManager):
@@ -34,7 +33,7 @@ class CustomUser(AbstractBaseUser, PermissionsMixin):
     email = models.EmailField('Почта', max_length=255, unique=True)
     username = models.CharField('Имя на сайте', max_length=255, unique=True)
     first_name = models.CharField('Имя', max_length=255, blank=True)
-    phone = PhoneNumberField('Номер телефона', blank=True)
+    phone = models.CharField('Номер телефона', blank=True, max_length=255)
     gender = models.CharField('Пол', max_length=1, choices=GENDERS, default='', blank=True)
     photo = models.ImageField('Фотография', blank=True)
     password = models.CharField('Пароль', max_length=128)
