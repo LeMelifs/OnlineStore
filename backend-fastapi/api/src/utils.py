@@ -33,12 +33,7 @@ def phone_check(phone_number: str):
         phone_number = "+7" + phone_number[1:]
 
     if len(phone_number) != 12:
-        response = Response(
-            content=ujson.dumps({"status": "fail", "msg": "wrong phone number format"}),
-            status_code=400,
-        )
-        response.headers["Content-Type"] = "application/json"
-        return response
+        raise HTTPException(status_code=400, detail="wrong phone number format")
 
     return phone_number
 
