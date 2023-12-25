@@ -53,7 +53,7 @@ async def type_required(
 async def login_required(
     auth: str = Header(None), session: AsyncSession = Depends(get_session)
 ):
-    return await type_required([], auth, session)
+    return await type_required(["regular_user"], auth, session)
 
 
 async def admin_required(
@@ -90,45 +90,20 @@ async def login_func(request: Request, session: AsyncSession = Depends(get_sessi
     except:
         raise HTTPException(status_code=400, detail="incorrect request")
 
-    if all(x not in login for x in ["@", "."]) and ("8" in login or "7" in login):
-        phone_number = phone_check(login)
+    stmt = select(User.active, User.password, User.id, User.type).where(
+        func.lower(User.username) == login.lower()
+    )
 
-        if not isinstance(phone_number, str):
-            return phone_number
+    user = (await session.execute(stmt)).first()
 
-        user = (
-            await session.execute(
-                select(User.active, User.password, User.id, User.type).where(
-                    User.phone_number == phone_number
-                )
-            )
-        ).first()
-
-        if user == None:
-            raise HTTPException(
-                status_code=400,
-                detail="user not found",
-            )
-
+    if user != None:
         user = user._mapping
 
     else:
-        email = login
-
-        stmt = select(User.active, User.password, User.id, User.type).where(
-            func.lower(User.email) == email.lower()
+        raise HTTPException(
+            status_code=400,
+            detail="user not found",
         )
-
-        user = (await session.execute(stmt)).first()
-
-        if user != None:
-            user = user._mapping
-
-        else:
-            raise HTTPException(
-                status_code=400,
-                detail="user not found",
-            )
 
     if user["active"] == False:
         raise HTTPException(
@@ -238,7 +213,6 @@ async def signup(request: Request, session: AsyncSession = Depends(get_session))
 
         username = data["username"].lstrip(" ").rstrip(" ")
         first_name = data["first_name"].lstrip(" ").rstrip(" ")
-        second_name = data["second_name"].lstrip(" ").rstrip(" ")
         gender = data["gender"]
         email = data["email"].lstrip(" ").rstrip(" ")
         phone_number = data["phone_number"].lstrip(" ").rstrip(" ")
@@ -286,7 +260,6 @@ async def signup(request: Request, session: AsyncSession = Depends(get_session))
     user = {
         "username": username,
         "first_name": first_name,
-        "second_name": second_name,
         "gender": gender,
         "email": email,
         "phone_number": phone_number,

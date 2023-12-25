@@ -16,7 +16,6 @@ async def user_view(
     result = {
         "username": user.username,
         "first_name": user.first_name,
-        "second_name": user.second_name,
         "email": user.email,
         "type": user.type.name,
         "gender": user.gender,
