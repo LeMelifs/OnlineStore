@@ -38,7 +38,7 @@ async def forum():
 async def index(session: AsyncSession = Depends(get_session)):
     try:
         await session.execute(select(User))
-        return {"detail": "server works!"}
+        return {"detail": "server works!!!!"}
     except Exception as e:
         print(e)
         return {"detail": "connection to the database is corrupted"}
