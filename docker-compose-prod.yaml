@@ -9,9 +9,9 @@ services:
         environment:
             POSTGRES_PASSWORD: postgres
         volumes:
-            - ./db_data:/var/lib/postgresql/data
-            - ./dumps/main.sql:/docker-entrypoint-initdb.d/main.sql
-            - ./dumps:/dumps
+            - ./backend-fastapi/db_data:/var/lib/postgresql/data
+            - ./backend-fastapi/dumps/main.sql:/docker-entrypoint-initdb.d/main.sql
+            - ./backend-fastapi/dumps:/dumps
 
 
     api:
@@ -27,9 +27,21 @@ services:
             DB_USER: postgres
             DB_HOST: database
         env_file:
-            - .env
-        build: ./api
+            - ./backend-fastapi/.env
+        build: ./backend-fastapi/api
         command: python -m uvicorn src.app:app --host 0.0.0.0 --port 8000
+
+    
+    web:
+        links:
+            - api
+        image: onlinestore
+        restart: always
+        ports:
+            - 9000:9000
+        build: ./frontend
+        command: yarn dev
+
 
 volumes:
     data:

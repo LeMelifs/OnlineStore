@@ -23,6 +23,6 @@ jobs:
           password: ${{ secrets.SERVER_PASS }}
           port: 22
           script: |
-            cd /home/poslam/OnlineStore
+            cd /home/poslam/onlinestore
             git pull
             make update-prod
