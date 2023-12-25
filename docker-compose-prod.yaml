@@ -35,12 +35,9 @@ services:
     web:
         links:
             - api
-        image: onlinestore
-        restart: always
-        ports:
-            - 9000:9000
+        image: web
         build: ./frontend
-        command: yarn dev
+        command: yarn build
 
 
 volumes:
