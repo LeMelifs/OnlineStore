@@ -87,7 +87,6 @@ CREATE TABLE public.client (
     id integer NOT NULL,
     username text,
     first_name text,
-    second_name text,
     email text,
     phone_number text,
     password text,
@@ -284,7 +283,7 @@ COPY public.change_pass_code_storage (id, email, code, exp_date) FROM stdin;
 -- Data for Name: client; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.client (id, username, first_name, second_name, email, phone_number, password, type, gender, register_date, active) FROM stdin;
+COPY public.client (id, username, first_name, email, phone_number, password, type, gender, register_date, active) FROM stdin;
 \.
 
 

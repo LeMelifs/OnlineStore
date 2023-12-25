@@ -16,6 +16,10 @@ start-dev:
 update-api-dev:
 	docker compose -f docker-compose-dev.yaml cp ./backend-fastapi/api api:.
 
+update-web-dev:
+	docker compose -f docker-compose-dev.yaml cp ./frontend frontend:/opt/app
+	docker compose -f docker-compose-dev.yaml restart web
+
 update-db-dev:
 	docker compose -f docker-compose-dev.yaml exec -w /api api python -m alembic upgrade head
 

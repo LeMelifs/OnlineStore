@@ -29,7 +29,6 @@ def upgrade() -> None:
     sa.Column('id', sa.Integer(), nullable=False),
     sa.Column('username', sa.TEXT(), nullable=True),
     sa.Column('first_name', sa.TEXT(), nullable=True),
-    sa.Column('second_name', sa.TEXT(), nullable=True),
     sa.Column('email', sa.TEXT(), nullable=True),
     sa.Column('phone_number', sa.TEXT(), nullable=True),
     sa.Column('password', sa.TEXT(), nullable=True),
