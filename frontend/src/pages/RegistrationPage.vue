@@ -92,7 +92,7 @@ let error = ref('')
 const submit = async () => {
   if (passwords.password1 === passwords.password2) {
     data.password = passwords.password1
-    await fetch('http://localhost:8005/api/v1/auth/signup', {
+    await fetch('https://onlinestore.poslam.ru/api/v1/auth/signup', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       credentials: 'include',
