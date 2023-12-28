@@ -28,6 +28,9 @@ async def code_generator(session: AsyncSession = Depends(get_session)):
     return code
 
 
+def phone_check(phone_number: str):
+    return phone_number
+
 def photo_maker(path: str):
     try:
         os.stat(path)
