@@ -17,7 +17,7 @@
               <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Имя пользователя</div>
               <q-input dense outlined rounded color="dark" type="text" v-model="data.username" label="Введите имя пользователя"><template v-slot:prepend></template></q-input>
               <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Телефон</div>
-              <q-input dense outlined rounded color="dark" mask="+7 ###-###-##-##" v-model="data.phone" label="Введите телефон"><template v-slot:prepend></template></q-input>
+              <q-input dense outlined rounded color="dark" mask="+7 ###-###-##-##" v-model="data.phone_number" label="Введите телефон"><template v-slot:prepend></template></q-input>
               <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px; margin-bottom: 10px">Выберите пол:</div>
               <input type="radio" v-model="data.gender" value="м" name="gender" class="radio" style="margin-left: 60px">
               <span>Мужчина</span>
@@ -82,7 +82,7 @@ const data = reactive({
     username: '',
     email: '',
     password: '',
-    phone: '',
+    phone_number: '',
     gender: ''
   }
 )

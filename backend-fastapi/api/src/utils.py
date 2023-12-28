@@ -2,7 +2,7 @@ import os
 from datetime import datetime, timedelta
 from random import randint
 
-import ujson
+
 from database.database import get_session
 from database.models import ChangePasswordCode, Photo
 from fastapi import Depends, HTTPException, Response
@@ -26,16 +26,6 @@ async def code_generator(session: AsyncSession = Depends(get_session)):
         code = str(randint(100000, 999999))
 
     return code
-
-
-def phone_check(phone_number: str):
-    if phone_number[0] in ["8", "7"]:
-        phone_number = "+7" + phone_number[1:]
-
-    if len(phone_number) != 12:
-        raise HTTPException(status_code=400, detail="wrong phone number format")
-
-    return phone_number
 
 
 def photo_maker(path: str):
