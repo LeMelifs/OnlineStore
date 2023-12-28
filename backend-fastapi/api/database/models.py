@@ -26,7 +26,6 @@ class User(base):
     username = Column(TEXT)
 
     first_name = Column(TEXT)
-    second_name = Column(TEXT)
 
     email = Column(TEXT)
     phone_number = Column(TEXT)
