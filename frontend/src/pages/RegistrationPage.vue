@@ -92,7 +92,7 @@ let error = ref('')
 const submit = async () => {
   if (passwords.password1 === passwords.password2) {
     data.password = passwords.password1
-    await fetch('http://127.0.0.1:8000/api/register', {
+    await fetch('http://localhost:8005/api/v1/auth/signup', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       credentials: 'include',

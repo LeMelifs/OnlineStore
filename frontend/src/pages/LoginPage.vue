@@ -107,13 +107,13 @@ const data = reactive({
 const router = useRouter()
 const submit = async () => {
   error.value = ''
-  const response = await fetch('http://127.0.0.1:8000/api/login', {
+  const response = await fetch('http://localhost:8005/api/v1/auth/login', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     credentials: 'include',
     body: JSON.stringify(data)
   })
-  if (response.status !== 403)
+  if (response.status !== 400)
     await router.push('/main')
   else {
     let text = await response.json()
