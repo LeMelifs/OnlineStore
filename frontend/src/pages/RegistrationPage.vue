@@ -92,13 +92,18 @@ let error = ref('')
 const submit = async () => {
   if (passwords.password1 === passwords.password2) {
     data.password = passwords.password1
-    await fetch('https://onlinestore.poslam.ru/api/v1/auth/signup', {
+    const response = await fetch('https://onlinestore.poslam.ru/api/v1/auth/signup', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       credentials: 'include',
       body: JSON.stringify(data),
     })
-    await router.push('/')
+    if (response.status !== 400)
+      await router.push('/')
+    else {
+      let text = await response.json()
+      error.value = text['detail']
+    }
   }
   else error.value = 'Пароли не совпадают!'
 }

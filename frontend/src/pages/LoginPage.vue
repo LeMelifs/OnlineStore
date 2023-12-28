@@ -11,7 +11,7 @@
           <q-form @submit.prevent="submit">
           <q-card-section>
             <div class="text-grey-9 text-weight-bold q-ma-sm">Имя пользователя</div>
-            <q-input dense outlined rounded color="dark" type="text" v-model="data.username" label="Введите имя пользователя"><template v-slot:prepend></template></q-input>
+            <q-input dense outlined rounded color="dark" type="text" v-model="data.login" label="Введите имя пользователя"><template v-slot:prepend></template></q-input>
             <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Пароль</div>
             <q-input dense outlined rounded color="dark" v-model="data.password" type="password" label="Введите пароль"><template v-slot:prepend></template></q-input>
             <div class="row round">
@@ -100,7 +100,7 @@ import {useRouter} from "vue-router";
 import {reactive, ref} from "vue";
 let error = ref('')
 const data = reactive({
-    username: '',
+    login: '',
     password: ''
   }
 )
@@ -117,7 +117,7 @@ const submit = async () => {
     await router.push('/main')
   else {
     let text = await response.json()
-    error.value = text['error']
+    error.value = text['detail']
   }
 }
 
