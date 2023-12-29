@@ -98,6 +98,7 @@
 <script setup>
 import {useRouter} from "vue-router";
 import {reactive, ref} from "vue";
+import store from "src/store";
 let error = ref('')
 const data = reactive({
     login: '',
@@ -113,11 +114,16 @@ const submit = async () => {
     credentials: 'include',
     body: JSON.stringify(data)
   })
-  if (response.status !== 400)
-    await router.push('/main')
+  let json = await response.json()
+  if (response.status !== 400) {
+      await router.push('/main')
+      await store.dispatch('setToken', json['token'])
+      await store.dispatch('setRefreshToken', json['refresh_token'])
+      await store.dispatch('setType', json['type'])
+      console.log(store.state.token)
+  }
   else {
-    let text = await response.json()
-    error.value = text['detail']
+    error.value = json['detail']
   }
 }
 
