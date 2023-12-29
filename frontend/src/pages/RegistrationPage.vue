@@ -99,7 +99,7 @@ const submit = async () => {
       body: JSON.stringify(data),
     })
     if (response.status !== 400)
-      await router.push('/')
+      await router.push('/login')
     else {
       let text = await response.json()
       error.value = text['detail']

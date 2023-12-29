@@ -1,7 +1,7 @@
-
 const routes = [
   {
-    path: '/',
+    path: '/login',
+    name: 'login',
     component: () => import('pages/LoginPage.vue')
   },
   {
@@ -13,11 +13,12 @@ const routes = [
     component: () => import('pages/RegistrationPage.vue')
   },
   {
-    path: "/main",
+    path: "/",
     component: () => import('pages/MainPage.vue')
   },
   {
     path: "/account",
+    name: 'account',
     component: () => import('pages/AccountPage.vue')
   },
   {

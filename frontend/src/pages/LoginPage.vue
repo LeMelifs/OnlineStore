@@ -116,11 +116,11 @@ const submit = async () => {
   })
   let json = await response.json()
   if (response.status !== 400) {
-      await router.push('/main')
+      await router.push('/')
       await store.dispatch('setToken', json['token'])
       await store.dispatch('setRefreshToken', json['refresh_token'])
       await store.dispatch('setType', json['type'])
-      console.log(store.state.token)
+      await store.dispatch('setAuth', true)
   }
   else {
     error.value = json['detail']
