@@ -11,7 +11,7 @@
           <q-form @submit.prevent="submit">
           <q-card-section>
             <div class="text-grey-9 text-weight-bold q-ma-sm">Имя пользователя</div>
-            <q-input dense outlined rounded color="dark" type="text" v-model="data.username" label="Введите имя пользователя"><template v-slot:prepend></template></q-input>
+            <q-input dense outlined rounded color="dark" type="text" v-model="data.login" label="Введите имя пользователя"><template v-slot:prepend></template></q-input>
             <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Пароль</div>
             <q-input dense outlined rounded color="dark" v-model="data.password" type="password" label="Введите пароль"><template v-slot:prepend></template></q-input>
             <div class="row round">
@@ -98,26 +98,32 @@
 <script setup>
 import {useRouter} from "vue-router";
 import {reactive, ref} from "vue";
+import store from "src/store";
 let error = ref('')
 const data = reactive({
-    username: '',
+    login: '',
     password: ''
   }
 )
 const router = useRouter()
 const submit = async () => {
   error.value = ''
-  const response = await fetch('http://127.0.0.1:8000/api/login', {
+  const response = await fetch('https://onlinestore.poslam.ru/api/v1/auth/login', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
     credentials: 'include',
     body: JSON.stringify(data)
   })
-  if (response.status !== 403)
-    await router.push('/main')
+  let json = await response.json()
+  if (response.status !== 400) {
+      await router.push('/')
+      await store.dispatch('setToken', json['token'])
+      await store.dispatch('setRefreshToken', json['refresh_token'])
+      await store.dispatch('setType', json['type'])
+      await store.dispatch('setAuth', true)
+  }
   else {
-    let text = await response.json()
-    error.value = text['error']
+    error.value = json['detail']
   }
 }
 

@@ -17,7 +17,7 @@
               <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Имя пользователя</div>
               <q-input dense outlined rounded color="dark" type="text" v-model="data.username" label="Введите имя пользователя"><template v-slot:prepend></template></q-input>
               <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Телефон</div>
-              <q-input dense outlined rounded color="dark" mask="+7 ###-###-##-##" v-model="data.phone" label="Введите телефон"><template v-slot:prepend></template></q-input>
+              <q-input dense outlined rounded color="dark" mask="+7 ###-###-##-##" v-model="data.phone_number" label="Введите телефон"><template v-slot:prepend></template></q-input>
               <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px; margin-bottom: 10px">Выберите пол:</div>
               <input type="radio" v-model="data.gender" value="м" name="gender" class="radio" style="margin-left: 60px">
               <span>Мужчина</span>
@@ -82,7 +82,7 @@ const data = reactive({
     username: '',
     email: '',
     password: '',
-    phone: '',
+    phone_number: '',
     gender: ''
   }
 )
@@ -92,13 +92,18 @@ let error = ref('')
 const submit = async () => {
   if (passwords.password1 === passwords.password2) {
     data.password = passwords.password1
-    await fetch('http://127.0.0.1:8000/api/register', {
+    const response = await fetch('https://onlinestore.poslam.ru/api/v1/auth/signup', {
       method: 'POST',
       headers: {'Content-Type': 'application/json'},
       credentials: 'include',
       body: JSON.stringify(data),
     })
-    await router.push('/')
+    if (response.status !== 400)
+      await router.push('/login')
+    else {
+      let text = await response.json()
+      error.value = text['detail']
+    }
   }
   else error.value = 'Пароли не совпадают!'
 }

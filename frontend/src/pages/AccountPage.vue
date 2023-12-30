@@ -23,13 +23,13 @@
                   </q-card-section>
                 </q-card>
                 <q-btn flat rounded style="width: 50px; height: 50px; background-color: #ffffff; border: 1px solid #a4a4a4; margin: 100px 0px 0px -20px" dense icon="edit"></q-btn>
-                <q-input dense outlined rounded color="dark" style="width: 410px; background-color: white; border-radius: 25px; height: 40px; margin: 110px 0px 0px 15px"  label="Ваше имя"><template v-slot:prepend></template></q-input>
-                <q-input dense outlined rounded color="dark" style="width: 410px; background-color: white; border-radius: 25px; height: 40px; margin: 110px 0px 0px 15px"  label="Имя пользователя"><template v-slot:prepend></template></q-input>
+                <q-input dense outlined rounded color="dark" style="width: 410px; background-color: white; border-radius: 25px; height: 40px; margin: 110px 0px 0px 15px"  v-model='first_name' label="Ваше имя"><template v-slot:prepend></template></q-input>
+                <q-input dense outlined rounded color="dark" style="width: 410px; background-color: white; border-radius: 25px; height: 40px; margin: 110px 0px 0px 15px" v-model='username' label="Имя пользователя"><template v-slot:prepend></template></q-input>
               </div>
               <div style="margin: 50px 0px 4px 15px; font-size: 14px">Почта</div>
-              <q-btn style="border: 1px solid #a4a4a4; padding: 7px 0px 7px 10px; font-size: 15px" rounded flat text-color="grey-10" class="full-width text-weight-bold"  label="popik@mail.ru" no-caps ><q-icon style="margin-left: 450px" name="chevron_right"></q-icon></q-btn>
+              <q-btn style="border: 1px solid #a4a4a4; padding: 7px 0px 7px 10px; font-size: 15px" rounded flat text-color="grey-10" class="full-width text-weight-bold"  :label="email" no-caps ><q-icon style="margin-left: 450px" name="chevron_right"></q-icon></q-btn>
               <div style="margin: 15px 0px 4px 15px; font-size: 14px">Телефон</div>
-              <q-btn style="border: 1px solid #a4a4a4;margin: 0px 0px 50px 0px; padding: 7px 0px 7px 10px" rounded flat text-color="grey-10" class="full-width text-h7 text-weight-bold" label="+7 (123) 456-89-00" no-caps ><q-icon style="margin-left: 420px" name="chevron_right"></q-icon></q-btn>
+              <q-btn style="border: 1px solid #a4a4a4;margin: 0px 0px 50px 0px; padding: 7px 0px 7px 10px" rounded flat text-color="grey-10" class="full-width text-h7 text-weight-bold" :label="phone_number" no-caps ><q-icon style="margin-left: 420px" name="chevron_right"></q-icon></q-btn>
               <q-btn>Сохранить</q-btn> <br>
               <router-link to="/">
                 <a class="text-grey-9 text-weight-bold" style="margin: 0px 0px 4px 10px;">Изменить пароль</a>
@@ -88,7 +88,6 @@
         </template>
       </div>
     </q-page-container>
-
     <FooterComponent/>
   </q-layout>
 </template>
@@ -134,40 +133,67 @@ a {
 <script setup>
 import HeaderComponent from "components/HeaderComponent.vue";
 import FooterComponent from "components/FooterComponent.vue";
+import {onMounted, ref} from "vue";
+import store from "src/store";
+
+let active = ref(false)
+let order = ref(false)
+let manage = ref(false)
+let deliver = ref(false)
+
+onMounted(() => {
+  order.value = true;
+  manage.value = false;
+  deliver.value = false;
+})
+
+function change_t() {
+  active.value = true;
+}
+
+function change_f() {
+  active.value = false;
+}
+
+function manage_acc() {
+  order.value = false;
+  manage.value = true;
+  deliver.value = false;
+}
+
+function orders() {
+  order.value = true;
+  manage.value = false;
+  deliver.value = false;
+}
+
+function delivery() {
+  order.value = false;
+  manage.value = false;
+  deliver.value = true;
+}
+
+let username = ''
+let first_name = ''
+let email = ''
+let gender = ''
+let phone_number = ''
+
+onMounted(async () => {
+  const response = await fetch('https://onlinestore.poslam.ru/api/v1/user/view', {
+    method: 'GET',
+    headers: {'auth': `${store.state.token}`},
+  })
+  const json = await response.json()
+  if (response.status !== 404) {
+    username = json['username']
+    first_name = json['first_name']
+    email = json['email']
+    gender = json['gender']
+    phone_number = json['phone_number']
+  }
+})
+
+
 </script>
 
-<script>
-export default {
-  data() {
-    return {
-      active: false,
-      order: false,
-      manage: false,
-      deliver: false
-    };
-  },
-  methods: {
-    change_t() {
-      this.active = true;
-    },
-    change_f() {
-      this.active = false;
-    },
-    manage_acc() {
-      this.order = false;
-      this.manage = true;
-      this.deliver = false;
-    },
-    orders() {
-      this.order = true;
-      this.manage = false;
-      this.deliver = false;
-    },
-    delivery() {
-      this.order = false;
-      this.manage = false;
-      this.deliver = true;
-    },
-  }
-};
-</script>

@@ -1,7 +1,6 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <HeaderComponent/>
-
     <FooterComponent/>
   </q-layout>
 </template>
@@ -12,4 +11,6 @@
 <script setup>
 import HeaderComponent from "components/HeaderComponent.vue";
 import FooterComponent from "components/FooterComponent.vue";
+
+
 </script>
