@@ -18,6 +18,10 @@ asyncpg = "^0.29.0"
 ujson = "^5.9.0"
 python-multipart = "^0.0.6"
 
+[tool.poetry.group.dev.dependencies]
+black = "^23.12.1"
+pre-commit = "^3.6.0"
+
 [build-system]
 requires = ["poetry-core"]
 build-backend = "poetry.core.masonry.api"

@@ -22,14 +22,14 @@ class User(base):
     __tablename__ = "client"
 
     id = Column(Integer, primary_key=True)
-    
+
     username = Column(TEXT)
 
     first_name = Column(TEXT)
 
     email = Column(TEXT)
     phone_number = Column(TEXT)
-    
+
     password = Column(TEXT)
     type = Column(Enum(UserTypes), default="regular_user")
 
