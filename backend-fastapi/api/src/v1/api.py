@@ -26,7 +26,7 @@ async def file_reciever(
         os.stat(path)
         return FileResponse(path=f"{IMG_PATH}/{img}")
     except:
-        raise HTTPException(status_code=404, detail="image not found")
+        raise HTTPException(status_code=404, detail="Изображение не найдено")
 
 
 @router.get("/forum")
@@ -38,15 +38,15 @@ async def forum():
 async def index(session: AsyncSession = Depends(get_session)):
     try:
         await session.execute(select(User))
-        return {"detail": "server works!!!!"}
+        return {"detail": "С сервером все в порядке"}
     except Exception as e:
         print(e)
-        return {"detail": "connection to the database is corrupted"}
+        return {"detail": "С сервером что-то не так"}
 
 
 @router.get("/check_token")
 async def token_checker(user=Depends(login_required)):
-    return {"detail": "token is ok"}
+    return {"detail": "Токен корректен"}
 
 
 @router.post("/upload")
@@ -89,7 +89,7 @@ async def upload(
             folder = "service"
             id = service_id
         else:
-            raise HTTPException(status_code=400, detail="wrong parameters")
+            raise HTTPException(status_code=400, detail="Некорректные параметры")
 
         try:
             os.stat(f"{IMG_PATH}/{folder}")
@@ -131,9 +131,9 @@ async def upload(
 
         except Exception as e:
             print(e)
-            raise HTTPException(status_code=500, detail="smth gone wrong")
+            raise HTTPException(status_code=500, detail="Что-то пошло не так")
 
-    return {"detail": "img upload success"}
+    return {"detail": "Добавление фотографии успешно"}
 
 
 @router.post("/img_delete")
@@ -149,7 +149,7 @@ async def img_delete(
     if photo_raw == None:
         raise HTTPException(
             status_code=400,
-            detail="img not found",
+            detail="Изображение не найдено",
         )
 
     photo = photo_raw._mapping
@@ -161,4 +161,4 @@ async def img_delete(
     await session.execute(stmt)
     await session.commit()
 
-    return {"detail": "img delete success"}
+    return {"detail": "Удаление фотографии успешно"}

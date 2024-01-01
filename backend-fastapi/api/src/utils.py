@@ -36,7 +36,7 @@ def photo_maker(path: str):
     try:
         os.stat(path)
     except:
-        raise HTTPException(status_code=400, detail="img not found")
+        raise HTTPException(status_code=400, detail="Изображение не найдено")
 
     src = Image.open(path)
 
@@ -71,7 +71,7 @@ def photo_maker(path: str):
         return "positive"
 
     except:
-        raise HTTPException(status_code=400, detail="incorrect img")
+        raise HTTPException(status_code=400, detail="Некорректное изображение")
 
 
 async def photo_search(
@@ -82,7 +82,7 @@ async def photo_search(
     allowed_objs = ["area", "building", "client", "category", "service"]
 
     if obj not in allowed_objs:
-        raise HTTPException(status_code=400, detail="obj not allowed")
+        raise HTTPException(status_code=400, detail="Некорректный тип объекта")
 
     stmt = select(Photo.path).where(Photo.obj == obj).where(Photo.obj_id == obj_id)
 
