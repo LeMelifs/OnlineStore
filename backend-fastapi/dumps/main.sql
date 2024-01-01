@@ -87,6 +87,7 @@ CREATE TABLE public.client (
     id integer NOT NULL,
     username text,
     first_name text,
+    second_name text,
     email text,
     phone_number text,
     password text,
@@ -283,7 +284,9 @@ COPY public.change_pass_code_storage (id, email, code, exp_date) FROM stdin;
 -- Data for Name: client; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.client (id, username, first_name, email, phone_number, password, type, gender, register_date, active) FROM stdin;
+COPY public.client (id, username, first_name, second_name, email, phone_number, password, type, gender, register_date, active) FROM stdin;
+1	poslam	Денис	\N	kirden04@gmail.com	+79245227172	scrypt:32768:8:1$yanj0KmURtpoWCWU$68aabd2e8520b7f038912866b0dae6fa51fccf2d17029a5878be56e2a000dfd31a1900ccbeda5454b190cf9ef162dcb62a5f69c440212419bc4a4e47d0fb93f2	regular_user	m	2023-12-25 17:02:57.357503	t
+2	Veronika	Вероника	\N	vera_mij_xxx@mail.ru	+7 914-658-15-99	scrypt:32768:8:1$Dy091ddXJ9cmapbQ$96748d11d1496c726ce564d90b8926860578682f557565c9630b0889ce21a31bc2d12787c5899c23b975986f25879bab863053e8039cda8afbddd645ffb74562	regular_user	ж	2023-12-28 22:43:43.559173	t
 \.
 
 
@@ -308,6 +311,7 @@ COPY public.photo (id, obj, obj_id, path, "time") FROM stdin;
 --
 
 COPY public.refresh_token_storage (id, refresh_token, expired) FROM stdin;
+1	eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MSwiZXhwaXJlZCI6IjIwMjQtMDEtMjQgMTA6MjQ6NTAuNzQ5NzcwIn0.X-vEf3RTaG1LGonzbfJ1auZCLKx-L_BzCa6DBXKZVNw	2024-01-24 10:24:50.74977
 \.
 
 
@@ -322,7 +326,7 @@ SELECT pg_catalog.setval('public.change_pass_code_storage_id_seq', 1, false);
 -- Name: client_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.client_id_seq', 1, false);
+SELECT pg_catalog.setval('public.client_id_seq', 3, true);
 
 
 --
@@ -343,7 +347,7 @@ SELECT pg_catalog.setval('public.photo_id_seq', 1, false);
 -- Name: refresh_token_storage_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.refresh_token_storage_id_seq', 1, false);
+SELECT pg_catalog.setval('public.refresh_token_storage_id_seq', 1, true);
 
 
 --
