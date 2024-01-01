@@ -226,7 +226,11 @@ async def signup(request: Request, session: AsyncSession = Depends(get_session))
     stmt = select(User).where(func.lower(User.email) == email.lower())
     user = (await session.execute(stmt)).first()
 
-    if user != None:
+    username_check = (
+        await session.execute(select(User).where(User.username == username))
+    ).first()
+
+    if user != None or username_check != None:
         raise HTTPException(
             status_code=400,
             detail="user already exist",
