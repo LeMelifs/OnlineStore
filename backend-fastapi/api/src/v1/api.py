@@ -33,10 +33,10 @@ async def file_reciever(
 async def index(session: AsyncSession = Depends(get_session)):
     try:
         await session.execute(select(User))
-        return {"detail": "С сервером все в порядке"}
+        return {"detail": "ok"}
     except Exception as e:
         print(e)
-        return {"detail": "С сервером что-то не так"}
+        return {"detail": "error"}
 
 
 @router.get("/check_token")
