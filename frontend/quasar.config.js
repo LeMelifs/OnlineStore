@@ -60,9 +60,9 @@ module.exports = configure(function (/* ctx */) {
         node: 'node16'
       },
 
-      publicPath: '/web/',
-
       vueRouterMode: 'hash', // available values: 'hash', 'history'
+      
+      publicPath: '/web/',
       // vueRouterBase,
       // vueDevtools,
       // vueOptionsAPI: false,
