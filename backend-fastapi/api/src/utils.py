@@ -1,6 +1,10 @@
+from email.mime.multipart import MIMEMultipart
+from email.mime.text import MIMEText
 import os
 from datetime import datetime, timedelta
 from random import randint
+import smtplib
+from config import EMAIL_BASE, EMAIL_PASS
 
 
 from database.database import get_session

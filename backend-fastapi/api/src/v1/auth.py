@@ -308,7 +308,7 @@ async def forgot_password(
 
         text = "Ваш код для восстановления пароля: " + code
 
-        back.add_task(send_email, text, email)
+        back.add_task(send_email, text, email, "Восстановление пароля onlinestore")
 
         return {"detail": "Письмо отправлено"}
 

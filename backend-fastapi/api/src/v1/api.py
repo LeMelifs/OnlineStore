@@ -3,7 +3,7 @@ import os
 from config import IMG_PATH
 from database.database import get_session
 from database.models import Photo, User
-from fastapi import APIRouter, Depends, HTTPException, UploadFile
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from sqlalchemy import delete, insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -27,11 +27,6 @@ async def file_reciever(
         return FileResponse(path=f"{IMG_PATH}/{img}")
     except:
         raise HTTPException(status_code=404, detail="Изображение не найдено")
-
-
-@router.get("/forum")
-async def forum():
-    return "https://t.me/+6VdMCPodJRYxNTUy"
 
 
 @router.get("/healthcheck")

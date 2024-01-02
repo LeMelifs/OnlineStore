@@ -21,3 +21,4 @@ IMG_PATH = os.environ.get("IMG_PATH")
 
 EMAIL_BASE = os.environ.get("EMAIL_BASE")
 EMAIL_PASS = os.environ.get("EMAIL_PASS")
+EMAIL_DOMAIN = os.environ.get("EMAIL_DOMAIN")
