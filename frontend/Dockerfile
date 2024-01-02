@@ -1,4 +1,4 @@
-FROM node:20.10
+FROM node:21.5
 RUN mkdir -p /opt/app
 WORKDIR /opt/app
 COPY . /opt/app
