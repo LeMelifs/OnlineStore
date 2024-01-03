@@ -9,8 +9,6 @@ services:
             - api
         image: onlinestore
         restart: always
-        ports:
-            - 9000:9000
         build: ./frontend
         command: yarn dev
         
