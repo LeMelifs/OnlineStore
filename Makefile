@@ -40,9 +40,9 @@ new-migr:
 
 start-prod:
 	docker compose -f docker-compose-prod.yaml up --build -d
-	docker compose -f docker-compose-prod.yaml cp web:/opt/app/dist ./frontend
-	$(SLEEP) 3
+	docker compose -f docker-compose-prod.yaml exec -w /opt/app web yarn build
 
+	docker compose -f docker-compose-prod.yaml cp web:/opt/app/dist ./frontend
 	docker compose -f docker-compose-prod.yaml exec -w /api api python -m alembic upgrade head
 
 update-prod:

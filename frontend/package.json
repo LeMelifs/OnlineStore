@@ -1,8 +1,8 @@
 {
   "name": "quasar",
   "version": "0.0.1",
-  "description": "A Quasar Project",
-  "productName": "onlinestore ",
+  "description": "onlinestore",
+  "productName": "onlinestore",
   "author": "LeMelifs <vera_mij_xxx@mail.ru>",
   "private": true,
   "scripts": {
