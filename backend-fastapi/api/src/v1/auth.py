@@ -9,7 +9,7 @@ from config import (
 )
 from database.database import get_session
 from database.models import ChangePasswordCode, RefreshTokenStorage, User
-from fastapi import APIRouter, BackgroundTasks, Depends, Header, HTTPException, Request
+from fastapi import APIRouter, Depends, Header, HTTPException, Request
 from jwt import decode, encode
 from sqlalchemy import delete, func, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -280,7 +280,6 @@ async def signup(request: Request, session: AsyncSession = Depends(get_session))
 
 @auth_router.post("/forgot_password")
 async def forgot_password(
-    back: BackgroundTasks,
     email: str = None,
     code: str = None,
     password: str = None,
@@ -308,7 +307,7 @@ async def forgot_password(
 
         text = "Ваш код для восстановления пароля: " + code
 
-        back.add_task(send_email, text, email, "Восстановление пароля onlinestore")
+        send_email.delay(text, email, "Восстановление пароля onlinestore")
 
         return {"detail": "Письмо отправлено"}
 

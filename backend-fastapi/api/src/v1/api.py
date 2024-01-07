@@ -1,4 +1,5 @@
 import os
+from src.v1.external import send_email
 
 from config import IMG_PATH
 from database.database import get_session

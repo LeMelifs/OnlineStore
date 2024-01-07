@@ -26,6 +26,7 @@ services:
             DB_PASS: postgres
             DB_USER: postgres
             DB_HOST: database
+            CELERY_BROKER_URL: redis://redis:6379/0
         env_file:
             - ./backend-fastapi/.env
         build: ./backend-fastapi/api
@@ -42,4 +43,19 @@ services:
         build: ./frontend
         command: yarn dev
 
+
+    redis:
+        image: redis:7
+
     
+    worker:
+        links:
+            - api
+            - redis
+        image: api
+        environment:
+            CELERY_BROKER_URL: redis://redis:6379/0
+        env_file:
+            - ./backend-fastapi/.env
+        build: ./backend-fastapi/api
+        command: celery -A src.worker:celery worker --loglevel info
