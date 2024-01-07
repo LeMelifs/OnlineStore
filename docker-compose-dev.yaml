@@ -9,6 +9,9 @@ services:
         restart: always
         environment:
             POSTGRES_PASSWORD: postgres
+        volumes:
+            - ./backend-fastapi/dumps/main.sql:/docker-entrypoint-initdb.d/main.sql
+            - ./backend-fastapi/dumps:/dumps
 
 
     api:

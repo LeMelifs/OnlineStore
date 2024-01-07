@@ -1,5 +1,4 @@
 from datetime import datetime, timedelta
-from uuid import uuid4
 
 from config import (
     ALGORITHM,
@@ -34,18 +33,18 @@ async def type_required(
             raise Exception
 
     except:
-        raise HTTPException(status_code=401, detail="token is invalid")
+        raise HTTPException(status_code=401, detail="Некорректный токен")
 
     user = await session.get(User, data["id"])
 
     if user == None:
-        raise HTTPException(status_code=400, detail="user not found")
+        raise HTTPException(status_code=400, detail="Пользователь не найден")
 
     if user.active == False:
-        raise HTTPException(status_code=401, detail="user is banned")
+        raise HTTPException(status_code=401, detail="Пользователь заблокирован")
 
-    if user.type.name not in types:
-        raise HTTPException(status_code=400, detail="not allowed")
+    if user.type.name not in types and types != []:
+        raise HTTPException(status_code=400, detail="Недопустимый тип пользвателя")
 
     return user
 
@@ -53,7 +52,7 @@ async def type_required(
 async def login_required(
     auth: str = Header(None), session: AsyncSession = Depends(get_session)
 ):
-    return await type_required(["regular_user"], auth, session)
+    return await type_required([], auth, session)
 
 
 async def admin_required(
@@ -88,7 +87,7 @@ async def login_func(request: Request, session: AsyncSession = Depends(get_sessi
 
         password = data["password"].lstrip(" ").rstrip(" ")
     except:
-        raise HTTPException(status_code=400, detail="incorrect request")
+        raise HTTPException(status_code=400, detail="Некорректный запрос")
 
     stmt = select(User.active, User.password, User.id, User.type).where(
         func.lower(User.username) == login.lower()
@@ -102,30 +101,30 @@ async def login_func(request: Request, session: AsyncSession = Depends(get_sessi
     else:
         raise HTTPException(
             status_code=400,
-            detail="user not found",
+            detail="Пользователь не найден",
         )
 
     if user["active"] == False:
         raise HTTPException(
             status_code=401,
-            detail="user is banned",
+            detail="Пользователь заблокирован",
         )
 
-    if check_password_hash(user["password"], password):
-        token = make_token(user["id"])
+    if not check_password_hash(user["password"], password):
+        raise HTTPException(
+            status_code=400,
+            detail="Некорретные данные",
+        )
 
-        refresh_token = make_refresh_token(user["id"])
+    token = make_token(user["id"])
 
-        return {
-            "token": token,
-            "refresh_token": refresh_token,
-            "type": user["type"].name,
-        }
+    refresh_token = make_refresh_token(user["id"])
 
-    raise HTTPException(
-        status_code=400,
-        detail="wrong auth data",
-    )
+    return {
+        "token": token,
+        "refresh_token": refresh_token,
+        "type": user["type"].name,
+    }
 
 
 @auth_router.post("/refresh")
@@ -147,7 +146,7 @@ async def refresh(request: Request, session: AsyncSession = Depends(get_session)
     except:
         raise HTTPException(
             status_code=400,
-            detail="token is invalid",
+            detail="Некорретный токен",
         )
 
     tokens = (
@@ -172,7 +171,7 @@ async def refresh(request: Request, session: AsyncSession = Depends(get_session)
         if token["refresh_token"] == refresh_token_recieved:
             raise HTTPException(
                 status_code=400,
-                detail="token is invalid",
+                detail="Некорректный токен",
             )
 
     user_id = token_data["id"]
@@ -182,7 +181,7 @@ async def refresh(request: Request, session: AsyncSession = Depends(get_session)
     if user.active == False:
         raise HTTPException(
             status_code=401,
-            detail="user is banned",
+            detail="Пользователь заблокирован",
         )
 
     token = make_token(user_id)
@@ -220,29 +219,30 @@ async def signup(request: Request, session: AsyncSession = Depends(get_session))
     except:
         raise HTTPException(
             status_code=400,
-            detail="incorrect request",
+            detail="Некорректный запрос",
         )
 
     stmt = select(User).where(func.lower(User.email) == email.lower())
     user = (await session.execute(stmt)).first()
 
-    if user != None:
+    username_check = (
+        await session.execute(select(User).where(User.username == username))
+    ).first()
+
+    if user != None or username_check != None:
         raise HTTPException(
             status_code=400,
-            detail="user already exist",
+            detail="Пользователь уже существует",
         )
 
     if "@" not in email or "." not in email:
         raise HTTPException(
             status_code=400,
-            detail="not an email",
+            detail="Некорректная почта",
         )
 
     if phone_number not in [None, " ", ""]:
         phone_number = phone_check(phone_number)
-
-        if not isinstance(phone_number, str):
-            return phone_number
 
         phone_number_check = (
             await session.execute(select(User).where(User.phone_number == phone_number))
@@ -251,11 +251,14 @@ async def signup(request: Request, session: AsyncSession = Depends(get_session))
         if phone_number_check != None:
             raise HTTPException(
                 status_code=400,
-                detail="this phone number is already in use",
+                detail="Номер телефона уже занят",
             )
 
     else:
         phone_number = None
+
+    if gender not in ["m", "f"]:
+        raise HTTPException(status_code=400, detail="Некорректный пол")
 
     user = {
         "username": username,
@@ -272,11 +275,11 @@ async def signup(request: Request, session: AsyncSession = Depends(get_session))
     await session.execute(stmt)
     await session.commit()
 
-    return {"detail": "successfully registered"}
+    return {"detail": "Пользователь успешно зарегистрирован"}
 
 
-@auth_router.post("/change_password")
-async def change_password(
+@auth_router.post("/forgot_password")
+async def forgot_password(
     back: BackgroundTasks,
     email: str = None,
     code: str = None,
@@ -291,7 +294,7 @@ async def change_password(
         if user == None:
             raise HTTPException(
                 status_code=400,
-                detail="user not found",
+                detail="Пользователь не найден",
             )
 
         code = await code_generator(session)
@@ -305,9 +308,9 @@ async def change_password(
 
         text = "Ваш код для восстановления пароля: " + code
 
-        back.add_task(send_email, text, email)
+        back.add_task(send_email, text, email, "Восстановление пароля onlinestore")
 
-        return {"detail": "email sent"}
+        return {"detail": "Письмо отправлено"}
 
     elif email != None and code != None and password == None:
         temp = (
@@ -321,7 +324,7 @@ async def change_password(
         if temp == None:
             raise HTTPException(
                 status_code=400,
-                detail="incorrect code or email",
+                detail="Некорректный код или email",
             )
 
         obj = temp._mapping
@@ -332,7 +335,7 @@ async def change_password(
                 detail="code is expired",
             )
 
-        return {"detail": "code is correct"}
+        return {"detail": "Код корректен"}
 
     elif email != None and code != None and password != None:
         temp = (
@@ -346,7 +349,7 @@ async def change_password(
         if temp == None:
             raise HTTPException(
                 status_code=400,
-                detail="incorrect code or email",
+                detail="Некорректный код или email",
             )
 
         obj = temp._mapping
@@ -354,7 +357,7 @@ async def change_password(
         if obj["exp_date"] < time():
             raise HTTPException(
                 status_code=400,
-                detail="code is expired",
+                detail="Код истек",
             )
 
         await session.execute(
@@ -371,12 +374,12 @@ async def change_password(
         )
         await session.commit()
 
-        return {"detail": "change password success"}
+        return {"detail": "Смена пароля завершена успешно"}
 
     else:
         raise HTTPException(
             status_code=400,
-            detail="wrong parameters",
+            detail="Некорректные параметры",
         )
 
 
@@ -395,7 +398,7 @@ async def email_verify(
         if user == None:
             raise HTTPException(
                 status_code=400,
-                detail="user not found",
+                detail="Пользователь не найден",
             )
 
         code = await code_generator(session)
@@ -409,9 +412,9 @@ async def email_verify(
 
         text = "Ваш код для подтверждения почты: " + code
 
-        back.add_task(send_email, text, email, "Подтверждение почты fefufit")
+        back.add_task(send_email, text, email, "Подтверждение почты onlinestore")
 
-        return {"detail": "email sent"}
+        return {"detail": "Письмо отправлено"}
 
     elif email != None and code != None:
         temp = (
@@ -425,7 +428,7 @@ async def email_verify(
         if temp == None:
             raise HTTPException(
                 status_code=400,
-                detail="incorrect code or email",
+                detail="Некорректный код или email",
             )
 
         obj = temp._mapping
@@ -433,7 +436,7 @@ async def email_verify(
         if obj["exp_date"] < time():
             raise HTTPException(
                 status_code=400,
-                detail="code is expired",
+                detail="Код истек",
             )
 
         await session.execute(
@@ -446,10 +449,44 @@ async def email_verify(
         )
         await session.commit()
 
-        return {"detail": "email verified"}
+        return {"detail": "Почта подтверждена"}
 
     else:
         raise HTTPException(
             status_code=400,
-            detail="wrong parameters",
+            detail="Некорректные параметры",
         )
+
+
+@auth_router.post("/change_password")
+async def change_password(
+    request: Request,
+    user: User = Depends(login_required),
+    session: AsyncSession = Depends(get_session),
+):
+    try:
+        data = await request.json()
+
+        old = data["old"].lstrip(" ").rstrip(" ")
+        new = data["new"].lstrip(" ").rstrip(" ")
+
+    except:
+        raise HTTPException(
+            status_code=400,
+            detail="Некорректный запрос",
+        )
+
+    if not check_password_hash(user.password, old):
+        raise HTTPException(
+            status_code=400,
+            detail="Некорретные данные",
+        )
+
+    await session.execute(
+        update(User)
+        .where(User.id == user.id)
+        .values(password=generate_password_hash(new))
+    )
+    await session.commit()
+
+    return {"detail": "Пароль успешно изменен"}

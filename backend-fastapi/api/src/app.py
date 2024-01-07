@@ -1,7 +1,6 @@
-import ujson
 from fastapi import FastAPI
-from src.v1.api import router
 from fastapi.middleware.cors import CORSMiddleware
+from src.v1.api import router
 
 app = FastAPI()
 
@@ -9,7 +8,7 @@ origins = [
     "http://localhost:9000",
     "http://127.0.0.1:4000",
     "http://localhost:8005",
-    'https://onlinestore.poslam.ru'
+    "https://onlinestore.poslam.ru",
 ]
 
 app.add_middleware(
@@ -19,11 +18,5 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-
-
-@app.on_event("startup")
-async def startup_event():
-    app.json_encoder = ujson
-
 
 app.include_router(router, prefix="/api/v1")

@@ -1,8 +1,17 @@
 version: '3'
 
-name: online-store
+name: onlinestore
 
 services:
+
+    web:
+        links:
+            - api
+        image: onlinestore
+        restart: always
+        build: ./frontend
+        command: yarn dev
+        
 
     database:
         image: postgres:16
@@ -30,14 +39,6 @@ services:
             - ./backend-fastapi/.env
         build: ./backend-fastapi/api
         command: python -m uvicorn src.app:app --host 0.0.0.0 --port 8000
-
-    
-    web:
-        links:
-            - api
-        image: web
-        build: ./frontend
-        command: yarn build
 
 
 volumes:

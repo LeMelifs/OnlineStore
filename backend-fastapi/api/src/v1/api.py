@@ -3,7 +3,7 @@ import os
 from config import IMG_PATH
 from database.database import get_session
 from database.models import Photo, User
-from fastapi import APIRouter, Depends, HTTPException, UploadFile
+from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, UploadFile
 from fastapi.responses import FileResponse
 from sqlalchemy import delete, insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -26,27 +26,22 @@ async def file_reciever(
         os.stat(path)
         return FileResponse(path=f"{IMG_PATH}/{img}")
     except:
-        raise HTTPException(status_code=404, detail="image not found")
-
-
-@router.get("/forum")
-async def forum():
-    return "https://t.me/+6VdMCPodJRYxNTUy"
+        raise HTTPException(status_code=404, detail="Изображение не найдено")
 
 
 @router.get("/healthcheck")
 async def index(session: AsyncSession = Depends(get_session)):
     try:
         await session.execute(select(User))
-        return {"detail": "server works!!!!"}
+        return {"detail": "ok"}
     except Exception as e:
         print(e)
-        return {"detail": "connection to the database is corrupted"}
+        return {"detail": "error"}
 
 
 @router.get("/check_token")
 async def token_checker(user=Depends(login_required)):
-    return {"detail": "token is ok"}
+    return {"detail": "Токен корректен"}
 
 
 @router.post("/upload")
@@ -89,7 +84,7 @@ async def upload(
             folder = "service"
             id = service_id
         else:
-            raise HTTPException(status_code=400, detail="wrong parameters")
+            raise HTTPException(status_code=400, detail="Некорректные параметры")
 
         try:
             os.stat(f"{IMG_PATH}/{folder}")
@@ -131,9 +126,9 @@ async def upload(
 
         except Exception as e:
             print(e)
-            raise HTTPException(status_code=500, detail="smth gone wrong")
+            raise HTTPException(status_code=500, detail="Что-то пошло не так")
 
-    return {"detail": "img upload success"}
+    return {"detail": "Добавление фотографии успешно"}
 
 
 @router.post("/img_delete")
@@ -149,7 +144,7 @@ async def img_delete(
     if photo_raw == None:
         raise HTTPException(
             status_code=400,
-            detail="img not found",
+            detail="Изображение не найдено",
         )
 
     photo = photo_raw._mapping
@@ -161,4 +156,4 @@ async def img_delete(
     await session.execute(stmt)
     await session.commit()
 
-    return {"detail": "img delete success"}
+    return {"detail": "Удаление фотографии успешно"}

@@ -1,5 +1,5 @@
-FROM node:20.10
+FROM node:18
 RUN mkdir -p /opt/app
 WORKDIR /opt/app
 COPY . /opt/app
-RUN yarn install
+RUN yarn install --ignore-engines
