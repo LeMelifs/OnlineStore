@@ -1,12 +1,11 @@
+import os
+import smtplib
+from datetime import datetime, timedelta
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
-import os
-from datetime import datetime, timedelta
 from random import randint
-import smtplib
+
 from config import EMAIL_BASE, EMAIL_PASS
-
-
 from database.database import get_session
 from database.models import ChangePasswordCode, Photo
 from fastapi import Depends, HTTPException, Response
