@@ -7,6 +7,7 @@ from sqlalchemy import (
     Boolean,
     Column,
     Enum,
+    Float,
     ForeignKey,
     Integer,
     String,
@@ -16,6 +17,13 @@ from sqlalchemy import (
 class UserTypes(enum.Enum):
     admin = "admin"
     regular_user = "regular_user"
+
+
+class City(base):
+    __tablename__ = "city"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(TEXT)
 
 
 class User(base):
@@ -35,6 +43,7 @@ class User(base):
 
     gender = Column(String(1))
 
+    city = Column(ForeignKey(City.id))
     register_date = Column(TIMESTAMP)
 
     active = Column(Boolean, default=True)
@@ -57,6 +66,16 @@ class ContractStorage(base):
     paid = Column(Boolean)
 
 
+class ChangePasswordCode(base):
+    __tablename__ = "change_pass_code_storage"
+
+    id = Column(Integer, primary_key=True)
+
+    email = Column(TEXT)
+    code = Column(TEXT)
+    exp_date = Column(TIMESTAMP)
+
+
 class Photo(base):
     __tablename__ = "photo"
 
@@ -69,11 +88,84 @@ class Photo(base):
     time = Column(TIMESTAMP)
 
 
-class ChangePasswordCode(base):
-    __tablename__ = "change_pass_code_storage"
+class Color(base):
+    __tablename__ = "color"
 
     id = Column(Integer, primary_key=True)
 
-    email = Column(TEXT)
-    code = Column(TEXT)
-    exp_date = Column(TIMESTAMP)
+    name = Column(TEXT)
+    hex_code = Column(TEXT)
+
+
+class Size(base):
+    __tablename__ = "size"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(TEXT)
+
+
+class Manufacturer(base):
+    __tablename__ = "manufacturer"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(TEXT)
+
+
+class Category(base):
+    __tablename__ = "category"
+
+    id = Column(Integer, primary_key=True)
+    name = Column(TEXT)
+
+
+class Product(base):
+    __tablename__ = "product"
+
+    id = Column(Integer, primary_key=True)
+
+    name = Column(TEXT)
+    rating = Column(Float)
+
+    price = Column(Integer)
+    sale = Column(Integer, default="0")
+
+    manufacturer_id = Column(ForeignKey(Manufacturer.id))
+    category_id = Column(ForeignKey(Category.id))
+
+    active = Column(Boolean, default=True)
+
+
+class ProductSize(base):
+    __tablename__ = "product_size"
+
+    id = Column(Integer, primary_key=True)
+
+    product_id = Column(ForeignKey(Product.id))
+    size_id = Column(ForeignKey(Size.id))
+
+
+class ProductColor(base):
+    __tablename__ = "product_color"
+
+    id = Column(Integer, primary_key=True)
+
+    product_id = Column(ForeignKey(Product.id))
+    color_id = Column(ForeignKey(Color.id))
+
+
+class Bin(base):
+    __tablename__ = "bin"
+
+    id = Column(Integer, primary_key=True)
+
+    user_id = Column(ForeignKey(User.id))
+    product_id = Column(ForeignKey(Product.id))
+
+
+class PickPoint(base):
+    __tablename__ = "pickpoint"
+
+    id = Column(Integer, primary_key=True)
+
+    name = Column(TEXT)
+    city_id = Column(ForeignKey(City.id))

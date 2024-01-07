@@ -2,9 +2,8 @@ import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
-from fastapi import HTTPException
-
 from config import EMAIL_BASE, EMAIL_DOMAIN, EMAIL_PASS
+from fastapi import HTTPException
 
 
 async def send_email(text: str, target_email: str, subject: str):
