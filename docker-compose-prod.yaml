@@ -9,9 +9,9 @@ services:
             - api
         image: onlinestore
         ports:
-            - 9000:4000
+            - 9000:9000
         build: ./frontend
-        command: yarn quasar serve dist/spa
+        command: yarn dev
         
 
     database:

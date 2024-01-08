@@ -3,4 +3,3 @@ RUN mkdir -p /opt/app
 WORKDIR /opt/app
 COPY . /opt/app
 RUN yarn install --ignore-engines
-RUN yarn build
