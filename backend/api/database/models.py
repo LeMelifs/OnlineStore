@@ -19,6 +19,13 @@ class UserTypes(enum.Enum):
     regular_user = "regular_user"
 
 
+class OrderStatuses(enum.Enum):
+    cancelled = "cancelled"
+    pending = "pending"
+    delivery = "delivery"
+    done = "done"
+
+
 class City(base):
     __tablename__ = "city"
 
@@ -169,3 +176,17 @@ class PickPoint(base):
 
     name = Column(TEXT)
     city_id = Column(ForeignKey(City.id))
+
+
+class Order(base):
+    __tablename__ = "order"
+
+    id = Column(Integer, primary_key=True)
+
+    product_id = Column(ForeignKey(Product.id))
+    user_id = Column(ForeignKey(User.id))
+
+    sum = Column(Integer)
+    time = Column(TIMESTAMP)
+
+    status = Column(Enum(OrderStatuses), default="pending")
