@@ -5,7 +5,7 @@ from src.v1.api import router
 app = FastAPI()
 
 origins = [
-    "http://localhost:9000/web/",
+    "http://localhost:9000/web",
     "http://localhost:8005",
     "https://onlinestore.poslam.ru",
 ]
