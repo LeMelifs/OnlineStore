@@ -7,6 +7,7 @@ app = FastAPI()
 origins = [
     "http://localhost:8005",
     "https://onlinestore.poslam.ru",
+    "http://localhost:9000"
 ]
 
 app.add_middleware(
