@@ -6,6 +6,7 @@ app = FastAPI()
 
 origins = [
     "http://127.0.0.0:9000",
+    "http://localhost:9000",
     "http://127.0.0.0:9000/",
     "http://127.0.0.0:8005",
     "https://onlinestore.poslam.ru",
