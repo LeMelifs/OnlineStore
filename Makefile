@@ -45,6 +45,7 @@ start-prod:
 
 update-prod:
 	docker compose -f docker-compose-prod.yaml build web
+	docker compose -f docker-compose-prod.yaml cp api:api/src/static/img ./api/src/static
 	docker compose -f docker-compose-prod.yaml exec database sh -c 'pg_dump -h 127.0.0.1 --username=postgres -d postgres > dumps/$$(date +'%Y-%m-%d_%H-%M-%S').dump'
 	docker compose -f docker-compose-prod.yaml cp ./backend/api api:.
 	docker compose -f docker-compose-prod.yaml cp web:/opt/app/dist ./frontend
