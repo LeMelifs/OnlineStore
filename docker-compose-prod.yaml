@@ -8,8 +8,10 @@ services:
         links:
             - api
         image: onlinestore
+        ports:
+            - 9000:4000
         build: ./frontend
-        command: yarn dev
+        command: yarn quasar serve dist/spa
         
 
     database:
