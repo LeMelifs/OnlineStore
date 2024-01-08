@@ -8,7 +8,6 @@ services:
         links:
             - api
         image: onlinestore
-        restart: always
         build: ./frontend
         command: yarn dev
         
@@ -18,9 +17,9 @@ services:
         environment:
             POSTGRES_PASSWORD: postgres
         volumes:
-            - ./backend-fastapi/db_data:/var/lib/postgresql/data
-            - ./backend-fastapi/dumps/main.sql:/docker-entrypoint-initdb.d/main.sql
-            - ./backend-fastapi/dumps:/dumps
+            - ./backend/db_data:/var/lib/postgresql/data
+            - ./backend/dumps/main.sql:/docker-entrypoint-initdb.d/main.sql
+            - ./backend/dumps:/dumps
 
 
     api:
@@ -37,8 +36,8 @@ services:
             DB_HOST: database
             CELERY_BROKER_URL: redis://redis:6379/0
         env_file:
-            - ./backend-fastapi/.env
-        build: ./backend-fastapi/api
+            - ./backend/.env
+        build: ./backend/api
         command: python -m uvicorn src.app:app --host 0.0.0.0 --port 8000
 
 
@@ -54,8 +53,8 @@ services:
         environment:
             CELERY_BROKER_URL: redis://redis:6379/0
         env_file:
-            - ./backend-fastapi/.env
-        build: ./backend-fastapi/api
+            - ./backend/.env
+        build: ./backend/api
         command: celery -A src.worker:celery worker --loglevel info
 
 volumes:
