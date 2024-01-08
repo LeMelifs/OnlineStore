@@ -11,14 +11,24 @@ from sqlalchemy.ext.asyncio import AsyncSession
 from src.utils import photo_maker, time
 from src.v1.auth import admin_required, auth_router, login_required
 from src.v1.user import user_router
+from src.v1.category import category_router
+from src.v1.bin import bin_router
+from src.v1.city import city_router
+from src.v1.pickpoint import pickpoint_router
+from src.v1.product import product_router
 
 router = APIRouter()
 
 router.include_router(user_router, prefix="/user")
 router.include_router(auth_router, prefix="/auth")
+router.include_router(category_router, prefix="/category")
+router.include_router(bin_router, prefix="/bin")
+router.include_router(city_router, prefix="/city")
+router.include_router(pickpoint_router, prefix="/pickpoint")
+router.include_router(product_router, prefix="/product")
 
 
-@router.get("/img")
+@router.get("/")
 async def file_reciever(
     img: str = None,
 ):
@@ -48,42 +58,24 @@ async def token_checker(user=Depends(login_required)):
 @router.post("/upload")
 async def upload(
     files: list[UploadFile],
-    building_id: int = None,
-    area_id: int = None,
+    product_id: int = None,
     category_id: int = None,
-    service_id: int = None,
+    pickpoint_id: int = None,
     user=Depends(login_required),
     session: AsyncSession = Depends(get_session),
 ):
-    user_id = None
-
     for file in files:
         contents = file.file.read()
 
-        if all(x == None for x in [area_id, building_id, category_id, service_id]):
-            folder = "client"
-            id = user.id
-            user_id = id
-        elif building_id != None and all(
-            x == None for x in [area_id, user_id, category_id, service_id]
-        ):
-            folder = "building"
-            id = building_id
-        elif area_id != None and all(
-            x == None for x in [user_id, building_id, category_id, service_id]
-        ):
-            folder = "area"
-            id = area_id
-        elif category_id != None and all(
-            x == None for x in [area_id, building_id, user_id, service_id]
-        ):
+        if product_id != None and all(x == None for x in [category_id, pickpoint_id]):
+            folder = "product"
+            id = product_id
+        elif category_id != None and all(x == None for x in [product_id, pickpoint_id]):
             folder = "category"
             id = category_id
-        elif service_id != None and all(
-            x == None for x in [area_id, building_id, category_id, user_id]
-        ):
-            folder = "service"
-            id = service_id
+        elif pickpoint_id != None and all(x == None for x in [product_id, category_id]):
+            folder = "pickpoint"
+            id = category_id
         else:
             raise HTTPException(status_code=400, detail="Некорректные параметры")
 

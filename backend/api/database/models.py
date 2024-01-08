@@ -30,7 +30,7 @@ class City(base):
     __tablename__ = "city"
 
     id = Column(Integer, primary_key=True)
-    name = Column(TEXT)
+    name = Column(TEXT, default="Vladivostok")
 
 
 class User(base):
@@ -188,5 +188,7 @@ class Order(base):
 
     sum = Column(Integer)
     time = Column(TIMESTAMP)
+
+    pickpoint_id = Column(ForeignKey(PickPoint.id))
 
     status = Column(Enum(OrderStatuses), default="pending")

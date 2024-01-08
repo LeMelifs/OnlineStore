@@ -1,12 +1,11 @@
 .DS_Store
 
-log/
-img/
 db_data/
 
 *.xlsx
 *.python
 *.dump
+*.jpg
 
 # Byte-compiled / optimized / DLL files
 __pycache__/

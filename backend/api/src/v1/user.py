@@ -1,5 +1,5 @@
 from database.database import get_session
-from database.models import User
+from database.models import City, User
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy import select, update
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -21,6 +21,7 @@ async def user_view(
         "gender": user.gender,
         "photo": await photo_search("client", user.id, session),
         "phone_number": user.phone_number,
+        "city": (await session.get(City, user.city)).name,
         "active": user.active,
     }
 
@@ -77,6 +78,18 @@ async def user_edit(
 
         elif i == "first_name":
             stmt = update(User).where(User.id == user.id).values(first_name=data[i])
+
+        elif i == "city":
+            city_raw = (
+                await session.execute(select(City).where(City.name == data[i]))
+            ).first()
+
+            if city_raw == None:
+                raise HTTPException(400, "city not found")
+
+            city: City = city_raw[0]
+
+            stmt = update(User).where(User.id == user.id).values(city=city.id)
 
         elif i == "email":
             if "@" not in data[i] and "." not in data[i]:
