@@ -6,32 +6,36 @@
           <q-card-section class="text-center">
             <div class="text-grey-9 text-h6 text-weight-bold q-mb-xl ">=＾• ⋏ •＾=</div>
             <div class="text-grey-9 text-h5 text-weight-bold" style="margin-bottom: 5px">Восстановление пароля</div>
-            <div  class="text-grey-7 text-h7 ">Укажите свой адрес электронной почты, мы отправим вам электронное письмо с инструкциями о том, как создать новый пароль</div>
+            <div  class="text-grey-7 text-h7 ">Укажите свой адрес электронной почты, мы отправим вам электронное письмо с кодом для смены пароля</div>
           </q-card-section>
+          <q-form @submit.prevent="submit">
           <q-card-section>
-              <div class="text-grey-9 text-weight-bold q-ma-sm">Email</div>
-              <q-input dense outlined rounded color="dark" v-model="email" label="Введите email"><template v-slot:prepend></template></q-input>
-
+              <div v-if="state === 'email'" class="text-grey-9 text-weight-bold q-ma-sm">Почта</div>
+              <div v-if="state === 'code'" class="text-grey-9 text-weight-bold q-ma-sm">Код</div>
+              <div v-if="state === 'password'" class="text-grey-9 text-weight-bold q-ma-sm">Новый пароль</div>
+              <q-input v-if="state === 'email'" dense outlined rounded color="dark" v-model="data.email" label="Введите email"><template v-slot:prepend></template></q-input>
+              <q-input v-if="state === 'code'" dense outlined rounded color="dark" v-model="data.code" label="Введите код"><template v-slot:prepend></template></q-input>
+              <q-input v-if="state === 'password'" dense outlined rounded color="dark" v-model="data.password" label="Введите новый пароль"><template v-slot:prepend></template></q-input>
           </q-card-section>
           <q-card-section>
             <div class="row" >
               <router-link to="/login">
-                <q-btn class="btn-l" color="dark" rounded outline size="md" style="padding: 9px" label="Отмена" no-caps ></q-btn>
+                <q-btn v-if="state !== 'success'" class="btn-l" color="dark" rounded outline size="md" style="padding: 9px" label="Отмена" no-caps ></q-btn>
               </router-link>
-              <router-link to="/">
-                <q-btn class="btn-r" color="dark" rounded size="md" style="padding: 9px" label="Отправить" no-caps ></q-btn>
-              </router-link>
+                <q-btn v-if="state !== 'password' && state !== 'success'" type="submit" class="btn-r" color="dark" rounded size="md" style="padding: 9px" label="Отправить" no-caps ></q-btn>
+                <q-btn v-if="state === 'password'" type="submit" class="btn-r" color="dark" rounded size="md" style="padding: 9px" label="Сохранить" no-caps ></q-btn>
             </div>
-
+            <router-link to="/login">
+            <q-btn v-if="state === 'success'" color="dark" size="md" type="submit" rounded style="padding: 9px;" label="Вернуться на страницу авторизации" no-caps class="full-width"></q-btn>
+            </router-link>
+            <p class="text-grey-9 text-h7" style="text-align: center; margin-top: 15px">{{ error }}</p>
           </q-card-section>
-
-
+        </q-form>
         </q-card>
       </q-page>
     </q-page-container>
   </q-layout>
 </template>
-
 <style>
 
 .btn-l {
@@ -56,10 +60,50 @@ a {
 }
 </style>
 
-<script>
-import { defineComponent } from 'vue'
-export default defineComponent({
-  name: 'ResetPassword',
+<script setup>
+import {reactive, ref} from "vue";
 
-})
+let error = ref('')
+let state = ref('email')
+
+const url = 'https://onlinestore.poslam.ru/api/v1/auth/forgot_password'
+const params = new URLSearchParams();
+
+const data = reactive({
+    email: '',
+    code: '',
+    password: ''
+  }
+)
+
+const submit = async () => {
+  error.value = ''
+  if (state.value === 'email') {
+    params.append('email', data.email);
+  }
+  else if (state.value === 'code') {
+    params.append('code', data.code);
+  }
+  else if (state.value === 'password') {
+    params.append('password', data.password);
+  }
+  const fullUrl = `${url}?${params.toString()}`;
+  console.log(fullUrl);
+  const response = await fetch(fullUrl, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json'},
+    credentials: 'include'
+  })
+  let json = await response.json()
+  error.value = json['detail']
+  if (response.status !== 400) {
+    if (state.value === 'password') {
+      state.value = 'success'
+    }
+    else {
+      state.value = state.value === 'email' ? 'code' : 'password'
+    }
+  }
+}
+
 </script>
