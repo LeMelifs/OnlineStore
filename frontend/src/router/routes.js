@@ -24,6 +24,11 @@ const routes = [
   {
     path: "/bucket",
     component: () => import('pages/BucketPage.vue')
+  },
+    {
+    path: "/change_password",
+    name: 'change_password',
+    component: () => import('pages/ChangePassword.vue')
   }
 ]
 

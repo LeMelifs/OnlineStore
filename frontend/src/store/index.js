@@ -1,7 +1,8 @@
 import { createStore } from 'vuex'
-import {ref} from "vue";
+import createPersistedState from 'vuex-persistedstate'
 
 export default createStore({
+  plugins: [createPersistedState({ storage: window.sessionStorage })],
   state: {
     authenticated: false,
     token: null,

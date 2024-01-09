@@ -31,7 +31,7 @@
               <div style="margin: 15px 0px 4px 15px; font-size: 14px">Телефон</div>
               <q-btn style="border: 1px solid #a4a4a4;margin: 0px 0px 50px 0px; padding: 7px 0px 7px 10px" rounded flat text-color="grey-10" class="full-width text-h7 text-weight-bold" :label="phone_number" no-caps ><q-icon style="margin-left: 420px" name="chevron_right"></q-icon></q-btn>
               <q-btn>Сохранить</q-btn> <br>
-              <router-link to="/">
+              <router-link to="/change_password">
                 <a class="text-grey-9 text-weight-bold" style="margin: 0px 0px 4px 10px;">Изменить пароль</a>
               </router-link>
               <div style="margin: 15px 0px 4px 10px;">
