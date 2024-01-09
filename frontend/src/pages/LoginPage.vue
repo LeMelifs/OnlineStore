@@ -6,7 +6,7 @@
           <q-card-section class="text-center">
             <div class="row">
               <router-link to="/">
-                <q-btn class="btn-l" flat round style="width: 40px; height: 40px; border: 1.5px solid #626262; margin-left: -20px; margin-right: 95px"><q-icon color="grey-8" name="chevron_left"></q-icon></q-btn>
+                <q-btn class="btn-l" flat round style="width: 40px; height: 40px; border: 1.5px solid #626262; margin-left: -20px; margin-right: 90px"><q-icon color="grey-8" name="chevron_left"></q-icon></q-btn>
               </router-link>
               <div class=" text-grey-9 text-h6 text-weight-bold q-mb-xl">=＾• ⋏ •＾=</div>
             </div>
