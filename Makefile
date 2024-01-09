@@ -4,6 +4,9 @@ else
 	SLEEP := sleep
 endif
 
+file = ./serv_pass.txt
+
+pass := $(shell cat ${file})
 
 # dev
 
@@ -49,6 +52,8 @@ update-prod:
 	docker compose -f docker-compose-prod.yaml restart web
 	docker compose -f docker-compose-prod.yaml cp api:api/src/static/img ./backend/api/src/static
 	docker compose -f docker-compose-prod.yaml exec database sh -c 'pg_dump -h 127.0.0.1 --username=postgres -d postgres > dumps/$$(date +'%Y-%m-%d_%H-%M-%S').dump'
+	sshpass -p "$(pass)" scp -r /home/poslam/onlinestore/backend/dumps poslam@188.127.225.179:/home/poslam/onlinestore_dumps
+	sshpass -p "$(pass)" scp -r /home/poslam/onlinestore/backend/api/src/static/img poslam@188.127.225.179:/home/poslam/onlinestore_imgs
 	docker compose -f docker-compose-prod.yaml cp ./backend/api api:.
 	docker compose -f docker-compose-prod.yaml restart api
 	docker compose -f docker-compose-prod.yaml exec -w /api api python -m alembic upgrade head
@@ -56,5 +61,7 @@ update-prod:
 update-prod-full:
 	docker compose -f docker-compose-prod.yaml cp api:api/src/static/img ./backend/api/src/static
 	docker compose -f docker-compose-prod.yaml exec database sh -c 'pg_dump -h 127.0.0.1 --username=postgres -d postgres > dumps/$$(date +'%Y-%m-%d_%H-%M-%S').dump'
+	sshpass -p "$(pass)" scp -r /home/poslam/onlinestore/backend/dumps poslam@188.127.225.179:/home/poslam/onlinestore_dumps
+	sshpass -p "$(pass)" scp -r /home/poslam/onlinestore/backend/api/src/static/img poslam@188.127.225.179:/home/poslam/onlinestore_imgs
 	docker compose -f docker-compose-prod.yaml up --build -d
 	docker compose -f docker-compose-prod.yaml exec -w /api api python -m alembic upgrade head

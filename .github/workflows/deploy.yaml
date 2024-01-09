@@ -25,5 +25,4 @@ jobs:
           script: |
             cd /home/poslam/onlinestore
             git pull
-            pwd
             make update-prod

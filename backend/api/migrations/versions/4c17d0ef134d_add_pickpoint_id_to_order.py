@@ -28,7 +28,14 @@ def upgrade() -> None:
         sa.Column("pickpoint_id", sa.Integer(), nullable=True),
         sa.Column(
             "status",
-            sa.Enum("cancelled", "pending", "delivery", "done", name="orderstatuses"),
+            sa.Enum(
+                "cancelled",
+                "pending",
+                "delivery",
+                "done",
+                "refund",
+                name="orderstatuses",
+            ),
             nullable=True,
         ),
         sa.ForeignKeyConstraint(

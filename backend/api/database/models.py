@@ -24,6 +24,7 @@ class OrderStatuses(enum.Enum):
     pending = "pending"
     delivery = "delivery"
     done = "done"
+    refund = "refund"
 
 
 class City(base):
@@ -111,13 +112,6 @@ class Size(base):
     name = Column(TEXT)
 
 
-class Manufacturer(base):
-    __tablename__ = "manufacturer"
-
-    id = Column(Integer, primary_key=True)
-    name = Column(TEXT)
-
-
 class Category(base):
     __tablename__ = "category"
 
@@ -136,7 +130,6 @@ class Product(base):
     price = Column(Integer)
     sale = Column(Integer, default="0")
 
-    manufacturer_id = Column(ForeignKey(Manufacturer.id))
     category_id = Column(ForeignKey(Category.id))
 
     active = Column(Boolean, default=True)

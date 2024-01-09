@@ -13,15 +13,19 @@ user_router = APIRouter()
 async def user_view(
     user: User = Depends(login_required), session: AsyncSession = Depends(get_session)
 ):
+    city = await session.get(City, user.city)
+
+    if city != None:
+        city = city.name
+
     result = {
         "username": user.username,
         "first_name": user.first_name,
         "email": user.email,
         "type": user.type.name,
         "gender": user.gender,
-        "photo": await photo_search("client", user.id, session),
         "phone_number": user.phone_number,
-        "city": (await session.get(City, user.city)).name,
+        "city": city,
         "active": user.active,
     }
 
