@@ -46,7 +46,7 @@ async def file_reciever(
 async def index(session: AsyncSession = Depends(get_session)):
     try:
         await session.execute(select(User))
-        return {"detail": "ok"}
+        return {"detail": "ok!"}
     except Exception as e:
         print(e)
         return {"detail": "error"}
