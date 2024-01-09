@@ -1,17 +1,15 @@
 import os
-import smtplib
 from datetime import datetime, timedelta
-from email.mime.multipart import MIMEMultipart
-from email.mime.text import MIMEText
 from random import randint
 
-from config import EMAIL_BASE, EMAIL_PASS, HOST
+from config import HOST
 from database.database import get_session
 from database.models import ChangePasswordCode, Photo
-from fastapi import Depends, HTTPException, Response
+from fastapi import Depends, HTTPException
 from PIL import Image
-from sqlalchemy import desc, select
+from sqlalchemy import select
 from sqlalchemy.ext.asyncio import AsyncSession
+from src.worker import celery
 
 
 def time():
@@ -35,6 +33,7 @@ def phone_check(phone_number: str):
     return phone_number
 
 
+@celery.task
 def photo_maker(path: str):
     try:
         os.stat(path)

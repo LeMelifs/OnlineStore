@@ -187,7 +187,9 @@ class Order(base):
     user_id = Column(ForeignKey(User.id))
 
     sum = Column(Integer)
-    time = Column(TIMESTAMP)
+
+    create_time = Column(TIMESTAMP)
+    close_time = Column(TIMESTAMP)
 
     pickpoint_id = Column(ForeignKey(PickPoint.id))
 

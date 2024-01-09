@@ -16,6 +16,7 @@ from src.v1.bin import bin_router
 from src.v1.city import city_router
 from src.v1.pickpoint import pickpoint_router
 from src.v1.product import product_router
+from src.v1.order import order_router
 
 router = APIRouter()
 
@@ -26,6 +27,7 @@ router.include_router(bin_router, prefix="/bin")
 router.include_router(city_router, prefix="/city")
 router.include_router(pickpoint_router, prefix="/pickpoint")
 router.include_router(product_router, prefix="/product")
+router.include_router(order_router, prefix="/order")
 
 
 @router.get("/")
@@ -105,7 +107,7 @@ async def upload(
                     with open(f"{IMG_PATH}/{folder}/{id}/{y}.jpg", "wb") as f:
                         f.write(contents)
 
-                    photo_maker(f"{IMG_PATH}/{folder}/{id}/{y}.jpg")
+                    photo_maker.delay(f"{IMG_PATH}/{folder}/{id}/{y}.jpg")
 
             photo = {
                 "obj": folder,
