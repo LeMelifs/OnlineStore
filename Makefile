@@ -17,14 +17,14 @@ update-dev:
 	docker compose -f docker-compose-dev.yaml cp ./backend/api api:.
 	docker compose -f docker-compose-dev.yaml exec -w /api api python -m alembic upgrade head
 
-	docker compose -f docker-compose-dev.yaml cp ./frontend frontend:/opt/app
+	docker compose -f docker-compose-dev.yaml cp ./frontend frontend:/opt/frontend
 	docker compose -f docker-compose-dev.yaml restart web
 
 update-api-dev:
 	docker compose -f docker-compose-dev.yaml cp ./backend/api api:.
 
 update-web-dev:
-	docker compose -f docker-compose-dev.yaml cp ./frontend/src web:/opt/app
+	docker compose -f docker-compose-dev.yaml cp ./frontend web:/opt
 	docker compose -f docker-compose-dev.yaml restart web
 
 update-db-dev:
@@ -43,10 +43,9 @@ start-prod:
 	docker compose -f docker-compose-prod.yaml exec -w /api api python -m alembic upgrade head
 
 update-prod:
-	docker compose -f docker-compose-prod.yaml cp ./frontend/src web:/opt/app
-	docker compose -f docker-compose-prod.yaml exec -w /opt/app web yarn quasar clean
-	$(SLEEP) 2
-	docker compose -f docker-compose-prod.yaml exec -w /opt/app web yarn build
+	docker compose -f docker-compose-prod.yaml cp ./frontend web:/opt
+	docker compose -f docker-compose-prod.yaml exec -w /opt/frontend web yarn quasar clean
+	docker compose -f docker-compose-prod.yaml exec -w /opt/frontend web yarn build
 	docker compose -f docker-compose-prod.yaml restart web
 	docker compose -f docker-compose-prod.yaml cp api:api/src/static/img ./backend/api/src/static
 	docker compose -f docker-compose-prod.yaml exec database sh -c 'pg_dump -h 127.0.0.1 --username=postgres -d postgres > dumps/$$(date +'%Y-%m-%d_%H-%M-%S').dump'
