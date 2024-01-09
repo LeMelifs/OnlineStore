@@ -4,8 +4,13 @@
       <q-page class="flex flex-center bg-grey-2">
         <q-card class="q-px-lg q-pt-md q-pb-xl shadow-2 my_card" bordered>
           <q-card-section class="text-center">
-            <div class="text-grey-9 text-h6 text-weight-bold q-mb-xl ">=＾• ⋏ •＾=</div>
-            <div class="text-grey-9 text-h5 text-weight-bold" style="margin-bottom: 5px">pap</div>
+            <div class="row">
+              <router-link to="/">
+                <q-btn class="btn-l" flat round style="width: 40px; height: 40px; border: 1.5px solid #626262; margin-left: -20px; margin-right: 95px"><q-icon color="grey-8" name="chevron_left"></q-icon></q-btn>
+              </router-link>
+              <div class=" text-grey-9 text-h6 text-weight-bold q-mb-xl">=＾• ⋏ •＾=</div>
+            </div>
+            <div class="text-grey-9 text-h5 text-weight-bold" style="margin-bottom: 5px">Вход в аккаунт</div>
             <div class="text-grey-7 text-h7 ">Войдите, чтобы получить доступ к своему аккаунту</div>
           </q-card-section>
           <q-form @submit.prevent="submit">

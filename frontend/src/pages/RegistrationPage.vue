@@ -4,15 +4,25 @@
       <q-page class="flex flex-center bg-grey-2">
         <q-card class="q-px-lg q-pt-md q-pb-xl shadow-2 my_card" bordered>
           <q-card-section class="text-center">
-            <div class="text-grey-9 text-h6 text-weight-bold q-mb-md ">=＾• ⋏ •＾=</div>
+            <template v-if="awesome">
+            <div class="row" style="height: 50px">
+              <router-link to="/">
+                <q-btn class="btn-l" flat round style="width: 40px; height: 40px; border: 1.5px solid #626262; margin-left: -20px; margin-right: 90px"><q-icon color="grey-8" name="chevron_left"></q-icon></q-btn>
+              </router-link>
+              <div class=" text-grey-9 text-h6 text-weight-bold q-mb-xl">=＾• ⋏ •＾=</div>
+            </div>
+            </template>
+            <template v-else>
+              <div class=" text-grey-9 text-h6 text-weight-bold q-mb-xl" style="margin-bottom: 18px">=＾• ⋏ •＾=</div>
+            </template>
             <div class="text-grey-9 text-h5 text-weight-bold" style="margin-bottom: 5px">Создание аккаунта</div>
-            <div v-if="awesome" class="text-grey-7 text-h7 ">Введите ваши контактные данные, чтобы создать аккаунт</div>
-            <div v-else class="text-grey-7 text-h7 ">Подтвердите пароль, чтобы завершить создание аккаунта</div>
+            <div v-if="awesome" class="text-grey-7 text-h7 ">Введите ваши контактные данные, чтобы<br> создать аккаунт</div>
+            <div v-else class="text-grey-7 text-h7 ">Подтвердите пароль, чтобы завершить<br> создание аккаунта</div>
           </q-card-section>
           <q-form @submit.prevent="submit">
           <q-card-section>
             <template v-if="awesome">
-              <div class="text-grey-9 text-weight-bold q-ma-sm">Имя</div>
+              <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: -10px">Имя</div>
               <q-input dense outlined rounded color="dark" type="text" v-model="data.first_name" label="Введите ваше имя"><template v-slot:prepend></template></q-input>
               <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Имя пользователя</div>
               <q-input dense outlined rounded color="dark" type="text" v-model="data.username" label="Введите имя пользователя"><template v-slot:prepend></template></q-input>
@@ -25,7 +35,7 @@
               <span>Женщина</span>
             </template>
             <template v-else>
-            <div class="text-grey-9 text-weight-bold q-ma-sm">Email</div>
+            <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: -10px">Email</div>
             <q-input dense outlined rounded color="dark" type="email" v-model="data.email" label="Введите email"><template v-slot:prepend></template></q-input>
             <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Пароль</div>
             <q-input dense outlined rounded color="dark" v-model="passwords.password1" type="password" label="Введите пароль"><template v-slot:prepend></template></q-input>
@@ -34,11 +44,11 @@
             </template>
             <q-btn  v-if="awesome" @click="awesome = false" color="dark" rounded size="md" style="padding: 9px; margin-top: 35px" label="Продолжить" no-caps class="full-width"></q-btn>
             <q-btn  v-else color="dark" type="submit" rounded size="md" style="padding: 9px; margin-top: 25px" label="Продолжить" no-caps class="full-width"></q-btn>
-            <q-btn  v-if="!awesome" @click="awesome = true" color="light-grey" type="submit" rounded size="md" style="padding: 9px; margin-top: 15px" label="Назад" text-color="black" no-caps class="full-width"></q-btn>
+            <q-btn  v-if="!awesome" @click="awesome = true" color="dark" type="submit" flat rounded size="md" style="padding: 9px; margin-top: 15px; padding-top: 8px; height: 42px" label="Назад" text-color="black" no-caps class="full-width btn-l"></q-btn>
           </q-card-section>
             <p style="text-align: center;" class="text-grey-9 text-h7">{{ error }}</p>
           </q-form>
-          <q-card-section class="text-center q-pt-none q-mt-lg">
+          <q-card-section class="text-center q-pt-none q-mt-md" style="height: 10px">
             <div class="text-grey-8">Уже есть аккаунт?
               <router-link to="/login"><a class="text-grey-9 text-weight-bold">Войти</a></router-link>
             </div>

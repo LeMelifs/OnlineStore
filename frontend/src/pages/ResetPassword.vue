@@ -15,7 +15,7 @@
           </q-card-section>
           <q-card-section>
             <div class="row" >
-              <router-link to="/">
+              <router-link to="/login">
                 <q-btn class="btn-l" color="dark" rounded outline size="md" style="padding: 9px" label="Отмена" no-caps ></q-btn>
               </router-link>
               <router-link to="/">
