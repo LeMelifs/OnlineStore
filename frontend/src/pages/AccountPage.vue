@@ -8,7 +8,7 @@
           <q-btn  @click="orders" flat icon="local_shipping"  text-color="grey-10" class="btn_start full-width  text-weight-bold" label="Мои заказы" :style="{border: order ? '2px solid #3a3a3a' : ''}" no-caps ><q-icon style="margin-left: 205px" name="chevron_right"></q-icon></q-btn>
           <q-btn  @click="manage_acc" flat icon="settings" text-color="grey-10" class="btn_center_dark full-width text-weight-bold" label="Управление аккаунтом" :style="{border: manage ? '2px solid #3a3a3a' : ''}" no-caps ><q-icon style="margin-left: 130px" name="chevron_right"></q-icon></q-btn>
           <q-btn  @click="delivery" flat icon="room" text-color="grey-10" class="btn_center_light full-width text-weight-bold" label="Адреса доставки" :style="{border: deliver ? '2px solid #3a3a3a' : ''}" no-caps ><q-icon style="margin-left: 165px" name="chevron_right"></q-icon></q-btn>
-          <router-link to="/">
+          <router-link to="/login">
             <q-btn flat icon="logout" text-color="grey-10" class="btn_end full-width text-weight-bold" label="Выход" no-caps ><q-icon style="margin-left: 235px" name="chevron_right"></q-icon></q-btn>
           </router-link>
         </q-card>

@@ -4,7 +4,7 @@
       <q-page class="flex flex-center bg-grey-2">
         <q-card class="q-px-lg q-pt-md q-pb-xl shadow-2 my_card" bordered>
           <q-card-section class="text-center">
-            <div class="text-grey-9 text-h6 text-weight-bold q-mb-xl ">=＾• ⋏ •＾=</div>
+            <div class="text-grey-9 text-h6 text-weight-bold q-mb-md ">=＾• ⋏ •＾=</div>
             <div class="text-grey-9 text-h5 text-weight-bold" style="margin-bottom: 5px">Создание аккаунта</div>
             <div v-if="awesome" class="text-grey-7 text-h7 ">Введите ваши контактные данные, чтобы создать аккаунт</div>
             <div v-else class="text-grey-7 text-h7 ">Подтвердите пароль, чтобы завершить создание аккаунта</div>
@@ -32,14 +32,15 @@
             <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Повтор пароля</div>
             <q-input dense outlined rounded style="margin-bottom: 20px" color="dark" v-model="passwords.password2" type="password" label="Повтор пароля"><template v-slot:prepend></template></q-input>
             </template>
-            <q-btn  v-if="awesome" @click="awesome = false" color="dark" rounded size="md" style="padding: 9px; margin-top: 15px" label="Продолжить" no-caps class="full-width"></q-btn>
-            <q-btn  v-else color="dark" type="submit" rounded size="md" style="padding: 9px; margin-top: 15px" label="Продолжить" no-caps class="full-width"></q-btn>
+            <q-btn  v-if="awesome" @click="awesome = false" color="dark" rounded size="md" style="padding: 9px; margin-top: 35px" label="Продолжить" no-caps class="full-width"></q-btn>
+            <q-btn  v-else color="dark" type="submit" rounded size="md" style="padding: 9px; margin-top: 25px" label="Продолжить" no-caps class="full-width"></q-btn>
+            <q-btn  v-if="!awesome" @click="awesome = true" color="light-grey" type="submit" rounded size="md" style="padding: 9px; margin-top: 15px" label="Назад" text-color="black" no-caps class="full-width"></q-btn>
           </q-card-section>
-            <p>{{ error }}</p>
+            <p style="text-align: center;" class="text-grey-9 text-h7">{{ error }}</p>
           </q-form>
           <q-card-section class="text-center q-pt-none q-mt-lg">
             <div class="text-grey-8">Уже есть аккаунт?
-              <router-link to="/"><a class="text-grey-9 text-weight-bold">Войти</a></router-link>
+              <router-link to="/login"><a class="text-grey-9 text-weight-bold">Войти</a></router-link>
             </div>
           </q-card-section>
         </q-card>
@@ -90,21 +91,26 @@ const router = useRouter()
 
 let error = ref('')
 const submit = async () => {
-  if (passwords.password1 === passwords.password2) {
-    data.password = passwords.password1
-    const response = await fetch('https://onlinestore.poslam.ru/api/v1/auth/signup', {
-      method: 'POST',
-      headers: {'Content-Type': 'application/json'},
-      credentials: 'include',
-      body: JSON.stringify(data),
-    })
-    if (response.status !== 400)
-      await router.push('/login')
-    else {
-      let text = await response.json()
-      error.value = text['detail']
-    }
+  error.value = ''
+  if (data.first_name !== '' && data.username !== '' && data.phone_number !== '' && data.email !== ''
+    && data.gender !== '' && passwords.password1 !== '' && passwords.password2 !== '') {
+    if (passwords.password1 === passwords.password2) {
+      data.password = passwords.password1
+      const response = await fetch('https://onlinestore.poslam.ru/api/v1/auth/signup', {
+        method: 'POST',
+        headers: {'Content-Type': 'application/json'},
+        credentials: 'include',
+        body: JSON.stringify(data),
+      })
+      if (response.status !== 400)
+        await router.push('/login')
+      else {
+        let text = await response.json()
+        error.value = text['detail']
+      }
+    } else error.value = 'Пароли не совпадают!'
   }
-  else error.value = 'Пароли не совпадают!'
+  else error.value = 'Заполните все поля!'
 }
+
 </script>

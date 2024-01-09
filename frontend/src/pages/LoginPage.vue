@@ -14,17 +14,17 @@
             <q-input dense outlined rounded color="dark" type="text" v-model="data.login" label="Введите имя пользователя"><template v-slot:prepend></template></q-input>
             <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Пароль</div>
             <q-input dense outlined rounded color="dark" v-model="data.password" type="password" label="Введите пароль"><template v-slot:prepend></template></q-input>
-            <div class="row round">
-              <input type="checkbox" checked id="checkbox" />
-              <label for="checkbox"></label>
-              <div class="text-grey-8 text-h7 q-ml-md">Запомнить меня</div>
-              <router-link to="/reset"><a class="text-grey-9 text-weight-bold" style="margin-left: 60px">Забыли пароль?</a></router-link>
+            <div style="margin-top: 5px; margin-bottom: -10px">
+<!--              <input type="checkbox" checked id="checkbox" />-->
+<!--              <label for="checkbox"></label>-->
+<!--              <div class="text-grey-8 text-h7 q-ml-md">Запомнить меня</div>-->
+              <router-link to="/reset"><a class="text-grey-9 text-weight-bold" style="margin-left: 200px;">Забыли пароль?</a></router-link>
             </div>
           </q-card-section>
           <q-card-section>
               <q-btn color="dark" size="md" type="submit" rounded style="padding: 9px;" label="Войти" no-caps class="full-width"></q-btn>
           </q-card-section>
-            <p>{{ error }}</p>
+            <p class="text-grey-9 text-h7" style="text-align: center">{{ error }}</p>
           </q-form>
           <q-card-section class="text-center q-pt-none q-mt-xl">
             <div class="text-grey-8">В первый раз здесь?
