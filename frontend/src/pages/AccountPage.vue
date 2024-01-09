@@ -9,7 +9,7 @@
           <q-btn  @click="manage_acc" flat icon="settings" text-color="grey-10" class="btn_center_dark full-width text-weight-bold" label="Управление аккаунтом" :style="{border: manage ? '2px solid #3a3a3a' : ''}" no-caps ><q-icon style="margin-left: 130px" name="chevron_right"></q-icon></q-btn>
           <q-btn  @click="delivery" flat icon="room" text-color="grey-10" class="btn_center_light full-width text-weight-bold" label="Адреса доставки" :style="{border: deliver ? '2px solid #3a3a3a' : ''}" no-caps ><q-icon style="margin-left: 165px" name="chevron_right"></q-icon></q-btn>
           <router-link to="/login">
-            <q-btn flat icon="logout" text-color="grey-10" class="btn_end full-width text-weight-bold" label="Выход" no-caps ><q-icon style="margin-left: 235px" name="chevron_right"></q-icon></q-btn>
+            <q-btn @click="logout" flat icon="logout" text-color="grey-10" class="btn_end full-width text-weight-bold" label="Выход" no-caps ><q-icon style="margin-left: 235px" name="chevron_right"></q-icon></q-btn>
           </router-link>
         </q-card>
         <template v-if="manage">
@@ -146,6 +146,13 @@ onMounted(() => {
   manage.value = false;
   deliver.value = false;
 })
+
+function logout() {
+  store.dispatch('setToken', null)
+  store.dispatch('setRefreshToken', null)
+  store.dispatch('setType', null)
+  store.dispatch('setAuth', false)
+}
 
 function change_t() {
   active.value = true;
