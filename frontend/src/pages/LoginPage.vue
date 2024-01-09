@@ -5,7 +5,7 @@
         <q-card class="q-px-lg q-pt-md q-pb-xl shadow-2 my_card" bordered>
           <q-card-section class="text-center">
             <div class="text-grey-9 text-h6 text-weight-bold q-mb-xl ">=＾• ⋏ •＾=</div>
-            <div class="text-grey-9 text-h5 text-weight-bold" style="margin-bottom: 5px">Вмамам</div>
+            <div class="text-grey-9 text-h5 text-weight-bold" style="margin-bottom: 5px">Вход в аккаунт</div>
             <div class="text-grey-7 text-h7 ">Войдите, чтобы получить доступ к своему аккаунту</div>
           </q-card-section>
           <q-form @submit.prevent="submit">
