@@ -19,7 +19,6 @@ async def user_view(
         "email": user.email,
         "type": user.type.name,
         "gender": user.gender,
-        "photo": await photo_search("client", user.id, session),
         "phone_number": user.phone_number,
         "city": (await session.get(City, user.city)).name,
         "active": user.active,

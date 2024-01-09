@@ -5,7 +5,7 @@ on:
 
   push:
     tags:
-      - "rebuild"
+      - "v*"
     branches:
       - main
 
@@ -27,5 +27,4 @@ jobs:
           script: |
             cd /home/poslam/onlinestore
             git pull
-            pwd
             make update-prod-full
