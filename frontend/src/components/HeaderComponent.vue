@@ -1,5 +1,5 @@
 <template>
-  <q-header class="bg-white text-black" style="height: 57px" >
+  <q-header class="bg-white text-black" style="height: 50px" >
     <q-toolbar>
       <router-link to="/categories">
         <q-btn  flat dense rounded label="Категории" no-caps style="font-weight: bold; margin-left: 15px; width: 88px"></q-btn>
@@ -24,7 +24,7 @@
       <q-btn flat rounded dense icon="account_circle" no-caps style="font-weight: bold; margin-right: 15px"></q-btn>
       </router-link>
     </q-toolbar>
-    <q-separator class="absolute-center" style="width: 2000px; margin-top:28px; color: #f5f5f5"></q-separator>
+    <q-separator class="absolute-center" style="width: 2000px; margin-top:25px; color: #f5f5f5"></q-separator>
   </q-header>
 </template>
 
