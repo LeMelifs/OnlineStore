@@ -1,5 +1,5 @@
 <template>
-  <q-header reveal class="bg-transparent text-black " height-hint="98" >
+  <q-header class="bg-white text-black" style="height: 57px" >
     <q-toolbar>
       <router-link to="/categories">
         <q-btn  flat dense rounded label="Категории" no-caps style="font-weight: bold; margin-left: 15px; width: 88px"></q-btn>
@@ -14,7 +14,9 @@
 <!--        <q-input v-if="liked" dense outlined rounded color="dark" v-model="email" label="Поиск..." style="width: 220px"><template v-slot:prepend></template></q-input>-->
 <!--      </Transition>-->
 <!--      <q-btn dense flat round icon="search" @click="liked = !liked" class="q-ml-xs q-mr-lg">{{ liked ? '' : '' }}</q-btn>-->
-      <q-btn flat rounded dense icon="shopping_bag" label="(0)" no-caps class="q-mr-lg" style="font-weight: bold"></q-btn>
+      <router-link to="/bucket">
+        <q-btn flat rounded dense icon="shopping_bag" label="(0)" no-caps class="q-mr-lg" style="font-weight: bold"></q-btn>
+      </router-link>
       <router-link v-if="store.state.authenticated" to="/account" style="color: #1D1D1D">
       <q-btn flat rounded dense icon="account_circle" no-caps style="font-weight: bold; margin-right: 15px"></q-btn>
       </router-link>
