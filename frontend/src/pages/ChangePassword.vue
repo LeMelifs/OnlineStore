@@ -43,7 +43,9 @@ const submit = async () => {
             <div class="text-grey-9 text-weight-bold q-ma-sm" style="margin-top: 15px">Новый пароль</div>
             <q-input dense outlined rounded color="dark" v-model="data.new" type="password" label="Введите новый пароль"><template v-slot:prepend></template></q-input>
             <q-btn color="dark" type="submit" rounded size="md" style="padding: 9px; margin-top: 57px" label="Сохранить" no-caps class="full-width"></q-btn>
+            <router-link to="/account">
             <q-btn color="dark" flat rounded size="md" style=" margin-top: 15px; height: 41px" label="Назад" text-color="black" no-caps class="full-width btn-l"></q-btn>
+            </router-link>
             </q-card-section>
             </q-form>
             <p class="text-grey-9 text-h7" style="text-align: center;">{{ error }}</p>
