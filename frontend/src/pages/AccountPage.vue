@@ -229,9 +229,5 @@ function delivery() {
   manage.value = false;
   deliver.value = true;
 }
-
-
-
-
 </script>
 

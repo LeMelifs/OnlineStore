@@ -100,6 +100,19 @@
 <script setup>
 import HeaderComponent from "components/HeaderComponent.vue";
 import FooterComponent from "components/FooterComponent.vue"
+import {onMounted} from "vue";
+import store from "src/store";
+
+let categories_json = []
+
+onMounted(async () => {
+    const response = await fetch('https://onlinestore.poslam.ru/api/v1/category/view', {
+      method: 'GET',
+      headers: {'Content-Type': 'application/json', 'auth': `${store.state.token}`}
+    })
+    categories_json = await response.json()
+    // console.log(categories_json[0].id)
+})
 </script>
 
 <script>
