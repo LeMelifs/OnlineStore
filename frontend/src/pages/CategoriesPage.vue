@@ -23,63 +23,12 @@
           {{ button }}
         </q-btn>
       </div>
+
       <div class="row parent" >
-        <div style="width: 20%; height: 300px" class="q-mx-sm">
-          <div class="bg-brown-2 q-mx-md q-mr-sm q-pa-xl parent" style="border-radius: 15px">
-            <q-icon size="180px" color="dark" name="mood" />
-          </div>
-          <div class="text-weight-bold text-grey-10 text-h6 q-mt-md" style="margin-left: 21px">
-            Футболка смайл фэйс
-          </div>
-          <div class="text-grey-6  q-mt-xs" style="margin-left: 21px">
-            Удобная футболка вообще темка вещь
-          </div>
-          <div class="text-weight-bold text-grey-10 text-h6 q-mt-xs" style="margin-left: 21px">
-            150 ₽
-          </div>
-        </div>
-        <div style="width: 20%; height: 300px" class="q-mx-sm">
-          <div class="bg-brown-2 q-ml-md q-mr-sm q-pa-xl parent" style="border-radius: 15px">
-            <q-icon size="180px" color="dark" name="mood" />
-          </div>
-          <div class="text-weight-bold text-grey-10 text-h6 q-mt-md" style="margin-left: 21px">
-            Футболка смайл фэйс
-          </div>
-          <div class="text-grey-6  q-mt-xs" style="margin-left: 21px">
-            Удобная футболка вообще темка вещь
-          </div>
-          <div class="text-weight-bold text-grey-10 text-h6 q-mt-xs" style="margin-left: 21px">
-            150 ₽
-          </div>
-        </div>
-        <div style="width: 20%; height: 300px" class="q-mx-sm">
-          <div class="bg-brown-2 q-ml-md q-mr-sm q-pa-xl parent" style="border-radius: 15px">
-            <q-icon size="180px" color="dark" name="mood" />
-          </div>
-          <div class="text-weight-bold text-grey-10 text-h6 q-mt-md" style="margin-left: 21px">
-            Футболка смайл фэйс
-          </div>
-          <div class="text-grey-6  q-mt-xs" style="margin-left: 21px">
-            Удобная футболка вообще темка вещь
-          </div>
-          <div class="text-weight-bold text-grey-10 text-h6 q-mt-xs" style="margin-left: 21px">
-            150 ₽
-          </div>
-        </div>
-        <div style="width: 20%; height: 300px" class="q-mx-sm">
-          <div class="bg-brown-2 q-ml-md q-mr-sm q-pa-xl parent" style="border-radius: 15px">
-            <q-icon size="180px" color="dark" name="mood" />
-          </div>
-          <div class="text-weight-bold text-grey-10 text-h6 q-mt-md" style="margin-left: 21px">
-            Футболка смайл фэйс
-          </div>
-          <div class="text-grey-6  q-mt-xs" style="margin-left: 21px">
-            Удобная футболка вообще темка вещь
-          </div>
-          <div class="text-weight-bold text-grey-10 text-h6 q-mt-xs" style="margin-left: 21px">
-            150 ₽
-          </div>
-        </div>
+        <ProductComponent/>
+        <ProductComponent/>
+        <ProductComponent/>
+        <ProductComponent/>
       </div>
     </q-page-container>
     <FooterComponent/>
@@ -91,15 +40,12 @@
   display: flex;
   justify-content: center;
 }
-.q-btn[disabled] {
-  background-color: #ffffff;
-  color: #3a3a3a;
-}
 </style>
 
 <script setup>
 import HeaderComponent from "components/HeaderComponent.vue";
-import FooterComponent from "components/FooterComponent.vue"
+import FooterComponent from "components/FooterComponent.vue";
+import ProductComponent from "components/ProductComponent.vue"
 import {onMounted} from "vue";
 import store from "src/store";
 
