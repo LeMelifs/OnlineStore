@@ -130,7 +130,7 @@ a {
 <script setup>
 import HeaderComponent from "components/HeaderComponent.vue";
 import FooterComponent from "components/FooterComponent.vue";
-import {computed, onMounted, reactive, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import store from "src/store";
 
 let active = ref(false)
@@ -166,7 +166,7 @@ onMounted(async () => {
     headers: {'auth': `${store.state.token}`},
   })
   const json = await response.json()
-  if (response.status !== 404) {
+  if (response.status !== 400) {
     data.username = json['username']
     defaultForm.username = data.username
     data.first_name = json['first_name']
