@@ -21,6 +21,10 @@ const routes = [
     component: () => import('pages/CategoriesPage.vue')
   },
   {
+    path: "/about",
+    component: () => import('pages/AboutUsPage.vue')
+  },
+  {
     path: "/account",
     name: 'account',
     component: () => import('pages/AccountPage.vue')
@@ -28,6 +32,10 @@ const routes = [
   {
     path: "/bucket",
     component: () => import('pages/BucketPage.vue')
+  },
+  {
+    path: "/product",
+    component: () => import('pages/ProductPage.vue')
   },
     {
     path: "/change_password",
