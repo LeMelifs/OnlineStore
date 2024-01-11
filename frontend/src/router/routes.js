@@ -34,6 +34,10 @@ const routes = [
     component: () => import('pages/BucketPage.vue')
   },
   {
+    path: "/payment",
+    component: () => import('pages/PaymentPage.vue')
+  },
+  {
     path: "/product",
     component: () => import('pages/ProductPage.vue')
   },

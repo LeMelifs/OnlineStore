@@ -23,8 +23,13 @@
           {{ button }}
         </q-btn>
       </div>
-
-      <div class="row parent" >
+      <div class="row parent" style="margin-bottom: 100px">
+        <ProductComponent/>
+        <ProductComponent/>
+        <ProductComponent/>
+        <ProductComponent/>
+      </div>
+      <div class="row parent" style="margin-bottom: 100px">
         <ProductComponent/>
         <ProductComponent/>
         <ProductComponent/>
