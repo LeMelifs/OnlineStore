@@ -33,12 +33,12 @@ async def code_generator(session: AsyncSession = Depends(get_session)):
 
 def phone_check(phone_number: str):
     if phone_number[0] in ["8", "7"]:
-        phone_number = "+7" + phone_number[1:]
+        phone_number = "+7" + phone_number[1:].lstrip(" ").rstrip(" ")
 
-    phone_number = phone_number.replace("-", "".replace(" ", ""))
+    phone_number = phone_number.replace("-", "").replace(" ", "")
 
     if len(phone_number) != 12:
-        raise HTTPException(400, "wrong phone number format")
+        raise HTTPException(400, f"wrong phone number format: {phone_number}")
 
     return phone_number
 
