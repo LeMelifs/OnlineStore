@@ -16,6 +16,7 @@
           <q-card style=" width: 650px; box-shadow: none; border-radius: 25px; margin-top: -38px;">
             <div class="text-weight-bold text-grey-10" style="margin: -10px 150px 20px; font-size: 30px; width: 350px ">Управление аккаунтом</div>
             <div class="q-pa-md" style="width: 640px; border-radius: 25px; background-color: #f6f6f6; margin-bottom: -100px">
+               <q-form @click.prevent="submit">
               <div class="row">
                 <q-card style="box-shadow: none; border-radius: 25px; height: 150px">
                   <q-card-section class="bg-brown-2">
@@ -23,22 +24,18 @@
                   </q-card-section>
                 </q-card>
                 <q-btn flat rounded style="width: 50px; height: 50px; background-color: #ffffff; border: 1px solid #a4a4a4; margin: 100px 0px 0px -20px" dense icon="edit"></q-btn>
-                <q-input dense outlined rounded color="dark" style="width: 410px; background-color: white; border-radius: 25px; height: 40px; margin: 110px 0px 0px 15px"  v-model='first_name' label="Ваше имя"><template v-slot:prepend></template></q-input>
-                <q-input dense outlined rounded color="dark" style="width: 410px; background-color: white; border-radius: 25px; height: 40px; margin: 110px 0px 0px 15px" v-model='username' label="Имя пользователя"><template v-slot:prepend></template></q-input>
+                <q-input dense outlined rounded color="dark" style="width: 410px; background-color: white; border-radius: 25px; height: 40px; margin: 110px 0px 0px 15px"  v-model='data.first_name' label="Ваше имя"><template v-slot:prepend></template></q-input>
+                <q-input dense outlined rounded color="dark" style="width: 410px; background-color: white; border-radius: 25px; height: 40px; margin: 110px 0px 0px 15px" v-model='data.username' label="Имя пользователя"><template v-slot:prepend></template></q-input>
               </div>
               <div style="margin: 50px 0px 4px 15px; font-size: 14px">Почта</div>
-              <q-btn style="border: 1px solid #a4a4a4; padding: 7px 0px 7px 10px; font-size: 15px" rounded flat text-color="grey-10" class="full-width text-weight-bold"  :label="email" no-caps ><q-icon style="margin-left: 450px" name="chevron_right"></q-icon></q-btn>
+              <q-btn style="border: 1px solid #a4a4a4; padding: 7px 0px 7px 10px; font-size: 15px" rounded flat text-color="grey-10" class="full-width text-weight-bold"  :label="data.email" no-caps ><q-icon style="margin-left: 450px" name="chevron_right"></q-icon></q-btn>
               <div style="margin: 15px 0px 4px 15px; font-size: 14px">Телефон</div>
-              <q-btn style="border: 1px solid #a4a4a4;margin: 0px 0px 50px 0px; padding: 7px 0px 7px 10px" rounded flat text-color="grey-10" class="full-width text-h7 text-weight-bold" :label="phone_number" no-caps ><q-icon style="margin-left: 420px" name="chevron_right"></q-icon></q-btn>
-              <q-btn>Сохранить</q-btn> <br>
+              <q-btn style="border: 1px solid #a4a4a4;margin: 0px 0px 50px 0px; padding: 7px 0px 7px 10px" rounded flat text-color="grey-10" class="full-width text-h7 text-weight-bold" :label="data.phone_number" no-caps ><q-icon style="margin-left: 420px" name="chevron_right"></q-icon></q-btn>
+              <q-btn type="submit">Сохранить</q-btn> <br>
+             </q-form>
               <router-link to="/change_password">
                 <a class="text-grey-9 text-weight-bold" style="margin: 0px 0px 4px 10px;">Изменить пароль</a>
               </router-link>
-              <div style="margin: 15px 0px 4px 10px;">
-                <router-link to="/">
-                  <a class="text-grey-9 text-weight-bold" >Удалить аккаунт</a>
-                </router-link>
-              </div>
             </div>
           </q-card>
         </template>
@@ -133,7 +130,7 @@ a {
 <script setup>
 import HeaderComponent from "components/HeaderComponent.vue";
 import FooterComponent from "components/FooterComponent.vue";
-import {onMounted, ref} from "vue";
+import {onMounted, reactive, ref} from "vue";
 import store from "src/store";
 
 let active = ref(false)
@@ -146,6 +143,59 @@ onMounted(() => {
   manage.value = false;
   deliver.value = false;
 })
+
+const data = reactive({
+  username: '',
+  first_name: '',
+  email: '',
+  gender: '',
+  phone_number: ''
+})
+
+const defaultForm = {
+  username: '',
+  first_name: '',
+  gender: '',
+  email: '',
+  phone_number: ''
+}
+
+onMounted(async () => {
+  const response = await fetch('https://onlinestore.poslam.ru/api/v1/user/view', {
+    method: 'GET',
+    headers: {'auth': `${store.state.token}`},
+  })
+  const json = await response.json()
+  if (response.status !== 400) {
+    data.username = json['username']
+    defaultForm.username = data.username
+    data.first_name = json['first_name']
+    defaultForm.first_name = data.first_name
+    data.email = json['email']
+    defaultForm.email = data.email
+    data.gender = json['gender']
+    defaultForm.gender = data.gender
+    data.phone_number = json['phone_number']
+    defaultForm.phone_number = data.phone_number
+  }
+})
+
+const changed = {}
+let error = ref('')
+const submit = async () => {
+  for (const [key] of Object.entries(defaultForm)) {
+    if (defaultForm[key] !== data[key]) {
+      changed[key] = data[key]
+    }
+  }
+  const response = await fetch('https://onlinestore.poslam.ru/api/v1/user/edit', {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'auth': `${store.state.token}`},
+    credentials: 'include',
+    body: JSON.stringify(changed)
+  })
+
+}
 
 function logout() {
   store.dispatch('setToken', null)
@@ -179,28 +229,5 @@ function delivery() {
   manage.value = false;
   deliver.value = true;
 }
-
-let username = ''
-let first_name = ''
-let email = ''
-let gender = ''
-let phone_number = ''
-
-onMounted(async () => {
-  const response = await fetch('https://onlinestore.poslam.ru/api/v1/user/view', {
-    method: 'GET',
-    headers: {'auth': `${store.state.token}`},
-  })
-  const json = await response.json()
-  if (response.status !== 404) {
-    username = json['username']
-    first_name = json['first_name']
-    email = json['email']
-    gender = json['gender']
-    phone_number = json['phone_number']
-  }
-})
-
-
 </script>
 
