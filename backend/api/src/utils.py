@@ -38,9 +38,7 @@ def phone_check(phone_number: str):
     phone_number = phone_number.replace("-", "".replace(" ", ""))
 
     if len(phone_number) != 12:
-        return UJSONResponse(
-            {"status": "fail", "msg": "wrong phone number format"}, status_code=400
-        )
+        raise HTTPException(400, "wrong phone number format")
 
     return phone_number
 
