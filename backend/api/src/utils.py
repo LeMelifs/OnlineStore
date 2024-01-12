@@ -2,10 +2,12 @@ import os
 from datetime import datetime, timedelta
 from random import randint
 
+from fastapi.responses import UJSONResponse
+
 from config import HOST
 from database.database import get_session
 from database.models import ChangePasswordCode, Photo
-from fastapi import Depends, HTTPException
+from fastapi import Depends, HTTPException, Response
 from PIL import Image
 from sqlalchemy import desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
@@ -30,6 +32,16 @@ async def code_generator(session: AsyncSession = Depends(get_session)):
 
 
 def phone_check(phone_number: str):
+    if phone_number[0] in ["8", "7"]:
+        phone_number = "+7" + phone_number[1:]
+
+    phone_number = phone_number.replace("-", "".replace(" ", ""))
+
+    if len(phone_number) != 12:
+        return UJSONResponse(
+            {"status": "fail", "msg": "wrong phone number format"}, status_code=400
+        )
+
     return phone_number
 
 
