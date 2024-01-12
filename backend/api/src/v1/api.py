@@ -69,7 +69,10 @@ async def upload(
     for file in files:
         contents = file.file.read()
 
-        if product_id != None and all(x == None for x in [category_id, pickpoint_id]):
+        if all(x == None for x in [product_id, category_id, pickpoint_id]):
+            folder = "client"
+            id = user.id
+        elif product_id != None and all(x == None for x in [category_id, pickpoint_id]):
             folder = "product"
             id = product_id
         elif category_id != None and all(x == None for x in [product_id, pickpoint_id]):

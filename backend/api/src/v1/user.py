@@ -25,6 +25,7 @@ async def user_view(
         "type": user.type.name,
         "gender": user.gender,
         "phone_number": user.phone_number,
+        "photo": await photo_search("client", user.id, session),
         "city": city,
         "active": user.active,
     }

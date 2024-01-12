@@ -7,7 +7,7 @@ from database.database import get_session
 from database.models import ChangePasswordCode, Photo
 from fastapi import Depends, HTTPException
 from PIL import Image
-from sqlalchemy import select
+from sqlalchemy import desc, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.worker import celery
 
@@ -81,12 +81,15 @@ async def photo_search(
 ):
     PHOTO_HOST = f"{HOST}/api/v1/?img="
 
-    allowed_objs = ["category", "product", "pickpoint"]
+    allowed_objs = ["category", "product", "pickpoint", "client"]
 
     if obj not in allowed_objs:
         raise HTTPException(status_code=400, detail="Некорректный тип объекта")
 
     stmt = select(Photo.path).where(Photo.obj == obj).where(Photo.obj_id == obj_id)
+
+    if obj == "client":
+        stmt = stmt.order_by(desc(Photo.time))
 
     photos = (await session.execute(stmt)).all()
 
