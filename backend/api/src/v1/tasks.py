@@ -1,9 +1,10 @@
+import os
 import smtplib
 from email.mime.multipart import MIMEMultipart
 from email.mime.text import MIMEText
 
 from src.worker import celery
-
+from PIL import Image
 from config import EMAIL_BASE, EMAIL_DOMAIN, EMAIL_PASS
 from fastapi import HTTPException
 
@@ -39,3 +40,45 @@ def send_email(text: str, target_email: str, subject: str):
     except Exception as e:
         print(e)
         raise HTTPException(status_code=500, detail="email not send. server error")
+
+
+def photo_maker(path: str):
+    try:
+        os.stat(path)
+    except:
+        raise HTTPException(status_code=400, detail="Изображение не найдено")
+
+    src = Image.open(path)
+
+    scale_percent = 95
+
+    try:
+        width = int(src.width * scale_percent / 100)
+        height = int(src.height * scale_percent / 100)
+
+        while width > 1800 and height > 1800:
+            scale_percent -= 5
+
+            width = int(src.width * scale_percent / 100)
+            height = int(src.height * scale_percent / 100)
+
+        dsize = (width, height)
+
+        output = src.resize(dsize)
+
+        output.save(path)
+
+        image = Image.open(path)
+
+        data = list(image.getdata())
+        image_without_exif = Image.new(image.mode, image.size)
+        image_without_exif.putdata(data)
+
+        image_without_exif.save(path)
+
+        image_without_exif.close()
+
+        return "positive"
+
+    except:
+        raise HTTPException(status_code=400, detail="Некорректное изображение")

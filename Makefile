@@ -25,6 +25,8 @@ update-dev:
 
 update-api-dev:
 	docker compose -f docker-compose-dev.yaml cp ./backend/api api:.
+	docker compose -f docker-compose-dev.yaml cp ./backend/api worker:.
+	docker compose -f docker-compose-dev.yaml restart worker
 
 update-web-dev:
 	docker compose -f docker-compose-dev.yaml cp ./frontend web:/opt

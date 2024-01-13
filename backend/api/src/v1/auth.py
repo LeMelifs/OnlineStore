@@ -14,7 +14,7 @@ from jwt import decode, encode
 from sqlalchemy import delete, func, insert, select, update
 from sqlalchemy.ext.asyncio import AsyncSession
 from src.utils import code_generator, phone_check, time
-from src.v1.external import send_email
+from src.v1.tasks import send_email
 from werkzeug.security import check_password_hash, generate_password_hash
 
 auth_router = APIRouter()

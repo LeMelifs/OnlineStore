@@ -1,5 +1,5 @@
 import os
-from src.v1.external import send_email
+from src.v1.tasks import send_email, photo_maker
 
 from config import IMG_PATH
 from database.database import get_session
@@ -8,7 +8,7 @@ from fastapi import APIRouter, BackgroundTasks, Depends, HTTPException, UploadFi
 from fastapi.responses import FileResponse
 from sqlalchemy import delete, insert, select
 from sqlalchemy.ext.asyncio import AsyncSession
-from src.utils import photo_maker, time
+from src.utils import time
 from src.v1.auth import admin_required, auth_router, login_required
 from src.v1.user import user_router
 from src.v1.category import category_router
@@ -60,6 +60,7 @@ async def token_checker(user=Depends(login_required)):
 @router.post("/upload")
 async def upload(
     files: list[UploadFile],
+    back: BackgroundTasks,
     product_id: int = None,
     category_id: int = None,
     pickpoint_id: int = None,
@@ -110,7 +111,7 @@ async def upload(
                     with open(f"{IMG_PATH}/{folder}/{id}/{y}.jpg", "wb") as f:
                         f.write(contents)
 
-                    photo_maker.delay(f"{IMG_PATH}/{folder}/{id}/{y}.jpg")
+                    back.add_task(photo_maker, f"{IMG_PATH}/{folder}/{id}/{y}.jpg")
 
             photo = {
                 "obj": folder,
@@ -149,7 +150,10 @@ async def img_delete(
 
     stmt = delete(Photo).where(Photo.id == photo["id"])
 
-    os.remove(f"{IMG_PATH}/{path}")
+    try:
+        os.remove(f"{IMG_PATH}/{path}")
+    except:
+        pass
 
     await session.execute(stmt)
     await session.commit()
