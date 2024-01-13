@@ -20,7 +20,7 @@ update-dev:
 	docker compose -f docker-compose-dev.yaml cp ./backend/api api:.
 	docker compose -f docker-compose-dev.yaml exec -w /api api python -m alembic upgrade head
 
-	docker compose -f docker-compose-dev.yaml cp ./frontend frontend:/opt/frontend
+	docker compose -f docker-compose-dev.yaml cp ./frontend web:/opt/frontend
 	docker compose -f docker-compose-dev.yaml restart web
 
 update-api-dev:
