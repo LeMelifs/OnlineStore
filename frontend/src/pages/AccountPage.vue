@@ -13,33 +13,54 @@
           </router-link>
         </q-card>
         <template v-if="manage">
-          <q-card style=" width: 650px; box-shadow: none; border-radius: 25px; margin-top: -38px;">
-            <div class="text-weight-bold text-grey-10" style="margin: -10px 150px 20px; font-size: 30px; width: 350px ">Управление аккаунтом</div>
-            <div class="q-pa-md" style="width: 640px; border-radius: 25px; background-color: #f6f6f6; margin-bottom: -100px">
-               <q-form @submit="submit" id="form">
-              <div class="row">
-                <q-card style="box-shadow: none; border-radius: 25px; height: 150px">
-                  <q-card-section class="bg-brown-2">
-                    <q-icon v-if="data.photo" size="120px">
-                      <img :src="data.photo" alt="Avatar">
-                    </q-icon>
-                    <q-icon v-else size="120px" color="dark" name="account_circle" />
-                  </q-card-section>
-                </q-card>
-                <input ref="fileInput" @change="onAddPicture" type="file" style="display: none">
-                <q-btn @click="$refs.fileInput.click()" flat rounded style="width: 50px; height: 50px; background-color: #ffffff; border: 1px solid #a4a4a4; margin: 100px 0px 0px -20px" dense icon="edit"></q-btn>
-                <q-input dense outlined rounded color="dark" style="width: 410px; background-color: white; border-radius: 25px; height: 40px; margin: 110px 0px 0px 15px"  v-model='data.first_name' label="Ваше имя"><template v-slot:prepend></template></q-input>
-                <q-input dense outlined rounded color="dark" style="width: 410px; background-color: white; border-radius: 25px; height: 40px; margin: 110px 0px 0px 15px" v-model='data.username' label="Имя пользователя"><template v-slot:prepend></template></q-input>
-              </div>
-              <div style="margin: 50px 0px 4px 15px; font-size: 14px">Почта</div>
-              <q-btn style="border: 1px solid #a4a4a4; padding: 7px 0px 7px 10px; font-size: 15px" rounded flat text-color="grey-10" class="full-width text-weight-bold"  :label="data.email" no-caps ><q-icon style="margin-left: 450px" name="chevron_right"></q-icon></q-btn>
-              <div style="margin: 15px 0px 4px 15px; font-size: 14px">Телефон</div>
-              <q-btn style="border: 1px solid #a4a4a4;margin: 0px 0px 50px 0px; padding: 7px 0px 7px 10px" rounded flat text-color="grey-10" class="full-width text-h7 text-weight-bold" :label="data.phone_number" no-caps ><q-icon style="margin-left: 420px" name="chevron_right"></q-icon></q-btn>
-              <q-btn type="submit">Сохранить</q-btn> <br>
-             </q-form>
-              <router-link to="/change_password">
-                <a class="text-grey-9 text-weight-bold" style="margin: 0px 0px 4px 10px;">Изменить пароль</a>
-              </router-link>
+          <q-card style="width: 650px; box-shadow: none; border-radius: 25px; margin-top: -38px;">
+            <div class="text-weight-bold text-grey-10" style="margin: -10px 150px 20px; font-size: 30px; width: 350px;">Управление аккаунтом</div>
+
+            <div class="q-pa-md" style="width: 640px; border-radius: 25px; background-color: #f6f6f6; margin-bottom: -100px;">
+              <q-form @submit="submit" id="form">
+                <div class="row">
+                  <q-card style="box-shadow: none; border-radius: 25px; height: 130px;">
+                    <q-card-section class="bg-brown-2">
+                      <q-icon v-if="data.photo" size="100px">
+                        <img :src="data.photo" alt="Avatar" style="border-radius: 20px; width: 120px; height: 120px;">
+                      </q-icon>
+                      <q-icon v-else size="100px" color="dark" name="account_circle" />
+                    </q-card-section>
+                  </q-card>
+
+                  <input ref="fileInput" @change="onAddPicture" type="file" style="display: none;">
+
+                  <q-btn @click="$refs.fileInput.click()" flat rounded style="width: 50px; height: 50px; background-color: #ffffff; border: 1px solid #a4a4a4; margin: 82px 0px 0px -25px" dense icon="edit"></q-btn>
+                  <div>
+                    <q-input dense outlined rounded color="dark" class="q-mb-md q-ml-lg bg-white" style="margin-top: 35px;border-radius: 25px; width: 200%" v-model='data.first_name' label="Ваше имя"><template v-slot:prepend></template></q-input>
+                    <q-input dense outlined rounded color="dark" class="q-ml-lg bg-white" style="border-radius: 25px; width: 200%" v-model='data.username' label="Имя пользователя"><template v-slot:prepend></template></q-input>
+                  </div>
+                </div>
+
+                <div class="text-weight-bold q-ml-sm q-mt-lg q-mb-sm" style="font-size: 14px;">Почта</div>
+                  <q-btn style="border: 1px solid #a4a4a4; padding: 7px 10px; font-weight: normal; font-size: 15px; position: relative;" rounded flat text-color="grey-10" class="full-width bg-grey-1" no-caps>
+                    <span style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%);">{{ data.email }}</span>
+                    <q-icon style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%);" name="chevron_right"></q-icon>
+                  </q-btn>
+                <div class="text-weight-bold q-ml-sm q-mt-md q-mb-sm" style="font-size: 14px;">Телефон</div>
+                <q-btn style="border: 1px solid #a4a4a4; padding: 7px 10px;font-weight: normal; font-size: 15px; position: relative;" rounded flat text-color="grey-10" class="full-width bg-grey-1" no-caps>
+                  <span style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%);">{{ data.phone_number }}</span>
+                  <q-icon style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%);" name="chevron_right"></q-icon>
+                </q-btn>
+                <div class="row">
+                  <div class="col-6">
+                    <q-btn class="bg-grey-10 text-grey-2 text-weight-bold q-mt-xl" rounded flat no-caps type="submit" style="width: 98%; font-size: 15px">Сохранить</q-btn>
+                  </div>
+                  <div class="col-6">
+                    <router-link to="/change_password" class="q-ml-xs">
+                      <q-btn class="text-weight-bold q-mt-xl" rounded outline no-caps style="width: 98%; font-size: 15px">Изменить пароль</q-btn>
+                    </router-link>
+                  </div>
+                </div>
+
+              </q-form>
+
+
             </div>
           </q-card>
         </template>
