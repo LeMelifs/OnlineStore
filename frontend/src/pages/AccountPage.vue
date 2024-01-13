@@ -16,14 +16,18 @@
           <q-card style=" width: 650px; box-shadow: none; border-radius: 25px; margin-top: -38px;">
             <div class="text-weight-bold text-grey-10" style="margin: -10px 150px 20px; font-size: 30px; width: 350px ">Управление аккаунтом</div>
             <div class="q-pa-md" style="width: 640px; border-radius: 25px; background-color: #f6f6f6; margin-bottom: -100px">
-               <q-form @click.prevent="submit">
+               <q-form @submit="submit" id="form">
               <div class="row">
                 <q-card style="box-shadow: none; border-radius: 25px; height: 150px">
                   <q-card-section class="bg-brown-2">
-                    <q-icon size="120px" color="dark" name="account_circle" />
+                    <q-icon v-if="data.photo" size="120px">
+                      <img :src="data.photo" alt="Avatar">
+                    </q-icon>
+                    <q-icon v-else size="120px" color="dark" name="account_circle" />
                   </q-card-section>
                 </q-card>
-                <q-btn flat rounded style="width: 50px; height: 50px; background-color: #ffffff; border: 1px solid #a4a4a4; margin: 100px 0px 0px -20px" dense icon="edit"></q-btn>
+                <input ref="fileInput" @change="onAddPicture" type="file" style="display: none">
+                <q-btn @click="$refs.fileInput.click()" flat rounded style="width: 50px; height: 50px; background-color: #ffffff; border: 1px solid #a4a4a4; margin: 100px 0px 0px -20px" dense icon="edit"></q-btn>
                 <q-input dense outlined rounded color="dark" style="width: 410px; background-color: white; border-radius: 25px; height: 40px; margin: 110px 0px 0px 15px"  v-model='data.first_name' label="Ваше имя"><template v-slot:prepend></template></q-input>
                 <q-input dense outlined rounded color="dark" style="width: 410px; background-color: white; border-radius: 25px; height: 40px; margin: 110px 0px 0px 15px" v-model='data.username' label="Имя пользователя"><template v-slot:prepend></template></q-input>
               </div>
@@ -90,6 +94,7 @@
 </template>
 
 <style scoped>
+
 a {
   color: #2f2f2f;
 }
@@ -137,6 +142,10 @@ let active = ref(false)
 let order = ref(false)
 let manage = ref(false)
 let deliver = ref(false)
+let blob = ref()
+let filename = ref('')
+const changed = {}
+let error = ref('')
 
 onMounted(() => {
   order.value = true;
@@ -149,7 +158,8 @@ const data = reactive({
   first_name: '',
   email: '',
   gender: '',
-  phone_number: ''
+  phone_number: '',
+  photo: null
 })
 
 const defaultForm = {
@@ -157,7 +167,23 @@ const defaultForm = {
   first_name: '',
   gender: '',
   email: '',
-  phone_number: ''
+  phone_number: '',
+  photo: null
+}
+
+function onAddPicture(e) {
+  if (e.target.files[0]['type'] === 'image/jpeg' || e.target.files[0]['type'] === 'image/png') {
+    blob.value = e.target.files[0];
+    filename.value = blob.value.name;
+    const reader = new FileReader();
+    reader.readAsDataURL(blob.value);
+    reader.onload = e => {
+      data.photo = e.target.result;
+    };
+  }
+  else {
+    alert('Файл изображения должен иметь расширение .jpeg или .png')
+  }
 }
 
 onMounted(async () => {
@@ -165,7 +191,9 @@ onMounted(async () => {
     method: 'GET',
     headers: {'auth': `${store.state.token}`},
   })
+
   const json = await response.json()
+
   if (response.status !== 400) {
     data.username = json['username']
     defaultForm.username = data.username
@@ -177,24 +205,47 @@ onMounted(async () => {
     defaultForm.gender = data.gender
     data.phone_number = json['phone_number']
     defaultForm.phone_number = data.phone_number
+    data.photo = json['photo'][0]
+    defaultForm.photo = data.photo
   }
 })
 
-const changed = {}
-let error = ref('')
 const submit = async () => {
+
+  let avatarChanged = false
+
   for (const [key] of Object.entries(defaultForm)) {
     if (defaultForm[key] !== data[key]) {
-      changed[key] = data[key]
+      if (key === 'photo')
+        avatarChanged = true
+      else changed[key] = data[key]
     }
   }
-  const response = await fetch('https://onlinestore.poslam.ru/api/v1/user/edit', {
-    method: 'POST',
-    headers: {'Content-Type': 'application/json', 'auth': `${store.state.token}`},
-    credentials: 'include',
-    body: JSON.stringify(changed)
-  })
 
+  if (Object.keys(changed).length !== 0) {
+    const response = await fetch('https://onlinestore.poslam.ru/api/v1/user/edit', {
+      method: 'POST',
+      headers: {'Content-Type': 'application/json', 'auth': `${store.state.token}`},
+      credentials: 'include',
+      body: JSON.stringify(changed)
+    })
+
+    const json = response.json()
+    error.value = json['detail']
+  }
+
+  if (avatarChanged) {
+    const formData = new FormData()
+    formData.append("files", blob.value, filename.value)
+    const response = await fetch('https://onlinestore.poslam.ru/api/v1/upload', {
+      method: 'POST',
+      headers: { 'auth': `${store.state.token}`},
+      body: formData
+    })
+
+    const json = response.json()
+    error.value = json['detail']
+  }
 }
 
 function logout() {
