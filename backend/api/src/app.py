@@ -9,6 +9,7 @@ origins = [
     "https://onlinestore.poslam.ru",
     "http://localhost:9000",
     "http://127.0.0.1:9000",
+    "http://localhost:9001"
 ]
 
 app.add_middleware(
