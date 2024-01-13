@@ -163,6 +163,9 @@ class Bin(base):
     user_id = Column(ForeignKey(User.id))
     product_id = Column(ForeignKey(Product.id))
 
+    size_id = Column(ForeignKey(Size.id))
+    color_id = Column(ForeignKey(Color.id))
+
 
 class PickPoint(base):
     __tablename__ = "pickpoint"
@@ -178,12 +181,10 @@ class Order(base):
 
     id = Column(Integer, primary_key=True)
 
-    num = Column(TEXT, unique=True)
-
-    product_id = Column(ForeignKey(Product.id))
-    user_id = Column(ForeignKey(User.id))
-
+    num = Column(TEXT)
     sum = Column(Integer)
+
+    user_id = Column(ForeignKey(User.id))
 
     create_time = Column(TIMESTAMP)
     close_time = Column(TIMESTAMP)
@@ -191,3 +192,15 @@ class Order(base):
     pickpoint_id = Column(ForeignKey(PickPoint.id))
 
     status = Column(Enum(OrderStatuses), default="pending")
+
+
+class OrderProduct(base):
+    __tablename__ = "order_product"
+
+    id = Column(Integer, primary_key=True)
+
+    num = Column(TEXT)
+
+    product_id = Column(ForeignKey(Product.id))
+    size_id = Column(ForeignKey(Size.id))
+    color_id = Column(ForeignKey(Color.id))

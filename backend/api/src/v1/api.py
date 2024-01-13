@@ -1,5 +1,5 @@
 import os
-from src.v1.tasks import send_email, photo_maker
+from src.v1.tasks import photo_maker
 
 from config import IMG_PATH
 from database.database import get_session
@@ -17,6 +17,8 @@ from src.v1.city import city_router
 from src.v1.pickpoint import pickpoint_router
 from src.v1.product import product_router
 from src.v1.order import order_router
+from src.v1.size import size_router
+from src.v1.color import color_router
 
 router = APIRouter()
 
@@ -28,6 +30,8 @@ router.include_router(city_router, prefix="/city")
 router.include_router(pickpoint_router, prefix="/pickpoint")
 router.include_router(product_router, prefix="/product")
 router.include_router(order_router, prefix="/order")
+router.include_router(size_router, prefix="/size")
+router.include_router(color_router, prefix="/color")
 
 
 @router.get("/")

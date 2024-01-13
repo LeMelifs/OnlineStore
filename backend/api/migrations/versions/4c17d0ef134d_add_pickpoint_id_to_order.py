@@ -21,11 +21,13 @@ def upgrade() -> None:
     op.create_table(
         "order",
         sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("num", sa.TEXT(), nullable=False, unique=True),
+        sa.Column("num", sa.TEXT(), nullable=True),
         sa.Column("product_id", sa.Integer(), nullable=True),
         sa.Column("user_id", sa.Integer(), nullable=True),
         sa.Column("sum", sa.Integer(), nullable=True),
         sa.Column("time", sa.TIMESTAMP(), nullable=True),
+        sa.Column("size_id", sa.Integer(), nullable=True),
+        sa.Column("color_id", sa.Integer(), nullable=True),
         sa.Column("pickpoint_id", sa.Integer(), nullable=True),
         sa.Column(
             "status",
@@ -50,6 +52,14 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(
             ["user_id"],
             ["client.id"],
+        ),
+        sa.ForeignKeyConstraint(
+            ["size_id"],
+            ["size.id"],
+        ),
+        sa.ForeignKeyConstraint(
+            ["color_id"],
+            ["color.id"],
         ),
         sa.PrimaryKeyConstraint("id"),
     )

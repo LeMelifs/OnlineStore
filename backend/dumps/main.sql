@@ -64,7 +64,9 @@ ALTER TABLE public.alembic_version OWNER TO postgres;
 CREATE TABLE public.bin (
     id integer NOT NULL,
     user_id integer,
-    product_id integer
+    product_id integer,
+    size_id integer,
+    color_id integer
 );
 
 
@@ -314,13 +316,13 @@ ALTER SEQUENCE public.contract_storage_id_seq OWNED BY public.contract_storage.i
 
 CREATE TABLE public."order" (
     id integer NOT NULL,
-    product_id integer,
     user_id integer,
     sum integer,
     pickpoint_id integer,
     status public.orderstatuses,
     create_time timestamp without time zone,
-    close_time timestamp without time zone
+    close_time timestamp without time zone,
+    num text
 );
 
 
@@ -346,6 +348,43 @@ ALTER SEQUENCE public.order_id_seq OWNER TO postgres;
 --
 
 ALTER SEQUENCE public.order_id_seq OWNED BY public."order".id;
+
+
+--
+-- Name: order_product; Type: TABLE; Schema: public; Owner: postgres
+--
+
+CREATE TABLE public.order_product (
+    id integer NOT NULL,
+    num text,
+    product_id integer,
+    size_id integer,
+    color_id integer
+);
+
+
+ALTER TABLE public.order_product OWNER TO postgres;
+
+--
+-- Name: order_product_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
+--
+
+CREATE SEQUENCE public.order_product_id_seq
+    AS integer
+    START WITH 1
+    INCREMENT BY 1
+    NO MINVALUE
+    NO MAXVALUE
+    CACHE 1;
+
+
+ALTER SEQUENCE public.order_product_id_seq OWNER TO postgres;
+
+--
+-- Name: order_product_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
+--
+
+ALTER SEQUENCE public.order_product_id_seq OWNED BY public.order_product.id;
 
 
 --
@@ -656,6 +695,13 @@ ALTER TABLE ONLY public."order" ALTER COLUMN id SET DEFAULT nextval('public.orde
 
 
 --
+-- Name: order_product id; Type: DEFAULT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.order_product ALTER COLUMN id SET DEFAULT nextval('public.order_product_id_seq'::regclass);
+
+
+--
 -- Name: photo id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -709,7 +755,7 @@ ALTER TABLE ONLY public.size ALTER COLUMN id SET DEFAULT nextval('public.size_id
 --
 
 COPY public.alembic_version (version_num) FROM stdin;
-0e9944d82080
+65193885c5da
 \.
 
 
@@ -717,7 +763,7 @@ COPY public.alembic_version (version_num) FROM stdin;
 -- Data for Name: bin; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.bin (id, user_id, product_id) FROM stdin;
+COPY public.bin (id, user_id, product_id, size_id, color_id) FROM stdin;
 \.
 
 
@@ -769,6 +815,9 @@ COPY public.client (id, username, first_name, email, phone_number, password, typ
 --
 
 COPY public.color (id, name, hex_code) FROM stdin;
+2	Белый	#FFFFFF
+3	Черный	#000000
+4	Темно-синий	#151B54
 \.
 
 
@@ -780,12 +829,24 @@ COPY public.contract_storage (id, paid) FROM stdin;
 \.
 
 
-
 --
 -- Data for Name: order; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public."order" (id, product_id, user_id, sum, pickpoint_id, status, create_time, close_time) FROM stdin;
+COPY public."order" (id, user_id, sum, pickpoint_id, status, create_time, close_time, num) FROM stdin;
+12	1	1150	1	pending	2024-01-14 03:57:03.583126	\N	KJFBPB
+11	1	2300	1	done	2024-01-14 03:45:45.495224	\N	VSFIBE
+\.
+
+
+--
+-- Data for Name: order_product; Type: TABLE DATA; Schema: public; Owner: postgres
+--
+
+COPY public.order_product (id, num, product_id, size_id, color_id) FROM stdin;
+1	VSFIBE	4	3	4
+2	VSFIBE	5	3	4
+3	KJFBPB	5	3	4
 \.
 
 
@@ -832,6 +893,7 @@ COPY public.photo (id, obj, obj_id, path, "time") FROM stdin;
 42	client	2	client/2/2_32.jpg	2024-01-13 18:54:19.891681
 45	client	2	client/2/2_33.jpg	2024-01-13 23:09:34.269342
 46	client	2	client/2/2_34.jpg	2024-01-13 23:09:35.016481
+47	product	4	product/4/4_0.jpg	2024-01-14 01:53:09.543183
 \.
 
 
@@ -848,7 +910,9 @@ COPY public.pickpoint (id, name, city_id) FROM stdin;
 -- Data for Name: product; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.product (id, name, rating, price, sale, category_id, active) FROM stdin;
+COPY public.product (id, name, description, rating, price, sale, category_id, active) FROM stdin;
+4	Толстовка смайл фэйс	Удобная футболка вообще темка вещь	5	1150	0	8	t
+5	Футболка смайл фэйс	Удобная футболка вообще темка вещь	5	1150	0	2	t
 \.
 
 
@@ -857,6 +921,9 @@ COPY public.product (id, name, rating, price, sale, category_id, active) FROM st
 --
 
 COPY public.product_color (id, product_id, color_id) FROM stdin;
+4	4	3
+5	5	2
+6	5	3
 \.
 
 
@@ -865,6 +932,12 @@ COPY public.product_color (id, product_id, color_id) FROM stdin;
 --
 
 COPY public.product_size (id, product_id, size_id) FROM stdin;
+8	4	4
+9	4	3
+10	4	2
+11	5	2
+12	5	3
+13	5	4
 \.
 
 
@@ -911,6 +984,12 @@ COPY public.refresh_token_storage (id, refresh_token, expired) FROM stdin;
 --
 
 COPY public.size (id, name) FROM stdin;
+2	M
+3	S
+4	XS
+5	L
+6	XL
+7	XXL
 \.
 
 
@@ -918,7 +997,7 @@ COPY public.size (id, name) FROM stdin;
 -- Name: bin_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.bin_id_seq', 1, false);
+SELECT pg_catalog.setval('public.bin_id_seq', 10, true);
 
 
 --
@@ -953,7 +1032,7 @@ SELECT pg_catalog.setval('public.client_id_seq', 8, true);
 -- Name: color_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.color_id_seq', 1, false);
+SELECT pg_catalog.setval('public.color_id_seq', 4, true);
 
 
 --
@@ -967,14 +1046,21 @@ SELECT pg_catalog.setval('public.contract_storage_id_seq', 1, false);
 -- Name: order_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.order_id_seq', 1, false);
+SELECT pg_catalog.setval('public.order_id_seq', 12, true);
+
+
+--
+-- Name: order_product_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
+--
+
+SELECT pg_catalog.setval('public.order_product_id_seq', 3, true);
 
 
 --
 -- Name: photo_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.photo_id_seq', 46, true);
+SELECT pg_catalog.setval('public.photo_id_seq', 47, true);
 
 
 --
@@ -988,21 +1074,21 @@ SELECT pg_catalog.setval('public.pickpoint_id_seq', 1, true);
 -- Name: product_color_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.product_color_id_seq', 1, false);
+SELECT pg_catalog.setval('public.product_color_id_seq', 6, true);
 
 
 --
 -- Name: product_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.product_id_seq', 1, false);
+SELECT pg_catalog.setval('public.product_id_seq', 5, true);
 
 
 --
 -- Name: product_size_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.product_size_id_seq', 1, false);
+SELECT pg_catalog.setval('public.product_size_id_seq', 13, true);
 
 
 --
@@ -1016,7 +1102,7 @@ SELECT pg_catalog.setval('public.refresh_token_storage_id_seq', 30, true);
 -- Name: size_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
 --
 
-SELECT pg_catalog.setval('public.size_id_seq', 1, false);
+SELECT pg_catalog.setval('public.size_id_seq', 7, true);
 
 
 --
@@ -1092,6 +1178,14 @@ ALTER TABLE ONLY public."order"
 
 
 --
+-- Name: order_product order_product_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.order_product
+    ADD CONSTRAINT order_product_pkey PRIMARY KEY (id);
+
+
+--
 -- Name: photo photo_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
 --
 
@@ -1148,11 +1242,27 @@ ALTER TABLE ONLY public.size
 
 
 --
+-- Name: bin bin_color_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bin
+    ADD CONSTRAINT bin_color_id_fkey FOREIGN KEY (color_id) REFERENCES public.color(id);
+
+
+--
 -- Name: bin bin_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
 ALTER TABLE ONLY public.bin
     ADD CONSTRAINT bin_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.product(id);
+
+
+--
+-- Name: bin bin_size_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.bin
+    ADD CONSTRAINT bin_size_id_fkey FOREIGN KEY (size_id) REFERENCES public.size(id);
 
 
 --
@@ -1180,11 +1290,27 @@ ALTER TABLE ONLY public."order"
 
 
 --
--- Name: order order_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+-- Name: order_product order_product_color_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
 --
 
-ALTER TABLE ONLY public."order"
-    ADD CONSTRAINT order_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.product(id);
+ALTER TABLE ONLY public.order_product
+    ADD CONSTRAINT order_product_color_id_fkey FOREIGN KEY (color_id) REFERENCES public.color(id);
+
+
+--
+-- Name: order_product order_product_product_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.order_product
+    ADD CONSTRAINT order_product_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.product(id);
+
+
+--
+-- Name: order_product order_product_size_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
+--
+
+ALTER TABLE ONLY public.order_product
+    ADD CONSTRAINT order_product_size_id_fkey FOREIGN KEY (size_id) REFERENCES public.size(id);
 
 
 --

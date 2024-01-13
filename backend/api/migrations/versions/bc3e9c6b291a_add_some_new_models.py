@@ -75,6 +75,8 @@ def upgrade() -> None:
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("user_id", sa.Integer(), nullable=True),
         sa.Column("product_id", sa.Integer(), nullable=True),
+        sa.Column("size_id", sa.Integer(), nullable=True),
+        sa.Column("color_id", sa.Integer(), nullable=True),
         sa.ForeignKeyConstraint(
             ["product_id"],
             ["product.id"],
@@ -82,6 +84,14 @@ def upgrade() -> None:
         sa.ForeignKeyConstraint(
             ["user_id"],
             ["client.id"],
+        ),
+        sa.ForeignKeyConstraint(
+            ["size_id"],
+            ["size.id"],
+        ),
+        sa.ForeignKeyConstraint(
+            ["color_id"],
+            ["color.id"],
         ),
         sa.PrimaryKeyConstraint("id"),
     )
