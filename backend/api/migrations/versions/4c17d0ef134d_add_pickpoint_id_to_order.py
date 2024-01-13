@@ -21,6 +21,7 @@ def upgrade() -> None:
     op.create_table(
         "order",
         sa.Column("id", sa.Integer(), nullable=False),
+        sa.Column("num", sa.TEXT(), nullable=False, unique=True),
         sa.Column("product_id", sa.Integer(), nullable=True),
         sa.Column("user_id", sa.Integer(), nullable=True),
         sa.Column("sum", sa.Integer(), nullable=True),
