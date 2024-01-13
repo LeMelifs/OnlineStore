@@ -2,31 +2,32 @@
   <q-layout view="lHh Lpr lFf">
     <HeaderComponent/>
 
-    <q-page-container>
-      <div class=" q-gutter-md row items-start" style="margin: 100px 200px ">
+    <q-page-container class="parent" style="margin-top: 100px; margin-right: 200px">
+      <div class=" q-gutter-md row items-start">
         <q-card style=" width: 380px; box-shadow: none; border-radius: 25px">
           <q-btn  @click="orders" flat icon="local_shipping"  text-color="grey-10" class="btn_start full-width  text-weight-bold" label="Мои заказы" :style="{border: order ? '2px solid #3a3a3a' : ''}" no-caps ><q-icon style="margin-left: 205px" name="chevron_right"></q-icon></q-btn>
           <q-btn  @click="manage_acc" flat icon="settings" text-color="grey-10" class="btn_center_dark full-width text-weight-bold" label="Управление аккаунтом" :style="{border: manage ? '2px solid #3a3a3a' : ''}" no-caps ><q-icon style="margin-left: 130px" name="chevron_right"></q-icon></q-btn>
-          <q-btn  @click="delivery" flat icon="room" text-color="grey-10" class="btn_center_light full-width text-weight-bold" label="Адреса доставки" :style="{border: deliver ? '2px solid #3a3a3a' : ''}" no-caps ><q-icon style="margin-left: 165px" name="chevron_right"></q-icon></q-btn>
           <router-link to="/login">
             <q-btn @click="logout" flat icon="logout" text-color="grey-10" class="btn_end full-width text-weight-bold" label="Выход" no-caps ><q-icon style="margin-left: 235px" name="chevron_right"></q-icon></q-btn>
           </router-link>
         </q-card>
         <template v-if="manage">
-          <q-card style="width: 650px; box-shadow: none; border-radius: 25px; margin-top: -38px;">
+          <q-card style=" width: 380px; box-shadow: none; border-radius: 25px; margin-top: -38px">
             <div class="text-weight-bold text-grey-10" style="margin: -10px 150px 20px; font-size: 30px; width: 350px;">Управление аккаунтом</div>
 
             <div class="q-pa-md" style="width: 640px; border-radius: 25px; background-color: #f6f6f6; margin-bottom: -100px;">
               <q-form @submit="submit" id="form">
                 <div class="row">
                   <q-card style="box-shadow: none; border-radius: 25px; height: 130px;">
-                    <q-card-section class="bg-brown-2">
-                      <q-icon v-if="data.photo" size="100px">
-                        <img :src="data.photo" alt="Avatar" style="border-radius: 20px; width: 120px; height: 120px;">
-                      </q-icon>
-                      <q-icon v-else size="100px" color="dark" name="account_circle" />
+                    <q-card-section class="bg-brown-2 q-pa-sm">
+                      <div style="width: 120px; height: 120px; overflow: hidden; border-radius: 20px; position: relative;">
+                        <img :src="data.photo" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+                      </div>
                     </q-card-section>
                   </q-card>
+
+
+
 
                   <input ref="fileInput" @change="onAddPicture" type="file" style="display: none;">
 
@@ -48,12 +49,20 @@
                   <q-icon style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%);" name="chevron_right"></q-icon>
                 </q-btn>
                 <div class="row">
+                  <div class="text-weight-bold q-ma-sm" style="margin-top: 15px; margin-bottom: 10px">Пол:</div>
+                  <input type="radio" v-model="data.gender" value="m" name="gender" class="radio" style="margin-left: 40px">
+                  <span style="margin-top: 15px">Мужчина</span>
+                  <input type="radio" v-model="data.gender" value="f" name="gender" class="radio" style="margin-left: 30px">
+                  <span style="margin-top: 15px">Женщина</span>
+                </div>
+
+                <div class="row">
                   <div class="col-6">
-                    <q-btn class="bg-grey-10 text-grey-2 text-weight-bold q-mt-xl" rounded flat no-caps type="submit" style="width: 98%; font-size: 15px">Сохранить</q-btn>
+                    <q-btn class="bg-grey-10 text-grey-2 text-weight-bold q-mt-lg" rounded flat no-caps type="submit" style="width: 98%; font-size: 15px">Сохранить</q-btn>
                   </div>
                   <div class="col-6">
                     <router-link to="/change_password" class="q-ml-xs">
-                      <q-btn class="text-weight-bold q-mt-xl" rounded outline no-caps style="width: 98%; font-size: 15px">Изменить пароль</q-btn>
+                      <q-btn class="text-weight-bold q-mt-lg q-mb-xs" rounded outline no-caps style="width: 98%; font-size: 15px">Изменить пароль</q-btn>
                     </router-link>
                   </div>
                 </div>
@@ -132,24 +141,27 @@ a {
   border-top: 0px solid #b0b0b0;
   background-color: #eeeeee;
 }
-.btn_center_light{
-  padding: 9px 9px 9px 15px;
-  border-radius: 0px;
-  border-bottom: 0px solid #b0b0b0;
-  border-top: 0px solid #b0b0b0;
-  background-color: #f6f6f6;
-}
 .btn_end{
   padding: 9px 9px 9px 15px;
   border-end-end-radius: 24px;
   border-end-start-radius: 24px;
-  background-color: #eeeeee;
+  background-color: #f6f6f6;
 }
 .btn_change{
   padding: 8px;
   width: 300px;
   background-color: white;
   font-size: 16px;
+}
+.radio {
+  accent-color: #1D1D1D;
+  margin-left: 5px;
+  margin-right: 10px;
+  margin-top: 5px;
+}
+.parent {
+  display: flex;
+  justify-content: center;
 }
 </style>
 
