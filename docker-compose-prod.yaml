@@ -41,6 +41,8 @@ services:
             - ./backend/.env
         build: ./backend/api
         command: python -m uvicorn src.app:app --host 0.0.0.0 --port 8000
+        volumes:
+            - ./backend/api/src/static/img:./api/src/static/img
 
 
     redis:
