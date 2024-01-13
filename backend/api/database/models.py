@@ -130,6 +130,8 @@ class Product(base):
     price = Column(Integer)
     sale = Column(Integer, default="0")
 
+    description = Column(TEXT)
+
     category_id = Column(ForeignKey(Category.id))
 
     active = Column(Boolean, default=True)
@@ -175,6 +177,8 @@ class Order(base):
     __tablename__ = "order"
 
     id = Column(Integer, primary_key=True)
+
+    num = Column(TEXT, unique=True)
 
     product_id = Column(ForeignKey(Product.id))
     user_id = Column(ForeignKey(User.id))

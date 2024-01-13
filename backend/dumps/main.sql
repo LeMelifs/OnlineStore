@@ -309,40 +309,6 @@ ALTER SEQUENCE public.contract_storage_id_seq OWNED BY public.contract_storage.i
 
 
 --
--- Name: manufacturer; Type: TABLE; Schema: public; Owner: postgres
---
-
-CREATE TABLE public.manufacturer (
-    id integer NOT NULL,
-    name text
-);
-
-
-ALTER TABLE public.manufacturer OWNER TO postgres;
-
---
--- Name: manufacturer_id_seq; Type: SEQUENCE; Schema: public; Owner: postgres
---
-
-CREATE SEQUENCE public.manufacturer_id_seq
-    AS integer
-    START WITH 1
-    INCREMENT BY 1
-    NO MINVALUE
-    NO MAXVALUE
-    CACHE 1;
-
-
-ALTER SEQUENCE public.manufacturer_id_seq OWNER TO postgres;
-
---
--- Name: manufacturer_id_seq; Type: SEQUENCE OWNED BY; Schema: public; Owner: postgres
---
-
-ALTER SEQUENCE public.manufacturer_id_seq OWNED BY public.manufacturer.id;
-
-
---
 -- Name: order; Type: TABLE; Schema: public; Owner: postgres
 --
 
@@ -461,10 +427,10 @@ ALTER SEQUENCE public.pickpoint_id_seq OWNED BY public.pickpoint.id;
 CREATE TABLE public.product (
     id integer NOT NULL,
     name text,
+    description text,
     rating double precision,
     price integer,
     sale integer,
-    manufacturer_id integer,
     category_id integer,
     active boolean
 );
@@ -683,13 +649,6 @@ ALTER TABLE ONLY public.contract_storage ALTER COLUMN id SET DEFAULT nextval('pu
 
 
 --
--- Name: manufacturer id; Type: DEFAULT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.manufacturer ALTER COLUMN id SET DEFAULT nextval('public.manufacturer_id_seq'::regclass);
-
-
---
 -- Name: order id; Type: DEFAULT; Schema: public; Owner: postgres
 --
 
@@ -821,13 +780,6 @@ COPY public.contract_storage (id, paid) FROM stdin;
 \.
 
 
---
--- Data for Name: manufacturer; Type: TABLE DATA; Schema: public; Owner: postgres
---
-
-COPY public.manufacturer (id, name) FROM stdin;
-\.
-
 
 --
 -- Data for Name: order; Type: TABLE DATA; Schema: public; Owner: postgres
@@ -896,7 +848,7 @@ COPY public.pickpoint (id, name, city_id) FROM stdin;
 -- Data for Name: product; Type: TABLE DATA; Schema: public; Owner: postgres
 --
 
-COPY public.product (id, name, rating, price, sale, manufacturer_id, category_id, active) FROM stdin;
+COPY public.product (id, name, rating, price, sale, category_id, active) FROM stdin;
 \.
 
 
@@ -1009,13 +961,6 @@ SELECT pg_catalog.setval('public.color_id_seq', 1, false);
 --
 
 SELECT pg_catalog.setval('public.contract_storage_id_seq', 1, false);
-
-
---
--- Name: manufacturer_id_seq; Type: SEQUENCE SET; Schema: public; Owner: postgres
---
-
-SELECT pg_catalog.setval('public.manufacturer_id_seq', 1, false);
 
 
 --
@@ -1136,14 +1081,6 @@ ALTER TABLE ONLY public.color
 
 ALTER TABLE ONLY public.contract_storage
     ADD CONSTRAINT contract_storage_pkey PRIMARY KEY (id);
-
-
---
--- Name: manufacturer manufacturer_pkey; Type: CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.manufacturer
-    ADD CONSTRAINT manufacturer_pkey PRIMARY KEY (id);
 
 
 --
@@ -1288,14 +1225,6 @@ ALTER TABLE ONLY public.product_color
 
 ALTER TABLE ONLY public.product_color
     ADD CONSTRAINT product_color_product_id_fkey FOREIGN KEY (product_id) REFERENCES public.product(id);
-
-
---
--- Name: product product_manufacturer_id_fkey; Type: FK CONSTRAINT; Schema: public; Owner: postgres
---
-
-ALTER TABLE ONLY public.product
-    ADD CONSTRAINT product_manufacturer_id_fkey FOREIGN KEY (manufacturer_id) REFERENCES public.manufacturer(id);
 
 
 --

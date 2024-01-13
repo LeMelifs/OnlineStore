@@ -38,12 +38,6 @@ def upgrade() -> None:
         sa.PrimaryKeyConstraint("id"),
     )
     op.create_table(
-        "manufacturer",
-        sa.Column("id", sa.Integer(), nullable=False),
-        sa.Column("name", sa.TEXT(), nullable=True),
-        sa.PrimaryKeyConstraint("id"),
-    )
-    op.create_table(
         "size",
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("name", sa.TEXT(), nullable=True),
@@ -64,19 +58,15 @@ def upgrade() -> None:
         "product",
         sa.Column("id", sa.Integer(), nullable=False),
         sa.Column("name", sa.TEXT(), nullable=True),
+        sa.Column("description", sa.TEXT(), nullable=True),
         sa.Column("rating", sa.Float(), nullable=True),
         sa.Column("price", sa.Integer(), nullable=True),
         sa.Column("sale", sa.Integer(), nullable=True),
-        sa.Column("manufacturer_id", sa.Integer(), nullable=True),
         sa.Column("category_id", sa.Integer(), nullable=True),
         sa.Column("active", sa.Boolean(), nullable=True),
         sa.ForeignKeyConstraint(
             ["category_id"],
             ["category.id"],
-        ),
-        sa.ForeignKeyConstraint(
-            ["manufacturer_id"],
-            ["manufacturer.id"],
         ),
         sa.PrimaryKeyConstraint("id"),
     )
@@ -145,7 +135,6 @@ def downgrade() -> None:
     op.drop_table("product")
     op.drop_table("pickpoint")
     op.drop_table("size")
-    op.drop_table("manufacturer")
     op.drop_table("color")
     op.drop_table("city")
     op.drop_table("category")
