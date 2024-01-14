@@ -26,9 +26,6 @@
                     </q-card-section>
                   </q-card>
 
-
-
-
                   <input ref="fileInput" @change="onAddPicture" type="file" style="display: none;">
                   <q-btn @click="$refs.fileInput.click()" flat rounded style="width: 50px; height: 50px; background-color: #ffffff; border: 1px solid #a4a4a4; margin: 82px 0px 0px -25px" dense icon="edit"></q-btn>
                   <div>
@@ -49,9 +46,9 @@
                 </q-btn>
                 <div class="row">
                   <div class="text-weight-bold q-ma-sm" style="margin-top: 15px; margin-bottom: 10px">Пол:</div>
-                  <input type="radio" v-model="data.gender" value="m" name="gender" class="radio" style="margin-left: 40px">
+                  <input type="radio" v-model="data.gender" value="м" name="gender" class="radio" style="margin-left: 40px">
                   <span style="margin-top: 15px">Мужчина</span>
-                  <input type="radio" v-model="data.gender" value="f" name="gender" class="radio" style="margin-left: 30px">
+                  <input type="radio" v-model="data.gender" value="ж" name="gender" class="radio" style="margin-left: 30px">
                   <span style="margin-top: 15px">Женщина</span>
                 </div>
 
@@ -65,10 +62,8 @@
                     </router-link>
                   </div>
                 </div>
-
+                <p style="text-align: center; margin-top: 5px">{{ error }}</p>
               </q-form>
-
-
             </div>
           </q-card>
         </template>
@@ -92,6 +87,7 @@
             </div>
           </q-card>
         </template>
+
         <template v-if="deliver">
           <q-card style=" box-shadow: none; border-radius: 25px; margin-top: -38px;">
             <div class="text-weight-bold text-grey-10" style="margin: -10px 15px 20px; font-size: 30px;padding-left: 40px">Адреса доставки</div>
@@ -173,7 +169,6 @@ import store from "src/store";
 let active = ref(false)
 let order = ref(false)
 let manage = ref(false)
-let deliver = ref(false)
 let blob = ref()
 let filename = ref('')
 const changed = {}
@@ -182,7 +177,6 @@ let error = ref('')
 onMounted(() => {
   order.value = true;
   manage.value = false;
-  deliver.value = false;
 })
 
 const data = reactive({
@@ -254,6 +248,9 @@ const submit = async () => {
     }
   }
 
+  let isEditSuccess = true
+  let isPhotoEditSuccess = true
+
   if (Object.keys(changed).length !== 0) {
     const response = await fetch('https://onlinestore.poslam.ru/api/v1/user/edit', {
       method: 'POST',
@@ -262,8 +259,8 @@ const submit = async () => {
       body: JSON.stringify(changed)
     })
 
-    const json = response.json()
-    error.value = json['detail']
+    if (response.status !== 200)
+      isEditSuccess = false
   }
 
   if (avatarChanged) {
@@ -275,9 +272,18 @@ const submit = async () => {
       body: formData
     })
 
-    const json = response.json()
-    error.value = json['detail']
+    if (response.status !== 200)
+      isPhotoEditSuccess = false
   }
+
+  if (Object.keys(changed).length === 0 && !avatarChanged) {
+    error.value = 'Изменения не обнаружены'
+    return
+  }
+
+  if (isEditSuccess && isPhotoEditSuccess)
+    error.value = 'Изменения сохранены!'
+  else error.value = 'Некорректные данные!'
 }
 
 function logout() {
@@ -289,28 +295,24 @@ function logout() {
 
 function change_t() {
   active.value = true;
+  error.value = ''
 }
 
 function change_f() {
   active.value = false;
+  error.value = ''
 }
 
 function manage_acc() {
   order.value = false;
   manage.value = true;
-  deliver.value = false;
+  error.value = ''
 }
 
 function orders() {
   order.value = true;
   manage.value = false;
-  deliver.value = false;
-}
-
-function delivery() {
-  order.value = false;
-  manage.value = false;
-  deliver.value = true;
+  error.value = ''
 }
 </script>
 

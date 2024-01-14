@@ -27,10 +27,6 @@
         <ProductComponent v-for="(product, index) in products_json.filter(item => item.category_id === activeButton)
         .slice(separator - 4, separator)" :key="index" :name="product.name" :description="product.description"
                                           :price="product.price" :photo="product.photo"/>
-
-<!--        <ProductComponent/>-->
-<!--        <ProductComponent/>-->
-<!--        <ProductComponent/>-->
       </div>
     </q-page-container>
     <FooterComponent/>
