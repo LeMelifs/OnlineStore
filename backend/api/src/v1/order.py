@@ -1,4 +1,5 @@
 from random import randint
+
 from database.database import get_session
 from database.models import (
     Bin,
@@ -27,7 +28,11 @@ async def order_view(
     result = []
 
     orders_raw = (
-        await session.execute(select(Order).where(Order.user_id == user.id))
+        await session.execute(
+            select(Order)
+            .where(Order.user_id == user.id)
+            .order_by(desc(Order.create_time))
+        )
     ).all()
 
     for order_raw in orders_raw:
@@ -85,6 +90,7 @@ async def order_add(
         data = await request.json()
 
         pickpoint_id = data["pickpoint_id"]
+        product_ids = data["product_ids"]
 
     except:
         raise HTTPException(400, "Некорректный запрос")
@@ -98,7 +104,21 @@ async def order_add(
 
     now = time()
 
-    products = (await session.execute(select(Bin).where(Bin.user_id == user.id))).all()
+    if product_ids != "":
+        products = [
+            (
+                await session.execute(
+                    select(Bin)
+                    .where(Bin.user_id == user.id)
+                    .where(Bin.product_id == int(x))
+                )
+            ).first()
+            for x in product_ids.split(",")
+        ]
+    else:
+        products = (
+            await session.execute(select(Bin).where(Bin.user_id == user.id))
+        ).all()
 
     codes = [
         x._mapping["distinct"]
