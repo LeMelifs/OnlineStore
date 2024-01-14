@@ -10,9 +10,7 @@ category_router = APIRouter()
 
 
 @category_router.get("/view")
-async def category_view(
-    user=Depends(login_required), session: AsyncSession = Depends(get_session)
-):
+async def category_view(session: AsyncSession = Depends(get_session)):
     result = []
 
     categories_raw = (await session.execute(select(Category))).all()

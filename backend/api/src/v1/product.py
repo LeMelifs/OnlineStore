@@ -18,7 +18,6 @@ product_router = APIRouter()
 
 @product_router.get("/view")
 async def product_view(
-    user=Depends(login_required),
     session: AsyncSession = Depends(get_session),
 ):
     result = []
