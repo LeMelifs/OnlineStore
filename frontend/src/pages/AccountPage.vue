@@ -30,7 +30,6 @@
 
 
                   <input ref="fileInput" @change="onAddPicture" type="file" style="display: none;">
-
                   <q-btn @click="$refs.fileInput.click()" flat rounded style="width: 50px; height: 50px; background-color: #ffffff; border: 1px solid #a4a4a4; margin: 82px 0px 0px -25px" dense icon="edit"></q-btn>
                   <div>
                     <q-input dense outlined rounded color="dark" class="q-mb-md q-ml-lg bg-white" style="margin-top: 35px;border-radius: 25px; width: 200%" v-model='data.first_name' label="Ваше имя"><template v-slot:prepend></template></q-input>
