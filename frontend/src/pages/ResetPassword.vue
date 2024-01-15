@@ -88,7 +88,6 @@ const submit = async () => {
     params.append('password', data.password);
   }
   const fullUrl = `${url}?${params.toString()}`;
-  console.log(fullUrl);
   const response = await fetch(fullUrl, {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},

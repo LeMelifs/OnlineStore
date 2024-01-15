@@ -40,7 +40,7 @@
             Цвет
           </div>
           <div>
-            <q-btn v-for="(color, index) in current_product[0].colors" :key="index" flat class="bordered-button">
+            <q-btn v-for="(color, index) in current_product[0].colors" :key="index" @click="setColor(color.id)" flat class="bordered-button">
               <div style="border-radius: 8px; width: 30px; height: 30px"
               :style="{ 'background-color': color.hex_code }"></div>
             </q-btn>
@@ -49,12 +49,14 @@
             Размер
           </div>
           <div>
-            <q-btn v-for="(size, index) in current_product[0].sizes" :key="index" flat class="bordered-button" :label="size.name"/>
+            <q-btn v-for="(size, index) in current_product[0].sizes" :key="index" flat class="bordered-button"
+                   :label="size.name" @click="setSize(size.id)"/>
           </div>
           <div class="q-mt-lg">
-            <q-btn flat rounded style="width: 200px" class="bg-grey-3 text-grey-9 q-mr-sm" no-caps label="Добавить в корзину"/>
+            <q-btn @click="addToCart" flat rounded style="width: 200px" class="bg-grey-3 text-grey-9 q-mr-sm" no-caps label="Добавить в корзину"/>
             <q-btn flat rounded style="width: 200px" class="bg-dark text-white" no-caps label="Купить сейчас"/>
           </div>
+          <p style="margin-top: 20px">{{ error }}</p>
         </div>
       </div>
     </q-page-container>
@@ -85,6 +87,11 @@ import store from "src/store";
 
 let current_product = null
 let state = ref(false)
+let picked_size = null
+let picked_color = null
+let error = ref('')
+const params = new URLSearchParams();
+const url = 'https://onlinestore.poslam.ru/api/v1/bin/add'
 
 const props = defineProps({
   id: Number
@@ -94,6 +101,60 @@ onMounted(async () => {
   current_product = store.state.products.filter(item => item.id === Number(props.id))
   state.value = true
 })
+
+function setSize(size) {
+  picked_size = size
+}
+
+function setColor(color) {
+  picked_color = color
+}
+
+async function addToCart() {
+
+  params.append('product_id', current_product[0].id)
+
+  if (picked_size === null) {
+    error.value = 'Выберите размер!'
+    params.delete('product_id')
+    return
+  }
+  else {
+    params.append('size_id', picked_size)
+  }
+
+  if (picked_color === null) {
+    error.value = 'Выберите цвет!'
+    params.delete('product_id')
+    params.delete('size_id')
+    return
+  }
+  else {
+    params.append('color_id', picked_color)
+  }
+
+  const fullUrl = `${url}?${params.toString()}`;
+  console.log(fullUrl)
+
+  const response = await fetch(fullUrl, {
+    method: 'POST',
+    headers: {'Content-Type': 'application/json', 'auth': `${store.state.token}`},
+    credentials: 'include'
+  })
+
+  if (response.status === 401) {
+    error.value = 'Вы не авторизованы!'
+  }
+  else if (response.status === 200) {
+    error.value = 'Товар успешно добавлен в корзину!'
+  }
+
+  params.delete('product_id')
+  params.delete('size_id')
+  params.delete('color_id')
+
+  console.log(error)
+}
 
 </script>
 
