@@ -15,7 +15,6 @@ async def bin_view(
 ):
     result = []
     sum = 0
-    count = 0
 
     products = (await session.execute(select(Bin).where(Bin.user_id == user.id))).all()
 
@@ -27,7 +26,6 @@ async def bin_view(
         color = await session.get(Color, product_bin.color_id)
 
         sum += product.price
-        count += 1
 
         product.photo = await photo_search("product", product.id, session)
         product.size = {"id": size.id, "name": size.name}
@@ -39,7 +37,7 @@ async def bin_view(
 
         result.append(product)
 
-    return {"sum": sum, "count": count, "products": result}
+    return {"sum": sum, "count": len(result), "products": result}
 
 
 @bin_router.post("/add")
