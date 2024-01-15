@@ -10,7 +10,6 @@ color_router = APIRouter()
 
 @color_router.get("/view")
 async def color_view(
-    user=Depends(login_required),
     session: AsyncSession = Depends(get_session),
 ):
     colors = [x[0] for x in (await session.execute(select(Color))).all()]

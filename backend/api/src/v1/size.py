@@ -10,7 +10,6 @@ size_router = APIRouter()
 
 @size_router.get("/view")
 async def size_view(
-    user=Depends(login_required),
     session: AsyncSession = Depends(get_session),
 ):
     sizes = [x[0] for x in (await session.execute(select(Size))).all()]
