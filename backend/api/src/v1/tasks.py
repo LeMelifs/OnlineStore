@@ -57,8 +57,8 @@ def photo_maker(path: str, small: bool = False):
         height = int(src.height * scale_percent / 100)
         
         if small == False:
-            max_width = 1800
-            max_height = 1800
+            max_width = 3000
+            max_height = 3000
             
         else:
             max_width = 200
