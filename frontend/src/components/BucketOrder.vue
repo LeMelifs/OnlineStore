@@ -2,17 +2,21 @@
   <div class="q-py-md q-mr-md" style="width: 640px; border-radius: 25px; margin-left: 180px">
     <div class="row">
       <div class="bg-brown-2 q-my-md q-mr-md q-pa-md parent" style="width: 180px; border-radius: 15px">
-        <q-icon size="150px" color="dark" name="mood" />
+        <div v-if="props.photo[0]" style="width: 120px; height: 120px; overflow: hidden; border-radius: 20px; position: relative;">
+          <img :src="props.photo[0]" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+        </div>
+        <q-icon v-else size="180px" color="dark" name="mood" />
       </div>
       <div class="q-ma-md">
-        <div style="font-weight: bold; font-size: 20px">Название продукта</div>
-        <div class="text-grey-8">Размер: XL</div>
-        <div style="font-weight: bold; margin-top: 80px; padding-top: 18px; font-size: 22px">1 500 ₽</div>
+        <div style="font-weight: bold; font-size: 20px">{{ props.name }}</div>
+        <div class="text-grey-8">Размер: {{ props.size }}</div>
+        <div class="text-grey-8">Цвет: {{ props.color }}</div>
+        <div style="font-weight: bold; margin-top: 80px; padding-top: 18px; font-size: 22px">{{ props.price }} ₽</div>
       </div>
       <div class="q-ma-md column" style="display: flex; justify-content: space-between; align-items: flex-start">
         <div class="round" style="margin-left: 100px">
-          <input type="checkbox" checked  :id="uniqueId" v-model="isChecked"  />
-          <label :for="uniqueId">
+          <input type="checkbox" checked :id="props.id" v-model="isChecked"  />
+          <label :for="props.id">
             <div class="checkmark" v-if="isChecked"></div>
           </label>
         </div>
@@ -79,12 +83,31 @@
 }
 </style>
 
+<script setup>
+import {ref, watch} from "vue";
+
+let isChecked = ref(false)
+
+const props = defineProps({
+  id: Number,
+  name: String,
+  size: String,
+  color: String,
+  photo: Array,
+  price: Number,
+  status: Boolean
+})
+
+watch(() => props.status, () => {
+    isChecked.value = props.status
+})
+</script>
+
 <script>
 export default {
   data() {
     return {
-      number: 0,
-      isChecked: false,
+      number: 1,
     };
   },
   methods: {
@@ -94,11 +117,6 @@ export default {
     decrement() {
       if (this.number > 0)
       this.number--;
-    },
-  },
-  computed: {
-    uniqueId() {
-      return 'checkbox_' + Math.random().toString(36).substr(2, 9); // генерация уникального id
     },
   },
 };

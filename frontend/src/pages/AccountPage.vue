@@ -21,8 +21,9 @@
                   <q-card style="box-shadow: none; border-radius: 25px; height: 130px;">
                     <q-card-section class="bg-brown-2 q-pa-sm">
                       <div style="width: 120px; height: 120px; overflow: hidden; border-radius: 20px; position: relative;">
-<!--                        <v-lazy-image />-->
-                        <img :src="data.photo" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+                   <v-lazy-image :src="data.photo" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;"
+                     :src-placeholder="placeholder"
+                        />
                       </div>
                     </q-card-section>
                   </q-card>
@@ -159,6 +160,14 @@ a {
   display: flex;
   justify-content: center;
 }
+
+.v-lazy-image {
+  filter: blur(10px);
+  transition: filter 0.7s;
+}
+.v-lazy-image-loaded {
+  filter: blur(0);
+}
 </style>
 
 <script setup>
@@ -175,6 +184,7 @@ let blob = ref()
 let filename = ref('')
 const changed = {}
 let error = ref('')
+let placeholder = ref(null)
 
 onMounted(() => {
   order.value = true;
@@ -233,7 +243,8 @@ onMounted(async () => {
     defaultForm.gender = data.gender
     data.phone_number = json['phone_number']
     defaultForm.phone_number = data.phone_number
-    data.photo = json['photo'][0]
+    data.photo = json['photo'][1]
+    placeholder.value = json['photo'][0]
     defaultForm.photo = data.photo
   }
 })

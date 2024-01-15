@@ -1,23 +1,23 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <HeaderComponent/>
-    <q-page-container>
+    <q-page-container v-if="state">
       <div class="row">
         <div class="text-weight-bold text-grey-10 parent" style="margin: 80px 80px 10px; font-size: 35px; width: 350px ">
           Корзина
         </div>
-        <div class="round" style="margin-left: 205px; margin-top:94px">
-          <input type="checkbox" v-model="selectAll" @change="toggleAllCheckboxes" />
-          <label :for="uniqueId">
-            <div class="checkmark" v-if="isChecked"></div>
+        <div v-if="products_cart.length !== 0" class="round" style="margin-left: 205px; margin-top:94px">
+          <input type="checkbox" id="checkbox" v-model="status" />
+          <label for="checkbox">
+            <div class="checkmark" v-if="status"></div>
           </label>
         </div>
       </div>
       <div class="row">
         <div>
-          <BucketOrder/>
-          <BucketOrder/>
-          <BucketOrder/>
+          <BucketOrder v-for="(product, index) in products_cart" :key="index" :name="product.name" :id="product.id"
+          :price="product.price" :size="product.size['name']" :color="product.color['name']" :photo="product.photo"
+          :status="status"/>
         </div>
         <div style="margin-left: 100px; position: fixed; left: 850px">
           <div class="text-weight-bold text-grey-10" style="font-size: 30px; margin-top: -58px;">Оформите заказ</div>
@@ -51,4 +51,22 @@
 import HeaderComponent from "components/HeaderComponent.vue";
 import FooterComponent from "components/FooterComponent.vue";
 import BucketOrder from "components/BucketOrder.vue";
+import {onMounted, ref} from "vue";
+import store from "src/store";
+
+let products_cart = ref(null)
+let products_count = ref(Number)
+let products_price = ref(Number)
+let state = ref(false)
+let status = ref(false)
+
+onMounted(async () => {
+  const response_products = await fetch('https://onlinestore.poslam.ru/api/v1/bin/view', {
+      method: 'GET',
+      headers: {'Content-Type': 'application/json', 'auth': `${store.state.token}`}
+    })
+    const json = await response_products.json()
+    products_cart.value = json['products']
+    state.value = true
+})
 </script>
