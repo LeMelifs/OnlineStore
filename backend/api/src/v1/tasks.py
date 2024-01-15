@@ -42,7 +42,7 @@ def send_email(text: str, target_email: str, subject: str):
         raise HTTPException(status_code=500, detail="email not send. server error")
 
 
-def photo_maker(path: str):
+def photo_maker(path: str, small: bool = False):
     try:
         os.stat(path)
     except:
@@ -55,8 +55,16 @@ def photo_maker(path: str):
     try:
         width = int(src.width * scale_percent / 100)
         height = int(src.height * scale_percent / 100)
+        
+        if small == False:
+            max_width = 1800
+            max_height = 1800
+            
+        else:
+            max_width = 200
+            max_height = 200
 
-        while width > 1800 and height > 1800:
+        while width > max_width and height > max_height:
             scale_percent -= 5
 
             width = int(src.width * scale_percent / 100)

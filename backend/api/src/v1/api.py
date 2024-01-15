@@ -114,8 +114,11 @@ async def upload(
 
                     with open(f"{IMG_PATH}/{folder}/{id}/{y}.jpg", "wb") as f:
                         f.write(contents)
+                        
+                    with open(f"{IMG_PATH}/{folder}/{id}/{y}_small.jpg", "wb") as f:
+                        f.write(contents)
 
-                    back.add_task(photo_maker, f"{IMG_PATH}/{folder}/{id}/{y}.jpg")
+            back.add_task(photo_maker, f"{IMG_PATH}/{folder}/{id}/{y}.jpg")
 
             photo = {
                 "obj": folder,
@@ -125,6 +128,18 @@ async def upload(
             }
 
             await session.execute(insert(Photo).values(photo))
+            
+            back.add_task(photo_maker, f"{IMG_PATH}/{folder}/{id}/{y}_small.jpg", True)
+
+            photo = {
+                "obj": folder,
+                "obj_id": id,
+                "path": f"{folder}/{id}/{y}_small.jpg",
+                "time": time(),
+            }
+
+            await session.execute(insert(Photo).values(photo))
+            
             await session.commit()
 
         except Exception as e:
