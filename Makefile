@@ -45,6 +45,8 @@ new-migr:
 
 start-prod:
 	docker compose -f docker-compose-prod.yaml up --build -d
+	$(SLEEP) 2
+	
 	docker compose -f docker-compose-prod.yaml exec -w /api api python -m alembic upgrade head
 
 update-prod:

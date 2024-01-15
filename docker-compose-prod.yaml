@@ -11,7 +11,7 @@ services:
         ports:
             - 9000:4000
         build: ./frontend
-        command: yarn quasar serve dist/spa
+        command: yarn quasar serve dist/spa --port 4000
         
 
     database:

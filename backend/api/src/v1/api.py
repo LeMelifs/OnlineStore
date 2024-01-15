@@ -166,11 +166,17 @@ async def img_delete(
         )
 
     photo = photo_raw._mapping
+    
+    l = path.split(".")
+
+    path_small = l[0]+"_small."+l[1]
 
     stmt = delete(Photo).where(Photo.id == photo["id"])
+    stmt = delete(Photo).where(Photo.path == path_small)
 
     try:
         os.remove(f"{IMG_PATH}/{path}")
+        os.remove(f"{IMG_PATH}/{path_small}")
     except:
         pass
 
