@@ -21,6 +21,7 @@
                   <q-card style="box-shadow: none; border-radius: 25px; height: 130px;">
                     <q-card-section class="bg-brown-2 q-pa-sm">
                       <div style="width: 120px; height: 120px; overflow: hidden; border-radius: 20px; position: relative;">
+<!--                        <v-lazy-image />-->
                         <img :src="data.photo" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
                       </div>
                     </q-card-section>
@@ -165,6 +166,7 @@ import HeaderComponent from "components/HeaderComponent.vue";
 import FooterComponent from "components/FooterComponent.vue";
 import {onMounted, reactive, ref} from "vue";
 import store from "src/store";
+import VLazyImage from "v-lazy-image";
 
 let active = ref(false)
 let order = ref(false)

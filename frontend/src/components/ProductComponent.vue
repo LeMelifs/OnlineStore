@@ -1,6 +1,6 @@
 <template>
   <div style="width: 20%; height: 300px" class="q-mx-sm">
-    <router-link to="/product">
+    <router-link :to="{ name: 'Product', params: { id: props.id }}">
       <div class="bg-brown-2 q-mx-md q-mr-sm q-pa-xl parent" style="border-radius: 15px">
         <div v-if="props.photo[0]" style="width: 120px; height: 120px; overflow: hidden; border-radius: 20px; position: relative;">
           <img :src="props.photo[0]" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
@@ -42,9 +42,5 @@ const props = defineProps({
     category_id: Number,
     photo: Array
 })
-
-function d() {
-  console.log(props.photo[0])
-}
 
 </script>

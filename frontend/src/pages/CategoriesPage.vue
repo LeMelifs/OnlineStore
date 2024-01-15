@@ -26,7 +26,7 @@
       <div v-for="(separator, idx) in separators" :key="idx" class="row parent" style="margin-bottom: 130px">
         <ProductComponent v-for="(product, index) in products_json.filter(item => item.category_id === activeButton)
         .slice(separator - 4, separator)" :key="index" :name="product.name" :description="product.description"
-                                          :price="product.price" :photo="product.photo"/>
+                                          :price="product.price" :photo="product.photo" :id="product.id"/>
       </div>
     </q-page-container>
     <FooterComponent/>
@@ -45,6 +45,7 @@ import HeaderComponent from "components/HeaderComponent.vue";
 import FooterComponent from "components/FooterComponent.vue";
 import ProductComponent from "components/ProductComponent.vue"
 import {onMounted, ref} from "vue";
+import store from "src/store";
 
 
 let categories_json = []
@@ -64,6 +65,7 @@ onMounted(async () => {
       headers: {'Content-Type': 'application/json'}
     })
     products_json = await response_products.json()
+    await store.dispatch('setProducts', products_json)
     state.value = true
 })
 </script>

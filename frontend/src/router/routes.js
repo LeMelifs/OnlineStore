@@ -38,7 +38,9 @@ const routes = [
     component: () => import('pages/PaymentPage.vue')
   },
   {
-    path: "/product",
+    path: "/product/:id?",
+    name: 'Product',
+    props: true,
     component: () => import('pages/ProductPage.vue')
   },
     {
