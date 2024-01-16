@@ -36,6 +36,7 @@ const routes = [
   },
   {
     path: "/payment",
+    name: 'payment',
     component: () => import('pages/PaymentPage.vue')
   },
   {
