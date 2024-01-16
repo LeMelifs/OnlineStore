@@ -131,6 +131,10 @@ async function buyNow() {
 }
 
 async function addToCart() {
+  if (store.state.token === null) {
+    error.value = 'Вы не авторизованы!'
+    return
+  }
 
   params.append('product_id', current_product[0].id)
 
