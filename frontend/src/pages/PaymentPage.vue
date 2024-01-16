@@ -170,10 +170,12 @@ async function makeOrder() {
     strArray.push(String(store.state.order[product].id))
   }
   let query = strArray.join(', ')
+
   const data = reactive({
     pickpoint_id: picked_point,
     product_ids: query
   })
+
   const response = await fetch('https://onlinestore.poslam.ru/api/v1/order/add', {
     method: 'POST',
     headers: {'Content-Type': 'application/json', 'auth': `${store.state.token}`},

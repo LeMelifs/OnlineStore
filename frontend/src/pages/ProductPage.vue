@@ -56,7 +56,9 @@
           </div>
           <div style="margin-top: 50px">
             <q-btn @click="addToCart" flat rounded style="width: 200px; height: 40px" class="bg-grey-3 text-grey-9 q-mr-sm" no-caps label="Добавить в корзину"/>
-            <q-btn flat rounded style="width: 200px; height: 40px" class="bg-dark text-white" no-caps label="Купить сейчас"/>
+            <router-link to="/payment">
+            <q-btn @click="buyNow" flat rounded style="width: 200px; height: 40px" class="bg-dark text-white" no-caps label="Купить сейчас"/>
+            </router-link>
           </div>
           <p style="margin-top: 20px">{{ error }}</p>
         </div>
@@ -121,6 +123,13 @@ function setColor(color) {
   picked_color = color
 }
 
+async function buyNow() {
+  store.state.order.push({ id: current_product[0].id, name: current_product[0].name, size: current_product[0].size,
+    color: current_product[0].color, photo: current_product[0].photo, price: current_product[0].price,
+    status: current_product[0].status })
+  await store.dispatch('setOrder', store.state.order)
+}
+
 async function addToCart() {
 
   params.append('product_id', current_product[0].id)
@@ -163,8 +172,6 @@ async function addToCart() {
   params.delete('product_id')
   params.delete('size_id')
   params.delete('color_id')
-
-  console.log(error)
 }
 
 </script>

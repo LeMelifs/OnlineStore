@@ -114,7 +114,6 @@ watch(() => props.status, () => {
 })
 
 onMounted(async () => {
-  store.state.order = []
   await store.dispatch('setOrder', [])
 })
 
