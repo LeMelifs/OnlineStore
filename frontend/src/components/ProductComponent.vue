@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 19%; height: 300px" class="q-mx-md">
+  <div style="width: 20%; height: 300px; " class="q-mx-sm q-px-sm">
     <router-link :to="{ name: 'Product', params: { id: props.id }}">
       <div class="bg-brown-2 q-mx-md q-mr-sm q-paxl parent" style="border-radius: 15px; position: relative; width: 260px; height: 260px;">
         <div v-if="props.photo[0]" style="width: 100%; height: 100%; overflow: hidden; border-radius: 15px; position: absolute; top: 0; left: 0;">

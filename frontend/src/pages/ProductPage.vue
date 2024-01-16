@@ -17,20 +17,21 @@
 <!--            <q-icon size="80px" color="grey-9" name="mood" />-->
 <!--          </div>-->
         </div>
-        <div class="bg-brown-2 q-ma-md q-pa-md parent square-icon-container" style="border-radius: 15px; display: flex; align-items: center; justify-content: center; width: 500px">
-         <div v-if="current_product[0].photo[0]" style="width: 120px; height: 120px; overflow: hidden; border-radius: 20px; position: relative;">
-          <img :src="current_product[0].photo[0]" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+        <div class="bg-brown-2 q-mx-md  parent" style="margin-top: 20px; margin-right: 70px; border-radius: 20px; position: relative; width: 450px; height: 450px;">
+          <div v-if="current_product[0].photo[0]" style="width: 100%; height: 100%; overflow: hidden; border-radius: 20px; position: absolute; top: 0; left: 0;">
+            <img :src="current_product[0].photo[0]" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+          </div>
+          <q-icon v-else style="margin-top: 40px" size="180px" color="dark" name="mood" />
         </div>
-        <q-icon v-else size="180px" color="dark" name="mood" />
-        </div>
+
         <div style="margin-left: 30px">
           <div class="text-weight-bold text-grey-10 q-mt-md" style="font-size: 23px">
             {{ current_product[0].name }}
           </div>
-          <div class="text-weight-bold text-dark q-mt-md" style="font-size: 30px">
+          <div class="text-weight-bold text-dark q-mt-md" style="font-size: 33px">
             {{ current_product[0].price }}
           </div>
-          <div class="text-weight-bold text-grey-10 q-mt-md q-mb-sm" style="font-size: 18px">
+          <div class="text-weight-bold text-grey-10 q-mt-lg q-mb-sm" style="font-size: 18px">
             Описание
           </div>
           <div class="text-grey-10" style="font-size: 15px; margin: 0 auto; width: 500px">
@@ -52,9 +53,9 @@
             <q-btn v-for="(size, index) in current_product[0].sizes" :key="index" flat class="bordered-button"
                    :label="size.name" @click="setSize(size.id)"/>
           </div>
-          <div class="q-mt-lg">
-            <q-btn @click="addToCart" flat rounded style="width: 200px" class="bg-grey-3 text-grey-9 q-mr-sm" no-caps label="Добавить в корзину"/>
-            <q-btn flat rounded style="width: 200px" class="bg-dark text-white" no-caps label="Купить сейчас"/>
+          <div style="margin-top: 50px">
+            <q-btn @click="addToCart" flat rounded style="width: 200px; height: 40px" class="bg-grey-3 text-grey-9 q-mr-sm" no-caps label="Добавить в корзину"/>
+            <q-btn flat rounded style="width: 200px; height: 40px" class="bg-dark text-white" no-caps label="Купить сейчас"/>
           </div>
           <p style="margin-top: 20px">{{ error }}</p>
         </div>
