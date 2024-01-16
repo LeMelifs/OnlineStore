@@ -38,15 +38,9 @@
                 </div>
 
                 <div class="text-weight-bold q-ml-sm q-mt-lg q-mb-sm" style="font-size: 14px;">Почта</div>
-                  <q-btn style="border: 1px solid #a4a4a4; padding: 7px 10px; font-weight: normal; font-size: 15px; position: relative;" rounded flat text-color="grey-10" class="full-width bg-grey-1" no-caps>
-                    <span style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%);">{{ data.email }}</span>
-                    <q-icon style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%);" name="chevron_right"></q-icon>
-                  </q-btn>
+                <q-input outlined dense rounded color="dark" class="q-mb-md q-ml-lg bg-white full-width bg-grey-1" style="font-size: 15px;border-radius: 25px; width: 200%" v-model='data.email'><template v-slot:prepend></template></q-input>
                 <div class="text-weight-bold q-ml-sm q-mt-md q-mb-sm" style="font-size: 14px;">Телефон</div>
-                <q-btn style="border: 1px solid #a4a4a4; padding: 7px 10px;font-weight: normal; font-size: 15px; position: relative;" rounded flat text-color="grey-10" class="full-width bg-grey-1" no-caps>
-                  <span style="position: absolute; left: 18px; top: 50%; transform: translateY(-50%);">{{ data.phone_number }}</span>
-                  <q-icon style="position: absolute; right: 8px; top: 50%; transform: translateY(-50%);" name="chevron_right"></q-icon>
-                </q-btn>
+                <q-input outlined dense rounded color="dark" class="q-mb-md q-ml-lg bg-white full-width bg-grey-1" style="font-size: 15px;border-radius: 25px; width: 200%" v-model='data.phone_number'><template v-slot:prepend></template></q-input>
                 <div class="row">
                   <div class="text-weight-bold q-ma-sm" style="margin-top: 15px; margin-bottom: 10px">Пол:</div>
                   <input type="radio" v-model="data.gender" value="м" name="gender" class="radio" style="margin-left: 40px">
@@ -80,10 +74,18 @@
               </div>
 
               <template v-if="active">
+                <div>
+                  <AccountOrdersCard/>
+                  <AccountOrdersCard/>
+                </div>
                 <div class="q-pl-sm" style="font-size: 14.5px; ">У вас нет заказов в архиве</div>
                 <q-separator color="grey-5" class="q-mt-md q-mb-sm"/>
               </template>
               <template v-else>
+                <div>
+                  <AccountOrdersCard/>
+                  <AccountOrdersCard/>
+                </div>
                 <div class="q-pl-sm" style="font-size: 14.5px; ">У вас нет активных заказов</div>
                 <q-separator color="grey-5" class="q-mt-md q-mb-sm"/>
               </template>
@@ -177,6 +179,7 @@ import FooterComponent from "components/FooterComponent.vue";
 import {onMounted, reactive, ref} from "vue";
 import store from "src/store";
 import VLazyImage from "v-lazy-image";
+import AccountOrdersCard from "components/AccountOrdersCard.vue";
 
 let active = ref(false)
 let order = ref(false)
