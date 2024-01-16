@@ -20,11 +20,12 @@
                 <div class="row">
                   <q-card style="box-shadow: none; border-radius: 25px; height: 130px;">
                     <q-card-section class="bg-brown-2 q-pa-sm">
-                      <div style="width: 120px; height: 120px; overflow: hidden; border-radius: 20px; position: relative;">
+                      <div v-if="data.photo" style="width: 120px; height: 120px; overflow: hidden; border-radius: 20px; position: relative;">
                    <v-lazy-image :src="data.photo" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;"
                      :src-placeholder="placeholder"
                         />
                       </div>
+                      <q-icon v-else size="120px" color="dark" name="mood" />
                     </q-card-section>
                   </q-card>
 
