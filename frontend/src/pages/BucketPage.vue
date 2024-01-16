@@ -22,12 +22,12 @@
         <div style="margin-left: 100px; position: fixed; left: 850px">
           <div class="text-weight-bold text-grey-10" style="font-size: 30px; margin-top: -58px;">Оформите заказ</div>
           <div class="q-mt-lg q-mb-sm" style="display: flex;">
-            <div>2 товара</div>
-            <div style="margin-left: 200px">3 000 ₽</div>
+            <div>Количество товаров: {{ products_count }}</div>
+            <div style="margin-left: 110px">{{ products_price }} ₽</div>
           </div>
           <div class="q-mb-lg" style="display: flex;">
             <div>Доставка</div>
-            <div style="margin-left: 196px">1 000 ₽</div>
+            <div style="margin-left: 196px">{{ products_price * 0.2 }} ₽</div>
           </div>
           <q-separator></q-separator>
           <router-link to="/payment">
@@ -51,7 +51,7 @@
 import HeaderComponent from "components/HeaderComponent.vue";
 import FooterComponent from "components/FooterComponent.vue";
 import BucketOrder from "components/BucketOrder.vue";
-import {onMounted, ref} from "vue";
+import {onMounted, onUnmounted, ref} from "vue";
 import store from "src/store";
 
 let products_cart = ref(null)
@@ -67,6 +67,8 @@ onMounted(async () => {
     })
     const json = await response_products.json()
     products_cart.value = json['products']
+    products_count.value = json['count']
+    products_price.value = json['sum']
     state.value = true
 })
 </script>

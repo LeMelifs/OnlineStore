@@ -20,11 +20,11 @@
             <div class="checkmark" v-if="isChecked"></div>
           </label>
         </div>
-        <div style="font-weight: bold; font-size: 22px; color: #2f2f2f;">
-          <q-btn round outline style="font-size: 12px" color="grey-8" @click="decrement"><q-icon color="dark" name="remove"></q-icon></q-btn>
-          <span class="q-ma-md dark" style="font-size: 22px">{{ number }}</span>
-          <q-btn round outline style="font-size: 12px" color="grey-8" @click="increment"><q-icon color="dark" name="add"></q-icon></q-btn>
-        </div>
+<!--        <div style="font-weight: bold; font-size: 22px; color: #2f2f2f;">-->
+<!--          <q-btn round outline style="font-size: 12px" color="grey-8" @click="decrement"><q-icon color="dark" name="remove"></q-icon></q-btn>-->
+<!--          <span class="q-ma-md dark" style="font-size: 22px">{{ number }}</span>-->
+<!--          <q-btn round outline style="font-size: 12px" color="grey-8" @click="increment"><q-icon color="dark" name="add"></q-icon></q-btn>-->
+<!--        </div>-->
       </div>
     </div>
     <q-separator class="q-mt-md" style="width: 570px; margin-top: 25px"/>
@@ -84,7 +84,8 @@
 </style>
 
 <script setup>
-import {ref, watch} from "vue";
+import {onMounted, onUnmounted, ref, watch} from "vue";
+import store from "src/store";
 
 let isChecked = ref(false)
 
@@ -100,6 +101,18 @@ const props = defineProps({
 
 watch(() => props.status, () => {
     isChecked.value = props.status
+})
+
+onMounted(async () => {
+  store.state.order = []
+  await store.dispatch('setOrder', [])
+})
+
+onUnmounted(async () => {
+  if (isChecked.value) {
+    store.state.order.push({ props })
+    await store.dispatch('setOrder', store.state.order)
+  }
 })
 </script>
 

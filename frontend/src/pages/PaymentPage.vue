@@ -1,7 +1,7 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <HeaderComponent/>
-    <q-page-container>
+    <q-page-container v-if="state">
       <div class="row">
         <div style="margin-left: 150px; margin-top: 80px">
           <div class="text-weight-bold text-grey-10 q-mb-sm" style="font-size: 23px">
@@ -9,12 +9,10 @@
           </div>
           <div class="row q-mb-lg">
             <div class="text-grey-10 q-mt-sm" style="font-size: 15px">
-              Имя Фамилия, +7 123 456-78-90
+              {{ userData.name }}, {{ userData.phone }}
             </div>
-            <q-btn style="margin-left: 315px; width: 90px" dense flat rounded class="bg-grey-3 text-grey-9 q-mr-sm" no-caps label="Изменить"/>
           </div>
           <q-separator/>
-
           <div class="text-weight-bold text-grey-10 q-mb-sm q-mt-md" style="font-size: 23px">
             Способ оплаты
           </div>
@@ -22,63 +20,43 @@
             <div class="q-mb-md q-mr-md" style="border: 1px solid #bebebe; border-radius: 8px; width: 200px">
               <div class="row">
                 <q-icon style="margin: 10px" color="grey-7" size="25px" name="home"/>
-                <q-btn dense size="sm" color="grey-7" round outline style="width: 10px; height: 10px; margin-top: 10px; margin-left: 118px"/>
               </div>
               <div class="text-grey-10" style="font-size: 15px; margin-left: 10px; margin-bottom: 10px;">
                 При получении товара
               </div>
             </div>
-            <div class="q-mb-md" style="border: 1px solid #bebebe; border-radius: 8px; width: 200px">
-              <div class="row">
-                <q-icon style="margin: 10px" color="grey-7" size="25px" name="add_card"/>
-                <q-btn dense size="sm" color="grey-7" round outline style="width: 10px; height: 10px; margin-top: 10px; margin-left: 118px"/>
-              </div>
-              <div class="text-grey-10" style="font-size: 15px; margin-left: 10px; margin-bottom: 10px;">
-                Онлайн
-              </div>
-            </div>
+<!--            <div class="q-mb-md" style="border: 1px solid #bebebe; border-radius: 8px; width: 200px">-->
+<!--              <div class="row">-->
+<!--                <q-icon style="margin: 10px" color="grey-7" size="25px" name="add_card"/>-->
+<!--                <q-btn dense size="sm" color="grey-7" round outline style="width: 10px; height: 10px; margin-top: 10px; margin-left: 118px"/>-->
+<!--              </div>-->
+<!--              <div class="text-grey-10" style="font-size: 15px; margin-left: 10px; margin-bottom: 10px;">-->
+<!--                Онлайн-->
+<!--              </div>-->
+<!--            </div>-->
           </div>
-
           <q-separator class="q-mt-lg"/>
-
           <div class="text-weight-bold text-grey-10 q-mb-sm q-mt-md" style="font-size: 23px">
             Пункт выдачи
           </div>
           <div class="row">
-            <div class="q-mb-md q-mr-md" style="border: 1px solid #bebebe; border-radius: 8px; width: 200px">
+            <div v-for="point in points" :key="point.id" class="q-mb-md q-mr-md clickable"
+                 style="border-radius: 8px; width: 200px" @click="choosePoint(point.id)"
+            :style="{ ...picked_point === point.id ? { 'border': '1px solid grey', 'background-color': 'whitesmoke' } : { 'border': '1px solid #bebebe' } }">
               <div class="row">
                 <q-icon style="margin: 10px" color="grey-7" size="25px" name="home"/>
-                <div class="text-grey-10 q-my-sm" style="font-size: 14px; margin-left: 10px; margin-bottom: 10px;">Владивосток, <br>улица Кирова, 28</div>
+                <div class="text-grey-10 q-my-sm" style="font-size: 14px; margin-left: 10px; margin-bottom: 10px;">{{ point.city_name }}, <br>{{ point.name }}</div>
               </div>
             </div>
-            <div class="q-mb-md q-mr-md" style="border: 1px solid #bebebe; border-radius: 8px; width: 200px">
-              <div class="row">
-                <q-icon style="margin: 10px" color="grey-7" size="25px" name="home"/>
-                <div class="text-grey-10 q-my-sm" style="font-size: 14px; margin-left: 10px; margin-bottom: 10px;">Владивосток, <br>улица Кирова, 28</div>
-              </div>
-            </div>
-            <div class="q-mb-md" style="border: 1px solid #bebebe; border-radius: 8px; width: 200px;">
-              <div class="row">
-                <q-icon style="margin: 10px" color="grey-7" size="25px" name="home"/>
-                <div class="text-grey-10 q-my-sm" style="font-size: 14px; margin-left: 10px; margin-bottom: 10px;">Владивосток, <br>улица Кирова, 28</div>
-              </div>
-            </div>
-          </div>
-          <div class="row parent">
-            <q-btn outline color="grey-9" dense round icon="chevron_left"/>
-            <div class="q-mx-sm" style="margin-top: 6px">1</div>
-            <div style="margin-top: 6px">2</div>
-            <div class="q-mx-sm" style="margin-top: 6px">3</div>
-            <q-btn outline color="grey-9" dense round icon="chevron_right"/>
           </div>
           <q-separator class="q-mt-lg q-mb-lg"/>
           <div class="text-weight-bold text-grey-10 q-mb-sm" style="font-size: 23px">
             Состав заказа
           </div>
-          <PaymentProduct/>
-          <PaymentProduct/>
-          <PaymentProduct/>
-          <q-separator/>
+          <PaymentProduct v-for="product in store.state.order" :key="product.props.id" :id="product.props.id"
+          :name="product.props.name" :size="product.props.size" :color="product.props.color" :photo="product.props.photo"
+          :price="product.props.price"/>
+
         </div>
         <div style="margin-left: 100px; position: fixed; left: 850px; top: 170px">
           <div class="row">
@@ -112,10 +90,49 @@
 a {
   color: transparent;
 }
+
+.clickable:hover {
+  cursor: pointer;
+  background-color: whitesmoke;
+}
 </style>
 
 <script setup>
 import HeaderComponent from "components/HeaderComponent.vue";
 import FooterComponent from "components/FooterComponent.vue";
 import PaymentProduct from "components/PaymentProduct.vue";
+import {onMounted, reactive, ref} from "vue";
+import store from "src/store";
+
+let userData = reactive({
+  name: '',
+  phone: ''
+})
+
+let points = reactive([])
+let state = ref(false)
+let picked_point = ref(0)
+
+onMounted(async () => {
+  const response_user = await fetch('https://onlinestore.poslam.ru/api/v1/user/view', {
+    method: 'GET',
+    headers: {'auth': `${store.state.token}`},
+  })
+  const json_user = await response_user.json()
+  userData.name = json_user['first_name']
+  userData.phone = json_user['phone_number']
+
+  const response_pickup = await fetch('https://onlinestore.poslam.ru/api/v1/pickpoint/view', {
+    method: 'GET',
+    headers: {'auth': `${store.state.token}`},
+  })
+  points = await response_pickup.json()
+
+
+  state.value = true
+})
+
+function choosePoint(id) {
+  picked_point.value = id
+}
 </script>

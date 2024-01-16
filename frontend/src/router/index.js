@@ -27,7 +27,8 @@ export default route(function (/* { store, ssrContext } */) {
     history: createHistory(process.env.VUE_ROUTER_BASE)
   })
   Router.beforeEach((to, from, next) => {
-    if ((to.name === 'account' || to.name === 'change_password') && !store.state.authenticated) next({ name: 'login' })
+    if ((to.name === 'account' || to.name === 'change_password' || to.name === 'bucket') && !store.state.authenticated)
+      next({ name: 'login' })
     else next()
   })
   return Router

@@ -250,7 +250,6 @@ onMounted(async () => {
 })
 
 const submit = async () => {
-
   let avatarChanged = false
 
   for (const [key] of Object.entries(defaultForm)) {

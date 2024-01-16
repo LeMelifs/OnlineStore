@@ -8,7 +8,8 @@ export default createStore({
     token: null,
     refresh_token: null,
     type: null,
-    products: null
+    products: null,
+    order: []
   },
   mutations: {
     SET_AUTH: (state, auth) => state.authenticated = auth,
@@ -19,7 +20,9 @@ export default createStore({
     SET_TYPE: (state, type) =>
         state.type = type,
     SET_PRODUCTS: (state, products) =>
-        state.products = products
+        state.products = products,
+    SET_ORDER: (state, order) =>
+        state.order = order
     },
   actions: {
     setAuth: ({commit}, auth) => commit('SET_AUTH', auth),
@@ -27,6 +30,7 @@ export default createStore({
     setRefreshToken: ({commit}, refresh_token) => commit('SET_REFRESH_TOKEN', refresh_token),
     setType: ({commit}, type) => commit('SET_TYPE', type),
     setProducts: ({commit}, products) => commit('SET_PRODUCTS', products),
+    setOrder: ({commit}, order) => commit('SET_ORDER', order)
   },
   modules: {}
 })

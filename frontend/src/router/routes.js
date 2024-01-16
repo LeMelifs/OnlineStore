@@ -31,6 +31,7 @@ const routes = [
   },
   {
     path: "/bucket",
+    name: 'bucket',
     component: () => import('pages/BucketPage.vue')
   },
   {

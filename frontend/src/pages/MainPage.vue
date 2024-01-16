@@ -22,6 +22,7 @@ const url_view = 'https://onlinestore.poslam.ru/api/v1/user/view'
 const url_refresh = 'https://onlinestore.poslam.ru/api/v1/auth/refresh'
 
 onMounted(async () => {
+  console.log(store.state.order)
   try {
     const response = await fetch(url_view, {
       method: 'GET',

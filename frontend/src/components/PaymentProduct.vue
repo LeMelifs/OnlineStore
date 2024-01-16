@@ -5,22 +5,10 @@
         <q-icon size="80px" color="dark" name="mood" />
       </div>
       <div class="q-ma-md">
-        <div style="font-weight: bold; font-size: 17px">Название продукта</div>
-        <div class="text-grey-8" style="font-size: 13px">Размер: XL</div>
-        <div style="font-weight: bold;padding-top: 18px; font-size: 22px">1 500 ₽</div>
-      </div>
-      <div class="column" style="display: flex; justify-content: space-between; align-items: flex-start">
-        <div class="round q-mt-sm" style="margin-left: 306px; margin-bottom: 20px">
-          <input type="checkbox" checked  :id="uniqueId" v-model="isChecked"  />
-          <label :for="uniqueId">
-            <div class="checkmark" v-if="isChecked"></div>
-          </label>
-        </div>
-        <div style="margin-left: 208px;margin-bottom: 30px; font-weight: bold; font-size: 22px; color: #2f2f2f;">
-          <q-btn round outline style="font-size: 11px" color="grey-8" @click="decrement"><q-icon color="dark" name="remove"></q-icon></q-btn>
-          <span class="q-ma-md dark" style="font-size: 22px">{{ number }}</span>
-          <q-btn round outline style="font-size: 11px" color="grey-8" @click="increment"><q-icon color="dark" name="add"></q-icon></q-btn>
-        </div>
+        <div style="font-weight: bold; font-size: 17px">{{ props.name }}</div>
+        <div class="text-grey-8" style="font-size: 13px">Размер: {{ props.size }}</div>
+         <div class="text-grey-8" style="font-size: 13px">Цвет: {{ props.color }}</div>
+        <div style="font-weight: bold;padding-top: 18px; font-size: 22px">{{ props.price }} ₽</div>
       </div>
     </div>
     <q-separator style="margin-bottom: -10px"/>
@@ -104,3 +92,19 @@ export default {
 };
 </script>
 
+<script setup>
+  import {onMounted} from "vue";
+
+  const props = defineProps({
+    id: Number,
+    name: String,
+    photo: Array,
+    size: String,
+    color: String,
+    price: Number
+  })
+
+  onMounted(() => {
+    console.log(props.name)
+  })
+</script>
