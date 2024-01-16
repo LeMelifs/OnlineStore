@@ -1,11 +1,13 @@
 <template>
   <q-layout view="lHh Lpr lFf">
     <HeaderComponent/>
-    <q-page-container style="border: 2px solid #9C27B0">
-      <div class="text-weight-bold text-grey-10 parent" style="margin: 80px 50px 10px; font-size: 32px; width: 350px ">
-        Корзина
+    <q-page-container class="parent">
+      <div class="text-weight-bold text-grey-10 parent q-mt-xl" style="font-size: 32px; width: 350px ">
+        О нас
       </div>
-
+      <div>
+        <img src="../assets/cat_img.jpg" style="border-radius: 100%; height: 50px">
+      </div>
     </q-page-container>
     <FooterComponent/>
   </q-layout>
@@ -21,5 +23,4 @@
 <script setup>
 import HeaderComponent from "components/HeaderComponent.vue";
 import FooterComponent from "components/FooterComponent.vue";
-import BucketOrder from "components/BucketOrder.vue";
 </script>
