@@ -115,6 +115,7 @@ async def order_add(
             ).first()
             for x in product_ids.split(",")
         ]
+        products = [x for x in products if x is not None]
     else:
         products = (
             await session.execute(select(Bin).where(Bin.user_id == user.id))
