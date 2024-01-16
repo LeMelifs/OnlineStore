@@ -222,6 +222,11 @@ async def signup(request: Request, session: AsyncSession = Depends(get_session))
             detail="Некорректный запрос",
         )
 
+    if any(
+        x == "" for x in [username, first_name, gender, email, phone_number, password]
+    ):
+        raise HTTPException(400, "Некоторые поля не заполнены :(")
+
     stmt = select(User).where(func.lower(User.email) == email.lower())
     user = (await session.execute(stmt)).first()
 
