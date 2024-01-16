@@ -14,12 +14,15 @@
         </div>
       </div>
       <div class="row">
-        <div>
+        <div v-if="products_cart.length !== 0">
           <BucketOrder v-for="(product, index) in products_cart" :key="index" :name="product.name" :id="product.id"
           :price="product.price" :size="product.size['name']" :color="product.color['name']" :photo="product.photo"
           :status="status"/>
         </div>
-        <div style="margin-left: 100px; position: fixed; left: 850px">
+        <div v-else style="margin-left: 185px">
+          В корзине пока нет товаров!
+        </div>
+        <div v-if="products_cart.length !== 0" style="margin-left: 100px; position: fixed; left: 850px">
           <div class="text-weight-bold text-grey-10" style="font-size: 30px; margin-top: -58px;">Оформите заказ</div>
           <div class="q-mt-lg q-mb-sm" style="display: flex;">
             <div>Количество товаров: {{ products_count }}</div>
@@ -30,7 +33,7 @@
             <div style="margin-left: 196px">{{ products_price * 0.2 }} ₽</div>
           </div>
           <q-separator></q-separator>
-          <router-link to="/payment">
+          <router-link to="/payment" v-if="store.state.order.length !== 0">
             <q-btn class="bg-grey-10  text-white full-width q-mt-lg q-pr-sm" no-caps rounded flat>К оформлению<q-icon style="margin-left: 150px" name="chevron_right"></q-icon></q-btn>
           </router-link>
         </div>

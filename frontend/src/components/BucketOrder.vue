@@ -84,7 +84,7 @@
 </style>
 
 <script setup>
-import {onMounted, onUnmounted, ref, watch} from "vue";
+import {onMounted, onUnmounted, onUpdated, ref, watch} from "vue";
 import store from "src/store";
 
 let isChecked = ref(false)
@@ -108,10 +108,17 @@ onMounted(async () => {
   await store.dispatch('setOrder', [])
 })
 
-onUnmounted(async () => {
+onUpdated(async () => {
   if (isChecked.value) {
-    store.state.order.push({ props })
+    store.state.order.push({ id: props.id, name: props.name, size: props.size, color: props.color, photo: props.photo,
+    price: props.price, status: props.status })
     await store.dispatch('setOrder', store.state.order)
+  }
+  else {
+      let lists = store.state.order.filter(x => {
+      return x.id !== props.id;
+    })
+    await store.dispatch('setOrder', lists)
   }
 })
 </script>

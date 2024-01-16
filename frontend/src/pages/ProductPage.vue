@@ -19,7 +19,8 @@
         </div>
         <div class="bg-brown-2 q-mx-md  parent" style="margin-top: 20px; margin-right: 70px; border-radius: 20px; position: relative; width: 450px; height: 450px;">
           <div v-if="current_product[0].photo[0]" style="width: 100%; height: 100%; overflow: hidden; border-radius: 20px; position: absolute; top: 0; left: 0;">
-            <img :src="current_product[0].photo[0]" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;">
+            <v-lazy-image :src="current_product[0].photo[0]" alt="Avatar" style="width: 100%; height: 100%;
+            object-fit: cover;" :src-placeholder="current_product[0].photo[1]" />
           </div>
           <q-icon v-else style="margin-top: 40px" size="180px" color="dark" name="mood" />
         </div>
@@ -29,7 +30,7 @@
             {{ current_product[0].name }}
           </div>
           <div class="text-weight-bold text-dark q-mt-md" style="font-size: 33px">
-            {{ current_product[0].price }}
+            {{ current_product[0].price }} ₽
           </div>
           <div class="text-weight-bold text-grey-10 q-mt-lg q-mb-sm" style="font-size: 18px">
             Описание
@@ -78,6 +79,14 @@
   margin-right: 10px;
   padding: 4px;
 }
+
+.v-lazy-image {
+  filter: blur(10px);
+  transition: filter 0.7s;
+}
+.v-lazy-image-loaded {
+  filter: blur(0);
+}
 </style>
 
 <script setup>
@@ -85,6 +94,7 @@ import HeaderComponent from "components/HeaderComponent.vue";
 import FooterComponent from "components/FooterComponent.vue";
 import {onMounted, ref} from "vue";
 import store from "src/store";
+import VLazyImage from "v-lazy-image";
 
 let current_product = null
 let state = ref(false)

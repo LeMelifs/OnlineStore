@@ -42,7 +42,7 @@
           <div class="row">
             <div v-for="point in points" :key="point.id" class="q-mb-md q-mr-md clickable"
                  style="border-radius: 8px; width: 200px" @click="choosePoint(point.id)"
-            :style="{ ...picked_point === point.id ? { 'border': '1px solid grey', 'background-color': 'whitesmoke' } : { 'border': '1px solid #bebebe' } }">
+            :style="{ ...picked_point === point.id ? { 'border': '1px solid grey', 'background-color': '#eeeeee' } : { 'border': '1px solid #bebebe' } }">
               <div class="row">
                 <q-icon style="margin: 10px" color="grey-7" size="25px" name="home"/>
                 <div class="text-grey-10 q-my-sm" style="font-size: 14px; margin-left: 10px; margin-bottom: 10px;">{{ point.city_name }}, <br>{{ point.name }}</div>
@@ -53,9 +53,9 @@
           <div class="text-weight-bold text-grey-10 q-mb-sm" style="font-size: 23px">
             Состав заказа
           </div>
-          <PaymentProduct v-for="product in store.state.order" :key="product.props.id" :id="product.props.id"
-          :name="product.props.name" :size="product.props.size" :color="product.props.color" :photo="product.props.photo"
-          :price="product.props.price"/>
+          <PaymentProduct v-for="product in store.state.order" :key="product.id" :id="product.id"
+          :name="product.name" :size="product.size" :color="product.color" :photo="product.photo"
+          :price="product.price"/>
 
         </div>
         <div style="margin-left: 100px; position: fixed; left: 850px; top: 170px">
@@ -102,7 +102,7 @@ a {
 
 .clickable:hover {
   cursor: pointer;
-  background-color: whitesmoke;
+  background-color: #eeeeee;
 }
 </style>
 
@@ -142,7 +142,7 @@ onMounted(async () => {
   points = await response_pickup.json()
 
   for (let product in store.state.order) {
-    sum.value += store.state.order[product].props.price
+    sum.value += store.state.order[product].price
     count.value++
   }
 
@@ -167,7 +167,7 @@ async function makeOrder() {
 
   let strArray = []
   for (let product in store.state.order) {
-    strArray.push(String(store.state.order[product].props.id))
+    strArray.push(String(store.state.order[product].id))
   }
   let query = strArray.join(', ')
   const data = reactive({
