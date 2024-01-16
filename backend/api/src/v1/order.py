@@ -121,6 +121,9 @@ async def order_add(
             await session.execute(select(Bin).where(Bin.user_id == user.id))
         ).all()
 
+    if products == []:
+        raise HTTPException(400, "В корзине пусто :(")
+
     codes = [
         x._mapping["distinct"]
         for x in (await session.execute(select(func.distinct(Order.num)))).all()
