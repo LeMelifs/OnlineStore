@@ -25,8 +25,8 @@
         <div v-if="products_cart.length !== 0" style="margin-left: 100px; position: fixed; left: 850px">
           <div class="text-weight-bold text-grey-10" style="font-size: 30px; margin-top: -58px;">Оформите заказ</div>
           <div class="q-mt-lg q-mb-sm" style="display: flex;">
-            <div>Количество товаров: {{ products_count }}</div>
-            <div style="margin-left: 110px">{{ products_price }} ₽</div>
+            <div>Всего товаров в корзине: {{ products_count }}</div>
+            <div style="margin-left: 83px">{{ products_price }} ₽</div>
           </div>
           <div class="q-mb-lg" style="display: flex;">
             <div>Доставка</div>
