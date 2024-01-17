@@ -3,10 +3,10 @@
     <HeaderComponent/>
     <q-page-container>
       <div class="parent">
-        <div class=" text-weight-bold text-h4" style="margin-top: 60px; margin-bottom: 50px">Добро пожаловать!</div>
+        <div class=" text-weight-bold text-h4" style="margin-top: 30px;">Добро пожаловать!</div>
       </div>
       <div class="parent">
-        <div class="row  q-pa-md parent" style="border-radius: 25px; margin-top: 50px; border: 1px solid #c2c2c2">
+        <div class="row  q-pa-md parent" style="border-radius: 25px; margin-top: 25px; border: 1px solid #c2c2c2">
           <div class="text-weight-bold text-grey-10 text-h5 q-ma-md" >
             Наша история: от первой<br>идеи до любимого магазина<br>с котиками
           </div>

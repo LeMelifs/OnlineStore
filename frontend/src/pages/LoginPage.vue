@@ -104,6 +104,7 @@
 import {useRouter} from "vue-router";
 import {reactive, ref} from "vue";
 import store from "src/store";
+import cookie from "vue-cookie";
 let error = ref('')
 const data = reactive({
     login: '',
@@ -126,6 +127,9 @@ const submit = async () => {
       await store.dispatch('setRefreshToken', json['refresh_token'])
       await store.dispatch('setType', json['type'])
       await store.dispatch('setAuth', true)
+      await cookie.set('user-token', `${store.state.token}`, { expires: '10h'})
+      await cookie.set('user-refresh', `${store.state.refresh_token}`, { expires: '10h'})
+      await cookie.set('type', `${store.state.type}`, { expires: '10h'})
   }
   else {
     error.value = json['detail']

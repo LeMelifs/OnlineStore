@@ -2,9 +2,6 @@
   <q-layout view="lHh Lpr lFf">
         <q-page-container>
           <HeaderComponent/>
-           <div class="text-weight-bold text-grey-10 text-h5 parent" style="position: fixed; text-align: center; left: 50%; top: 10%; transform: translate(-50%, 0);">
-        Добро пожаловать!
-      </div>
     </q-page-container>
     <FooterComponent/>
   </q-layout>
@@ -17,16 +14,25 @@ import HeaderComponent from "components/HeaderComponent.vue";
 import FooterComponent from "components/FooterComponent.vue";
 import {onMounted} from "vue";
 import store from "src/store";
+import cookie from "vue-cookie";
 
 const url_view = 'https://onlinestore.poslam.ru/api/v1/user/view'
 const url_refresh = 'https://onlinestore.poslam.ru/api/v1/auth/refresh'
 
 onMounted(async () => {
-  console.log(store.state.order)
+  const token = cookie.get('user-token')
+  const refresh = cookie.get('user-refresh')
+  const type = cookie.get('type')
+  if (token && refresh) {
+      await store.dispatch('setToken', token)
+      await store.dispatch('setRefreshToken', refresh)
+      await store.dispatch('setType', type)
+      await store.dispatch('setAuth', true)
+  }
   try {
     const response = await fetch(url_view, {
       method: 'GET',
-      headers: {'auth': `${store.state.token}`},
+      headers: {'Content-Type': 'application/json', 'auth': `${store.state.token}`},
     })
 
     if (response.status !== 200) {
