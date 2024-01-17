@@ -9,7 +9,7 @@
         <q-icon v-else size="180px" color="dark" name="mood" />
       </div>
       <div class="q-ma-md">
-        <div style="font-weight: bold; font-size: 20px">{{ props.name }}</div>
+        <div style="font-weight: bold; font-size: 20px; width: 250px">{{ props.name }}</div>
         <div class="text-grey-8">Размер: {{ props.size }}</div>
         <div class="text-grey-8">Цвет: {{ props.color }}</div>
         <div style="font-weight: bold; margin-top: 80px; padding-top: 18px; font-size: 22px">{{ props.price }} ₽</div>
