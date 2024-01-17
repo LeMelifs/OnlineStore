@@ -122,7 +122,6 @@
     <FooterComponent/>
   </q-layout>
 </template>
-
 <style scoped>
 
 a {

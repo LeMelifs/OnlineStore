@@ -3,7 +3,8 @@
     <div class="row">
       <div class="bg-brown-2 q-my-md q-mr-md q-pa-md parent" style="width: 180px; border-radius: 15px">
         <div v-if="props.photo[0]" style="width: 120px; height: 120px; overflow: hidden; border-radius: 20px; position: relative;">
-          <img :src="props.photo[0]" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover; position: absolute; top: 0; left: 0;">
+          <v-lazy-image :src="props.photo[0]" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;
+           position: absolute; top: 0; left: 0;" :src-placeholder="props.photo[1]"/>
         </div>
         <q-icon v-else size="180px" color="dark" name="mood" />
       </div>
@@ -81,11 +82,20 @@
 .round input[type="checkbox"]:checked + label:after {
   opacity: 1;
 }
+
+.v-lazy-image {
+  filter: blur(10px);
+  transition: filter 0.7s;
+}
+.v-lazy-image-loaded {
+  filter: blur(0);
+}
 </style>
 
 <script setup>
-import {onMounted, onUnmounted, ref, watch} from "vue";
+import {onMounted, onUnmounted, onUpdated, ref, watch} from "vue";
 import store from "src/store";
+import VLazyImage from "v-lazy-image";
 
 let isChecked = ref(false)
 
@@ -104,14 +114,20 @@ watch(() => props.status, () => {
 })
 
 onMounted(async () => {
-  store.state.order = []
   await store.dispatch('setOrder', [])
 })
 
-onUnmounted(async () => {
+onUpdated(async () => {
   if (isChecked.value) {
-    store.state.order.push({ props })
+    store.state.order.push({ id: props.id, name: props.name, size: props.size, color: props.color, photo: props.photo,
+    price: props.price, status: props.status })
     await store.dispatch('setOrder', store.state.order)
+  }
+  else {
+      let lists = store.state.order.filter(x => {
+      return x.id !== props.id;
+    })
+    await store.dispatch('setOrder', lists)
   }
 })
 </script>

@@ -1,8 +1,11 @@
 <template>
   <div class="q-py-md" style="width: 640px; border-radius: 25px;">
     <div class="row">
-      <div class="bg-brown-2 q-my-md q-mr-md parent" style="width: 100px; border-radius: 15px; height: 100px; padding-top: 10px">
-        <q-icon size="80px" color="dark" name="mood" />
+      <div class="bg-brown-2 q-my-md q-mr-md parent" style="width: 100px; border-radius: 15px; height: 100px; padding-top: 10px; position: relative">
+        <div v-if="props.photo[0]" style="width: 100%; height: 100%; overflow: hidden; border-radius: 20px; position: absolute; top: 0; left: 0;">
+            <v-lazy-image :src="props.photo[0]" :src-placeholder="props.photo[1]" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;" />
+          </div>
+        <q-icon v-else style="margin-top: 40px" size="180px" color="dark" name="mood" />
       </div>
       <div class="q-ma-md">
         <div style="font-weight: bold; font-size: 17px">{{ props.name }}</div>
@@ -65,6 +68,14 @@
 .round input[type="checkbox"]:checked + label:after {
   opacity: 1;
 }
+
+.v-lazy-image {
+  filter: blur(10px);
+  transition: filter 0.7s;
+}
+.v-lazy-image-loaded {
+  filter: blur(0);
+}
 </style>
 
 <script>
@@ -93,7 +104,7 @@ export default {
 </script>
 
 <script setup>
-  import {onMounted} from "vue";
+import VLazyImage from "v-lazy-image";
 
   const props = defineProps({
     id: Number,
@@ -104,7 +115,4 @@ export default {
     price: Number
   })
 
-  onMounted(() => {
-    console.log(props.name)
-  })
 </script>

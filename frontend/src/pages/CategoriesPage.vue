@@ -66,6 +66,8 @@ onMounted(async () => {
     })
     products_json = await response_products.json()
     await store.dispatch('setProducts', products_json)
+    await store.dispatch('setOrder', [])
+
     state.value = true
 })
 </script>
