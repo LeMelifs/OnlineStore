@@ -77,7 +77,7 @@ export default {
   data() {
     return {
       buttons: ['Футболки', 'Толстовки', 'Штаны', 'Носки', 'Сумки', 'Аксессуары'],
-      activeButton: 0,
+      activeButton: 2,
       activeButtonStyle: {
         border: '1.5px solid #3a3a3a',
         backgroundColor: '#343434',

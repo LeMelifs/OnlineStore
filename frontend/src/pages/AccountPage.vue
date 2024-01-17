@@ -2,7 +2,7 @@
   <q-layout view="lHh Lpr lFf">
     <HeaderComponent/>
 
-    <q-page-container class="parent" style="margin-top: 100px; margin-right: 200px">
+    <q-page-container class="parent" style="margin-top: 100px; margin-right: 200px" v-if="state">
       <div class=" q-gutter-md row items-start">
         <q-card style=" width: 380px; box-shadow: none; border-radius: 25px">
           <q-btn  @click="orders" flat icon="local_shipping"  text-color="grey-10" class="btn_start full-width  text-weight-bold" label="Мои заказы" :style="{border: order ? '2px solid #3a3a3a' : ''}" no-caps ><q-icon style="margin-left: 205px" name="chevron_right"></q-icon></q-btn>
@@ -74,20 +74,24 @@
               </div>
 
               <template v-if="active">
-                <div>
-                  <AccountOrdersCard/>
-                  <AccountOrdersCard/>
+                <div v-if="orders_list_stored.length !== 0">
+                  <AccountOrdersCard v-for="order in orders_list_stored" :key="order.id " :name="order.name"
+                  :size="order.size" :color="order.color" :status="order.status" :photo="order.photo"/>
                 </div>
+                <div v-else>
                 <div class="q-pl-sm" style="font-size: 14.5px; ">У вас нет заказов в архиве</div>
                 <q-separator color="grey-5" class="q-mt-md q-mb-sm"/>
+                 </div>
               </template>
               <template v-else>
-                <div>
-                  <AccountOrdersCard/>
-                  <AccountOrdersCard/>
+                <div v-if="orders_list_active.length !== 0">
+                  <AccountOrdersCard v-for="order in orders_list_active" :key="order.id" :name="order.name"
+                  :size="order.size" :color="order.color" :status="order.status" :photo="order.photo"/>
                 </div>
+                <div v-else>
                 <div class="q-pl-sm" style="font-size: 14.5px; ">У вас нет активных заказов</div>
                 <q-separator color="grey-5" class="q-mt-md q-mb-sm"/>
+                </div>
               </template>
             </div>
           </q-card>
@@ -188,6 +192,10 @@ let filename = ref('')
 const changed = {}
 let error = ref('')
 let placeholder = ref(null)
+let orders_list_active = []
+let orders_list_stored = []
+let state = ref(false)
+let all_orders = []
 
 onMounted(() => {
   order.value = true;
@@ -228,14 +236,14 @@ function onAddPicture(e) {
 }
 
 onMounted(async () => {
-  const response = await fetch('https://onlinestore.poslam.ru/api/v1/user/view', {
+  const response_user = await fetch('https://onlinestore.poslam.ru/api/v1/user/view', {
     method: 'GET',
     headers: {'auth': `${store.state.token}`},
   })
 
-  const json = await response.json()
+  let json = await response_user.json()
 
-  if (response.status !== 400) {
+  if (response_user.status !== 400) {
     data.username = json['username']
     defaultForm.username = data.username
     data.first_name = json['first_name']
@@ -250,6 +258,56 @@ onMounted(async () => {
     placeholder.value = json['photo'][0]
     defaultForm.photo = data.photo
   }
+
+  const response_orders = await fetch('https://onlinestore.poslam.ru/api/v1/order/view', {
+    method: 'GET',
+    headers: {'auth': `${store.state.token}`},
+  })
+
+  all_orders = await response_orders.json()
+
+  for (let info in all_orders) {
+    for (let product in all_orders[info].products) {
+      let product_info = all_orders[info].products[product]
+      switch (all_orders[info].status) {
+        case 'pending':
+          all_orders[info].status = 'В обработке'
+          break
+
+        case 'done':
+          all_orders[info].status = 'Получен'
+          break
+
+        case 'canceled':
+          all_orders[info].status = 'Отменён'
+          break
+
+        case 'delivery':
+          all_orders[info].status = 'Отправлен'
+          break
+
+        case 'refund':
+          all_orders[info].status = 'Возвращён'
+          break
+      }
+      product_info['status'] = all_orders[info].status
+      if (all_orders[info].status === 'В обработке' || all_orders[info].products.status === 'Отправлен') {
+        orders_list_active.push(all_orders[info].products[product])
+      } else {
+        orders_list_stored.push(all_orders[info].products[product])
+      }
+    }
+  }
+
+  orders_list_active.sort(function(a, b) {
+    return a.status[0] < b.status[0]
+  })
+
+   orders_list_stored.sort(function(a, b) {
+    return a.status[0] < b.status[0]
+  })
+
+  state.value = true
 })
 
 const submit = async () => {
