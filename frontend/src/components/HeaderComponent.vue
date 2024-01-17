@@ -8,7 +8,7 @@
         <q-btn  flat dense rounded label="О нас" no-caps class="q-ml-lg" style="font-weight: bold; width: 50px"></q-btn>
       </router-link>
       <q-toolbar-title>
-        <router-link to="/">
+        <router-link to="/about">
           <a class="row absolute-center text-grey-10 text-h6 text-weight-bold  ">=＾• ⋏ •＾=</a>
         </router-link>
       </q-toolbar-title>
