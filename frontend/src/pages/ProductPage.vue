@@ -2,8 +2,8 @@
   <q-layout view="lHh Lpr lFf">
     <HeaderComponent/>
     <q-page-container v-if="state">
-      <div class="row q-mt-xl">
-        <div style="margin-left: 15%">
+      <div class="row q-mt-xl parent">
+        <div>
 <!--          <div class="bg-brown-2 q-ma-md q-pa-md parent" style="border-radius: 10px">-->
 <!--            <q-icon size="80px" color="grey-9" name="mood" />-->
 <!--          </div>-->
