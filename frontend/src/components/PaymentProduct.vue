@@ -5,7 +5,7 @@
         <div v-if="props.photo[0]" style="width: 100%; height: 100%; overflow: hidden; border-radius: 20px; position: absolute; top: 0; left: 0;">
             <v-lazy-image :src="props.photo[0]" :src-placeholder="props.photo[1]" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;" />
           </div>
-        <q-icon v-else style="margin-top: 40px" size="180px" color="dark" name="mood" />
+        <q-icon v-else size="80px" color="dark" name="mood" />
       </div>
       <div class="q-ma-md">
         <div style="font-weight: bold; font-size: 17px">{{ props.name }}</div>

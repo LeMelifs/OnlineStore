@@ -2,8 +2,8 @@
   <q-layout view="lHh Lpr lFf">
     <HeaderComponent/>
     <q-page-container v-if="state">
-      <div class="row q-mt-xl">
-        <div style="margin-left: 15%">
+      <div class="row q-mt-xl parent">
+        <div>
 <!--          <div class="bg-brown-2 q-ma-md q-pa-md parent" style="border-radius: 10px">-->
 <!--            <q-icon size="80px" color="grey-9" name="mood" />-->
 <!--          </div>-->
@@ -22,7 +22,7 @@
             <v-lazy-image :src="current_product[0].photo[0]" alt="Avatar" style="width: 100%; height: 100%;
             object-fit: cover;" :src-placeholder="current_product[0].photo[1]" />
           </div>
-          <q-icon v-else style="margin-top: 40px" size="180px" color="dark" name="mood" />
+          <q-icon v-else style="margin-top: 120px" size="180px" color="dark" name="mood" />
         </div>
 
         <div style="margin-left: 30px">
@@ -42,8 +42,9 @@
             Цвет
           </div>
           <div>
-            <q-btn v-for="(color, index) in current_product[0].colors" :key="index" @click="setColor(color.id)" flat class="bordered-button">
-              <div style="border-radius: 8px; width: 30px; height: 30px"
+            <q-btn v-for="(color, index) in current_product[0].colors" :key="index" @click="setColor(color.id)"
+                  style="padding: 1px" flat class="bordered-button" :style=" {...picked_color === color.id ? { 'border': '3px solid lightgrey' } : {}}">
+              <div style="border-radius: 8px; width: 30px; height: 30px;"
               :style="{ 'background-color': color.hex_code }"></div>
             </q-btn>
           </div>
@@ -52,7 +53,7 @@
           </div>
           <div>
             <q-btn v-for="(size, index) in current_product[0].sizes" :key="index" flat class="bordered-button"
-                   :label="size.name" @click="setSize(size.id)"/>
+                   :label="size.name" @click="setSize(size.id)" :style="{ ...picked_size === size.id ? {'border': '3px solid lightgrey'} : {}}"/>
           </div>
           <div style="margin-top: 50px">
             <q-btn @click="addToCart" flat rounded style="width: 200px; height: 40px" class="bg-grey-3 text-grey-9 q-mr-sm" no-caps label="Добавить в корзину"/>
@@ -100,8 +101,8 @@ import VLazyImage from "v-lazy-image";
 
 let current_product = null
 let state = ref(false)
-let picked_size = null
-let picked_color = null
+let picked_size = ref(null)
+let picked_color = ref(null)
 let error = ref('')
 const params = new URLSearchParams();
 const url = 'https://onlinestore.poslam.ru/api/v1/bin/add'
@@ -116,11 +117,11 @@ onMounted(async () => {
 })
 
 function setSize(size) {
-  picked_size = size
+  picked_size.value = size
 }
 
 function setColor(color) {
-  picked_color = color
+  picked_color.value = color
 }
 
 async function buyNow() {
@@ -141,23 +142,23 @@ async function addToCart() {
 
   params.append('product_id', current_product[0].id)
 
-  if (picked_size === null) {
+  if (picked_size.value === null) {
     error.value = 'Выберите размер!'
     params.delete('product_id')
     return
   }
   else {
-    params.append('size_id', picked_size)
+    params.append('size_id', picked_size.value)
   }
 
-  if (picked_color === null) {
+  if (picked_color.value === null) {
     error.value = 'Выберите цвет!'
     params.delete('product_id')
     params.delete('size_id')
     return
   }
   else {
-    params.append('color_id', picked_color)
+    params.append('color_id', picked_color.value)
   }
 
   const fullUrl = `${url}?${params.toString()}`;

@@ -21,10 +21,6 @@ const routes = [
     component: () => import('pages/CategoriesPage.vue')
   },
   {
-    path: "/about",
-    component: () => import('pages/AboutUsPage.vue')
-  },
-  {
     path: "/account",
     name: 'account',
     component: () => import('pages/AccountPage.vue')

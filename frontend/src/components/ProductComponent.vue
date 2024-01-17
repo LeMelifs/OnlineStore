@@ -6,7 +6,7 @@
           <v-lazy-image :src="props.photo[0]" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;"
           :src-placeholder="props.photo[1]"/>
         </div>
-        <q-icon v-else style="margin-top: 40px" size="180px" color="dark" name="mood" />
+        <q-icon v-else style="margin-top:40px" size="180px" color="dark" name="mood" />
       </div>
     </router-link>
     <router-link to="/product">

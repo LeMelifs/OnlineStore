@@ -4,11 +4,11 @@
       <router-link to="/categories">
         <q-btn  flat dense rounded label="Категории" no-caps style="font-weight: bold; margin-left: 15px; width: 88px"></q-btn>
       </router-link>
-      <router-link to="/about">
+      <router-link to="/">
         <q-btn  flat dense rounded label="О нас" no-caps class="q-ml-lg" style="font-weight: bold; width: 50px"></q-btn>
       </router-link>
       <q-toolbar-title>
-        <router-link to="/about">
+        <router-link to="/">
           <a class="row absolute-center text-grey-10 text-h6 text-weight-bold  ">=＾• ⋏ •＾=</a>
         </router-link>
       </q-toolbar-title>
