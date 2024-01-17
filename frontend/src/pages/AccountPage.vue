@@ -183,6 +183,7 @@ import {onMounted, reactive, ref} from "vue";
 import store from "src/store";
 import VLazyImage from "v-lazy-image";
 import AccountOrdersCard from "components/AccountOrdersCard.vue";
+import cookie from "vue-cookie";
 
 let active = ref(false)
 let order = ref(false)
@@ -364,6 +365,9 @@ function logout() {
   store.dispatch('setRefreshToken', null)
   store.dispatch('setType', null)
   store.dispatch('setAuth', false)
+  cookie.delete('user-token')
+  cookie.delete('user-refresh')
+  cookie.delete('type')
 }
 
 function change_t() {
