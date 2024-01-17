@@ -69,5 +69,5 @@ update-prod-full:
 copy:
 	docker compose -f docker-compose-prod.yaml cp api:api/src/static/img ./backend/api/src/static
 	docker compose -f docker-compose-prod.yaml exec database sh -c 'pg_dump -h 127.0.0.1 --username=postgres -d postgres > dumps/$$(date +'%Y-%m-%d_%H-%M-%S').dump'
-	sshpass -p "$(pass)" scp -r ./backend/dumps poslam@188.127.225.179:/home/poslam/onlinestore_dumps
-	sshpass -p "$(pass)" scp -r ./backend/api/src/static/img poslam@188.127.225.179:/home/poslam/onlinestore_imgs
+	sshpass -p "$(pass)" scp -r ./backend/dumps poslam@188.127.225.179:/home/poslam/onlinestore
+	sshpass -p "$(pass)" scp -r ./backend/api/src/static/img poslam@188.127.225.179:/home/poslam/onlinestore
