@@ -6,7 +6,7 @@
         <div class="text-weight-bold text-grey-10 parent" style="margin: 80px 80px 10px; font-size: 35px; width: 350px ">
           Корзина
         </div>
-        <div v-if="products_cart.length !== 0" class="round" style="margin-left: 205px; margin-top:94px">
+        <div v-if="products_cart.length !== 0" class="round" style="margin-left: 245px; margin-top:94px">
           <input type="checkbox" id="checkbox" v-model="status" />
           <label for="checkbox">
             <div class="checkmark" v-if="status"></div>
