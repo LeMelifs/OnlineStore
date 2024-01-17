@@ -21,6 +21,9 @@
             <div class="checkmark" v-if="isChecked"></div>
           </label>
         </div>
+        <q-btn flat round dence style="margin-left: 75px; margin-bottom: 5px">
+          <q-icon  size="32px" color="dark" name="delete" />
+        </q-btn>
 <!--        <div style="font-weight: bold; font-size: 22px; color: #2f2f2f;">-->
 <!--          <q-btn round outline style="font-size: 12px" color="grey-8" @click="decrement"><q-icon color="dark" name="remove"></q-icon></q-btn>-->
 <!--          <span class="q-ma-md dark" style="font-size: 22px">{{ number }}</span>-->

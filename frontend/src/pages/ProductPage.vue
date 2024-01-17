@@ -22,7 +22,7 @@
             <v-lazy-image :src="current_product[0].photo[0]" alt="Avatar" style="width: 100%; height: 100%;
             object-fit: cover;" :src-placeholder="current_product[0].photo[1]" />
           </div>
-          <q-icon v-else style="margin-top: 40px" size="180px" color="dark" name="mood" />
+          <q-icon v-else style="margin-top: 120px" size="180px" color="dark" name="mood" />
         </div>
 
         <div style="margin-left: 30px">

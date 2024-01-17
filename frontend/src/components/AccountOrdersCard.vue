@@ -3,7 +3,7 @@
     <q-card-section class="bg-grey-1 q-pa-sm" style="border: 1px solid #bebdbd">
       <div class="row">
         <div class="bg-brown-2 q-pa-sm q-ma-xs" style="border-radius: 20px; width: 120px">
-         <div v-if="props.photo[0]" style="width: 100%; height: 100%; overflow: hidden; border-radius: 15px; position: absolute; top: 0; left: 0;">
+         <div v-if="props.photo[0]" style="margin: 10px ;width: 122px; height: 110px; overflow: hidden; border-radius: 20px; position: absolute; top: 0; left: 0;">
           <v-lazy-image :src="props.photo[0]" alt="Avatar" style="width: 100%; height: 100%; object-fit: cover;"
           :src-placeholder="props.photo[1]"/>
         </div>
