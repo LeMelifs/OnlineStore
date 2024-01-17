@@ -124,6 +124,8 @@ function setColor(color) {
 }
 
 async function buyNow() {
+
+  await addToCart()
   store.state.order.push({ id: current_product[0].id, name: current_product[0].name, size: current_product[0].size,
     color: current_product[0].color, photo: current_product[0].photo, price: current_product[0].price,
     status: current_product[0].status })
@@ -131,10 +133,11 @@ async function buyNow() {
 }
 
 async function addToCart() {
-  if (store.state.token === null) {
-    error.value = 'Вы не авторизованы!'
-    return
-  }
+
+  // if (store.state.token === null) {
+  //   error.value = 'Вы не авторизованы!'
+  //   return
+  // }
 
   params.append('product_id', current_product[0].id)
 
