@@ -131,6 +131,7 @@ class Product(base):
     sale = Column(Integer, default="0")
 
     description = Column(TEXT)
+    short_description = Column(String(70))
 
     category_id = Column(ForeignKey(Category.id))
 

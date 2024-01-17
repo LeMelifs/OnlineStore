@@ -66,6 +66,7 @@ async def product_view(
                 "price": product.price,
                 "sale": product.sale,
                 "description": product.description,
+                "short_description": product.short_description,
                 "category_id": product.category_id,
                 "photo": await photo_search("product", product.id, session),
                 "sizes": sizes,
@@ -88,6 +89,7 @@ async def product_add(
         name = data["name"]
         price = data["price"]
         description = data["description"]
+        short_description = data["short_description"]
         category_id = data["category_id"]
         size_ids = data["size_ids"]
         color_ids = data["color_ids"]
@@ -122,6 +124,7 @@ async def product_add(
         "price": price,
         "sale": 0,
         "description": description,
+        "short_description": short_description,
         "category_id": category_id,
     }
 
