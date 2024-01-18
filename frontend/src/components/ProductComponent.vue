@@ -1,5 +1,5 @@
 <template>
-  <div style="width: 20%; height: 300px; " class="q-mx-sm q-px-sm">
+  <div id="header" style="width: 20%; height: 390px; margin-bottom: -100px" class="q-mx-sm q-px-sm">
     <router-link :to="{ name: 'Product', params: { id: props.id }}">
       <div class="bg-brown-2 q-mx-md q-mr-sm q-paxl parent" style="border-radius: 15px; position: relative; width: 260px; height: 260px;">
         <div v-if="props.photo[0]" style="width: 100%; height: 100%; overflow: hidden; border-radius: 15px; position: absolute; top: 0; left: 0;">
@@ -17,7 +17,7 @@
     <div class="text-grey-6  q-mt-xs" style="margin-left: 21px">
       {{ props.short_description }}
     </div>
-    <div class="text-weight-bold text-grey-10 text-h6 q-mt-xs" style="margin-left: 21px">
+    <div id="header-content" class="text-weight-bold text-grey-10 text-h6 q-mt-xs" style="margin-left: 21px;">
       {{ props.price }} ₽
     </div>
   </div>
@@ -39,6 +39,16 @@ a {
 
 .v-lazy-image-loaded {
   filter: blur(0);
+}
+#header {
+  position: relative;
+  min-height: 150px;
+}
+
+#header-content {
+  position: absolute;
+  bottom: 0;
+  left: 10;
 }
 </style>
 
