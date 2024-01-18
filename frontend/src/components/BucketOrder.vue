@@ -2,7 +2,7 @@
   <div class="q-py-md q-mr-md" style="width: 640px; border-radius: 25px; margin-left: 180px">
     <div class="row">
       <div class="bg-brown-2 q-my-sm q-mr-md parent" style="width: 180px; border-radius: 15px">
-        <div v-if="props.photo[0]" style="width: 180px; height: 230px; overflow: hidden; border-radius: 15px; position: relative;">
+        <div v-if="props.photo[0]" style="width: 180px; height: 250px; overflow: hidden; border-radius: 15px; position: relative;">
           <v-lazy-image :src="props.photo[0]" alt="Avatar" style=";width: 100%; height: 100%; object-fit: cover;
            position: absolute; top: 0; left: 0;" :src-placeholder="props.photo[1]"/>
         </div>
