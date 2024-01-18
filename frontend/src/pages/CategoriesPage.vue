@@ -23,10 +23,13 @@
           {{ category.name }}
         </q-btn>
       </div>
+      <div v-if="productIsLoaded">
       <div v-for="(separator, idx) in separators" :key="idx" class="row parent" style="margin-bottom: 130px">
         <ProductComponent v-for="(product, index) in products_json.filter(item => item.category_id === activeButton)
         .slice(separator - 4, separator)" :key="index" :name="product.name" :description="product.description"
-                                          :price="product.price" :photo="product.photo" :id="product.id"/>
+                                          :price="product.price" :photo="product.photo" :id="product.id"
+                          :short_description="product.short_description"/>
+        </div>
       </div>
     </q-page-container>
     <FooterComponent/>
@@ -70,6 +73,16 @@ onMounted(async () => {
 
     state.value = true
 })
+
+let activeButton = ref(2)
+let productIsLoaded = ref(true)
+function setActiveButton(index) {
+  productIsLoaded.value = false
+  activeButton.value = index
+  setTimeout(function() {
+    productIsLoaded.value = true
+}, (100))
+}
 </script>
 
 <script>
@@ -77,7 +90,6 @@ export default {
   data() {
     return {
       buttons: ['Футболки', 'Толстовки', 'Штаны', 'Носки', 'Сумки', 'Аксессуары'],
-      activeButton: 2,
       activeButtonStyle: {
         border: '1.5px solid #3a3a3a',
         backgroundColor: '#343434',
@@ -85,10 +97,5 @@ export default {
       }
     };
   },
-  methods: {
-    setActiveButton(index) {
-      this.activeButton = index;
-    }
-  }
 };
 </script>

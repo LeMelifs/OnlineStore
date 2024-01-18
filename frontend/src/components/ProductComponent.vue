@@ -15,10 +15,10 @@
       </div>
     </router-link>
     <div class="text-grey-6  q-mt-xs" style="margin-left: 21px">
-      {{ props.description }}
+      {{ props.short_description }}
     </div>
     <div class="text-weight-bold text-grey-10 text-h6 q-mt-xs" style="margin-left: 21px">
-      {{ props.price }}
+      {{ props.price }} ₽
     </div>
   </div>
 </template>
@@ -52,7 +52,8 @@ const props = defineProps({
     price: Number,
     description: String,
     category_id: Number,
-    photo: Array
+    photo: Array,
+    short_description: String
 })
 
 </script>
